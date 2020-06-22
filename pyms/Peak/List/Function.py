@@ -130,6 +130,7 @@ def fill_peaks(data, peak_list: List, D: float, minutes: bool = False) -> Peak:
 
     if not is_peak_list(peak_list):
         raise TypeError("'peak_list' must be a list of Peak objects")
+
     if not isinstance(D, float):
         raise TypeError("'D' must be a float")
 
@@ -243,17 +244,17 @@ def sele_peaks_by_rt(peaks: Union[List, tuple, numpy.ndarray], rt_range: Sequenc
     :type peaks: list or tuple or numpy.ndarray
     :param rt_range: A list of two time strings, specifying lower and
            upper retention times
-    :type rt_range: Sequence[str]
+    :type rt_range: ~collections.abc.Sequence[str]
 
     :return: A list of peak objects
     :rtype: :class:`list` of :class:`pyms.Peak.Class.Peak`
     """
 
     if not is_peak_list(peaks):
-        raise TypeError("'peaks' not a peak list")
+        raise TypeError("'peaks' must be a Sequence of Peak objects")
 
     if not is_sequence(rt_range):
-        raise TypeError("'rt_range' not a Sequence")
+        raise TypeError("'rt_range' must be a Sequence")
     else:
         if len(rt_range) != 2:
             raise ValueError("'rt_range' must have exactly two elements")

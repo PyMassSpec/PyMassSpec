@@ -8,3 +8,4 @@ biopython >= 1.74
 deprecation >= 2.1.0
 pandas>=1.0.0
 sdjson >= 0.2.3
+aenum

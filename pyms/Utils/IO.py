@@ -40,7 +40,7 @@ def prepare_filepath(file_name: Union [str, pathlib.Path], mkdirs: bool = True) 
 	Convert string filename into pathlib.Path object and create parent directories if required
 
 	:param file_name: file_name to process
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 	:param mkdirs: Whether the parent directory of the file should be created if it doesn't exist. Default True.
 	:type mkdirs: bool, optional
 
@@ -69,7 +69,7 @@ def dump_object(obj: Any, file_name: Union[str, pathlib.Path]) :
 	:param obj: Object to be dumped
 	:type obj: any
 	:param file_name: Name of the file for the object dump
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 
 	:author: Vladimir Likic
 	:author: Dominic Davis-Foster (pathlib support)
@@ -90,7 +90,7 @@ def load_object(file_name: Union[str, pathlib.Path]):
 	Loads an object previously dumped with dump_object()
 
 	:param file_name: Name of the object dump file
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 
 	:return: Object contained in the file 'file_name'
 	:rtype: An instance of an arbitrary class
@@ -114,7 +114,7 @@ def file_lines(file_name: Union[str, pathlib.Path], strip: bool = False) -> List
 	Returns lines from a file, as a list
 
 	:param file_name: Name of a file
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 	:param strip: If True, lines are pre-processed. Newline characters are
 		removed, leading and trailing whitespaces are removed, and lines
 		starting with '#' are discarded
@@ -162,7 +162,7 @@ def save_data(file_name: Union[str, pathlib.Path],data: List, format_st: str = "
 	Saves a list of numbers or a list of lists of numbers to a file with specific formatting
 
 	:param file_name: Name of a file
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 	:param data: A list of numbers, or a list of lists
 	:type data: list
 	:param format_str: A format string for individual entries

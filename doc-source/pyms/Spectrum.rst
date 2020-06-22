@@ -3,5 +3,6 @@
 *************************
 
 .. automodule:: pyms.Spectrum
-    :members:
-    :inherited-members:
+	:members:
+	:inherited-members:
+	:autosummary:

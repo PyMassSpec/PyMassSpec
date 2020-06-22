@@ -12,6 +12,7 @@ username: "domdfcoding"
 license: 'GPLv2'
 short_desc: 'Python Toolkit for Mass Spectrometry'
 conda_description: 'Python Toolkit for Mass Spectrometry'
+travis_site: "org"
 
 #enable_conda: False
 
@@ -71,10 +72,9 @@ extra_sphinx_extensions:
   - 'nbsphinx'
 
 html_theme_options:  # Must be strings to preserve booleans
-  - "'includehidden': False"
+  includehidden: False
 
 sphinx_conf_preamble:
   # Built rst from jupyter notebooks
   - import ipynb2rst
   - nitpicky = True
-  - "autodoc_default_options = {'autosummary': True}"

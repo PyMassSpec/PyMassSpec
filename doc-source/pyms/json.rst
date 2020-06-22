@@ -3,6 +3,7 @@
 **********************
 
 .. automodule:: pyms.json
-    :members:
-    :inherited-members:
+	:members:
+	:inherited-members:
+	:autosummary:
 

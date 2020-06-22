@@ -41,7 +41,7 @@ class MissingPeak:
 	:type qual_ion_1:
 	:param qual_ion_2:
 	:type qual_ion_2:
-	:param rt: Retention time of the peak (Default 0.0)
+	:param rt: Retention time of the peak. Default ``0.0``
 	:type rt: float, optional
 
 	:author: Jairus Bowne

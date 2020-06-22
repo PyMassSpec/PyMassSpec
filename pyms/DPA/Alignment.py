@@ -51,6 +51,7 @@ from pyms.Utils.Utils import is_sequence
 from pyms.Experiment import Experiment
 from pyms.Peak.List.Function import composite_peak
 from pyms.Utils.IO import prepare_filepath
+from pyms.Utils.Utils import is_path, is_sequence_of
 
 
 class Alignment:
@@ -67,9 +68,7 @@ class Alignment:
 	"""
 
 	def __init__(self, expr):
-		"""
-		Models an alignment of peak lists
-		"""
+
 		if expr is None:
 			self.peakpos = []
 			self.peakalgt = []
@@ -77,7 +76,8 @@ class Alignment:
 			self.similarity = None
 		else:
 			if not isinstance(expr, Experiment):
-				raise TypeError("'expr' must be an Experiment object")
+				raise TypeError("'expr' must be an 'Experiment' object")
+
 			# for peak in expr.get_peak_list():
 			#    if peak.get_area() == None or peak.get_area() <= 0:
 			#        error("All peaks must have an area for alignment")
@@ -89,7 +89,7 @@ class Alignment:
 	def __len__(self):
 		"""
 		Returns the length of the alignment, defined as the number of
-			peak positions in the alignment
+		peak positions in the alignment
 
 		:author: Qiao Wang
 		:author: Vladimir Likic
@@ -103,7 +103,7 @@ class Alignment:
 			and average retention time of all peaks that aligned.
 
 		:param minutes: An optional indicator of whether retention times are in
-			minutes. If False, retention time are in seconds
+		minutes. If False, retention time are in seconds
 		:type minutes: bool, optional
 
 		:return: A list of composite peaks based on the alignment.
@@ -116,13 +116,17 @@ class Alignment:
 
 		# for all peaks found
 		peak_list = []
+
 		for peak_idx in range(len(self.peakpos[0])):
 			# get aligned peaks, ignore missing
+
 			new_peak_list = []
 			for align_idx in range(len(self.peakpos)):
 				peak = self.peakpos[align_idx][peak_idx]
+
 				if peak is not None:
 					new_peak_list.append(peak)
+
 			# create composite
 			new_peak = composite_peak(new_peak_list)
 			peak_list.append(new_peak)
@@ -208,6 +212,7 @@ class Alignment:
 			# top_ion_list.append(self.get_highest_mz_ion(entry))
 			# This was in the version being used by GSMatch and easyGC
 			top_ion_list.append(max(entry, key=entry.get))
+
 		# TODO: Change over to the new version
 
 		return top_ion_list
@@ -254,7 +259,8 @@ class Alignment:
 
 		max_occurrences = max(ion_dict.values())
 		most_freq_mzs = []
-		for key, value in ion_dict.iteritems():
+
+		for key, value in ion_dict.items():
 			if value == max_occurrences:
 				most_freq_mzs.append(key)
 
@@ -371,9 +377,9 @@ class Alignment:
 		retention times and the other containing the alignment of peak areas.
 
 		:param area_file_name: The name for the areas alignment file
-		:type area_file_name: str or pathlib.Path
+		:type area_file_name: str or os.PathLike
 		:param top_ion_list: A list of the highest intensity common ion along the aligned peaks
-		:type top_ion_list: list
+		:type top_ion_list: ~collections.abc.Sequence
 		:param minutes: An optional indicator whether to save retention times
 			in minutes. If False, retention time will be saved in seconds
 		:type minutes: bool, optional
@@ -387,105 +393,103 @@ class Alignment:
 
 		# TODO: minutes currently does nothing
 
-		if not isinstance(area_file_name, (str, pathlib.Path)):
-			raise TypeError("'area_file_name' must be a string or a pathlib.Path object")
+		if not is_path(area_file_name):
+			raise TypeError("'area_file_name' must be a string or a PathLike object")
 
-		if not isinstance(top_ion_list, list) or not isinstance(top_ion_list[0], Number):
-			raise TypeError("'top_ion_list' must be a list of numbers")
+		if not is_sequence_of(top_ion_list, Number):
+			raise TypeError("'top_ion_list' must be a Sequence of Numbers")
 
 		area_file_name = prepare_filepath(area_file_name)
 
-		fp = open(area_file_name, "w")
+		with area_file_name.open("w") as fp:
 
-		# create header
-		header = ['"UID"', '"RTavg"', '"Quant Ion"']
-		for item in self.expr_code:
-			header.append(f'"{item}"')
+			# create header
+			header = ['"UID"', '"RTavg"', '"Quant Ion"']
+			for item in self.expr_code:
+				header.append(f'"{item}"')
 
-		# write headers
-		fp.write(",".join(header) + "\n")
+			# write headers
+			fp.write(",".join(header) + "\n")
 
-		rtsums = []
-		rtcounts = []
+			rtsums = []
+			rtcounts = []
 
-		# The following two arrays will become list of lists
-		# such that:
-		# areas = [  [align1_peak1, align2_peak1, .....,alignn_peak1]
-		#            [align1_peak2, ................................]
-		#              .............................................
-		#            [align1_peakm,....................,alignn_peakm]  ]
-		areas = []
-		new_peak_lists = []
+			# The following two arrays will become list of lists
+			# such that:
+			# areas = [  [align1_peak1, align2_peak1, .....,alignn_peak1]
+			#            [align1_peak2, ................................]
+			#              .............................................
+			#            [align1_peakm,....................,alignn_peakm]  ]
+			areas = []
+			new_peak_lists = []
 
-		for peak_list in self.peakpos:
+			for peak_list in self.peakpos:
+				index = 0
+				for peak in peak_list:
+					# one the first iteration, populate the lists
+					if len(areas) < len(peak_list):
+						areas.append([])
+						new_peak_lists.append([])
+						rtsums.append(0)
+						rtcounts.append(0)
+
+					if peak is not None:
+						rt = peak.rt
+
+						# get the area of the common ion for the peak
+						# an area of 'na' shows that while the peak was
+						# aligned, the common ion was not present
+						area = peak.get_ion_area(top_ion_list[index])
+
+						areas[index].append(area)
+						new_peak_lists[index].append(peak)
+
+						# The following code to the else statement is
+						# just for calculating the average rt
+						rtsums[index] += rt
+						rtcounts[index] += 1
+
+					else:
+						areas[index].append(None)
+
+					index += 1
+
+			out_strings = []
 			index = 0
-			for peak in peak_list:
-				# one the first iteration, populate the lists
-				if len(areas) < len(peak_list):
-					areas.append([])
-					new_peak_lists.append([])
-					rtsums.append(0)
-					rtcounts.append(0)
+			# now write the strings for the file
+			for area_list in areas:
 
-				if peak is not None:
-					rt = peak.rt
+				# write initial info:
+				# peak unique id, peak average rt
+				compo_peak = composite_peak(new_peak_lists[index])
+				peak_UID = compo_peak.UID
+				peak_UID_string = f'"{peak_UID}"'
 
-					# get the area of the common ion for the peak
-					# an area of 'na' shows that while the peak was
-					# aligned, the common ion was not present
-					area = peak.get_ion_area(top_ion_list[index])
+				rt_avg = rtsums[index] / rtcounts[index]
 
-					areas[index].append(area)
-					new_peak_lists[index].append(peak)
+				out_strings.append(f"{peak_UID_string},{rt_avg / 60:.3f},{top_ion_list[index]:f}")
 
-					# The following code to the else statement is
-					# just for calculating the average rt
-					rtsums[index] += rt
-					rtcounts[index] += 1
-
-				else:
-					areas[index].append(None)
+				for area in area_list:
+					if area is not None:
+						out_strings[index] += f",{area:.4f}"
+					else:
+						out_strings[index] += ",NA"
 
 				index += 1
 
-		out_strings = []
-		index = 0
-		# now write the strings for the file
-		for area_list in areas:
-
-			# write initial info:
-			# peak unique id, peak average rt
-			compo_peak = composite_peak(new_peak_lists[index])
-			peak_UID = compo_peak.UID
-			peak_UID_string = f'"{peak_UID}"'
-
-			rt_avg = rtsums[index] / rtcounts[index]
-
-			out_strings.append(f"{peak_UID_string},{rt_avg / 60:.3f},{top_ion_list[index]:f}")
-
-			for area in area_list:
-				if area is not None:
-					out_strings[index] += f",{area:.4f}"
-				else:
-					out_strings[index] += ",NA"
-
-			index += 1
-
-		# now write the file
-		#        print("length of areas[0]", len(areas[0]))
-		#        print("length of areas", len(areas))
-		#        print("length of out_strings", len(out_strings))
-		for row in out_strings:
-			fp.write(row + "\n")
-
-		fp.close()
+			# now write the file
+			#        print("length of areas[0]", len(areas[0]))
+			#        print("length of areas", len(areas))
+			#        print("length of out_strings", len(out_strings))
+			for row in out_strings:
+				fp.write(row + "\n")
 
 	def write_ion_areas_csv(self, ms_file_name: Union[str, pathlib.Path], minutes: bool = True):
 		"""
 		Write Ion Areas to CSV File
 
 		:param ms_file_name: The name of the file
-		:type ms_file_name: str or pathlib.Path
+		:type ms_file_name: str, PathLike
 		:param minutes:
 		:type minutes: bool
 
@@ -493,55 +497,56 @@ class Alignment:
 		:author: Dominic Davis-Foster (pathlib support)
 		"""
 
-		if not isinstance(ms_file_name, (str, pathlib.Path)):
-			raise TypeError("'ms_file_name' must be a string or a pathlib.Path object")
+		if not is_path(ms_file_name):
+			raise TypeError("'ms_file_name' must be a string or a PathLike object")
 
 		ms_file_name = prepare_filepath(ms_file_name)
 
-		fp1 = ms_file_name.open("w")
+		with ms_file_name.open("w") as fp1:
 
-		# create header
+			# create header
 
-		header = ['"UID"', '"RTavg"']
-		for item in self.expr_code:
-			header.append(f'"{item}"')
+			header = ['"UID"', '"RTavg"']
+			for item in self.expr_code:
+				header.append(f'"{item}"')
 
-		# write headers
-		fp1.write("|".join(header) + "\n")
+			# write headers
+			fp1.write("|".join(header) + "\n")
 
-		for peak_idx in range(len(self.peakpos[0])):
+			for peak_idx in range(len(self.peakpos[0])):
 
-			ias = []
-			new_peak_list = []
+				ias = []
+				new_peak_list = []
 
-			for align_idx in range(len(self.peakpos)):
+				for align_idx in range(len(self.peakpos)):
 
-				peak = self.peakpos[align_idx][peak_idx]
+					peak = self.peakpos[align_idx][peak_idx]
 
-				if peak is not None:
+					if peak is not None:
 
-					ia = peak.ion_areas
-					ia.update((mass, math.floor(intensity)) for mass, intensity in ia.items())
-					sorted_ia = sorted(ia.items(), key=operator.itemgetter(1), reverse=True)
-					ias.append(sorted_ia)
-					new_peak_list.append(peak)
+						ia = peak.ion_areas
+						ia.update((mass, math.floor(intensity)) for mass, intensity in ia.items())
+						sorted_ia = sorted(ia.items(), key=operator.itemgetter(1), reverse=True)
+						ias.append(sorted_ia)
+						new_peak_list.append(peak)
 
-			compo_peak = composite_peak(new_peak_list)
+				compo_peak = composite_peak(new_peak_list)
 
-			# write to ms file
-			fp1.write(compo_peak.UID)
-			if minutes:
-				fp1.write(f"|{compo_peak.rt/60:.3f}")
-			else:
-				fp1.write(f"|{compo_peak.rt:.3f}")
-			for ia in ias:
-				if ia is None:
-					fp1.write("|NA")
+				# write to ms file
+				fp1.write(compo_peak.UID)
+
+				if minutes:
+					fp1.write(f"|{compo_peak.rt/60:.3f}")
 				else:
-					fp1.write(f"|{ia}")
-			fp1.write("\n")
+					fp1.write(f"|{compo_peak.rt:.3f}")
 
-		fp1.close()
+				for ia in ias:
+					if ia is None:
+						fp1.write("|NA")
+					else:
+						fp1.write(f"|{ia}")
+
+				fp1.write("\n")
 
 	def get_peak_alignment(self, minutes: bool = True, require_all_expr: bool = True) -> DataFrame:
 		"""
@@ -621,7 +626,6 @@ class Alignment:
 					ms = peak.get_mass_spectrum()
 					specs.append(ms)
 					countms = countms + 1
-
 				else:
 					specs.append(None)
 
@@ -676,7 +680,8 @@ class Alignment:
 		"""
 		Returns a Pandas dataframe of peak areas for the aligned peaks
 
-		:param require_all_expr: Whether the peak must be present in all experiments to be included in the data frame, Default True
+		:param require_all_expr: Whether the peak must be present in all experiments to be included in the data frame.
+			Default ``True``
 		:type require_all_expr: bool, optional
 
 		:rtype: pandas.DataFrame
@@ -701,7 +706,6 @@ class Alignment:
 					area = peak.area
 					areas.append(area)
 					count_areas = count_areas + 1
-
 				else:
 					areas.append(None)
 

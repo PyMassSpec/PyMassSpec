@@ -4,3 +4,4 @@
 
 .. automodule:: pyms.BillerBiemann
     :members:
+	:autosummary:

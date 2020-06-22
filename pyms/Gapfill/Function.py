@@ -50,7 +50,7 @@ def file2matrix(file_name: Union[str, pathlib.Path) -> numpy.ndarray:
 	Convert a .csv file to a numpy array
 
 	:param file_name: Filename (.csv) to convert (area.csv, area_ci.csv)
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 
 	:return: Data matrix
 	:rtype: :class:`numpy.array`
@@ -91,15 +91,15 @@ def missing_peak_finder(sample: Sample, file_name: str, points: int = 3, null_io
 
 	:param file_name: Name of the raw data file
 	:type file_name: str
-	:param points: Peak finding - Peak if maxima over 'points' number of scans (Default 3)
+	:param points: Peak finding - Peak if maxima over 'points' number of scans. Default ``3``
 	:type points: int, optional
-	:param  null_ions: Ions to be deleted in the matrix (Default [73, 147])
+	:param  null_ions: Ions to be deleted in the matrix. Default ``[73, 147]``
 	:type null_ions: list, optional
-	:param crop_ions: Range of Ions to be considered (Default [50, 540])
+	:param crop_ions: Range of Ions to be considered. Default ``[50, 540]``
 	:type crop_ions: list, optional
-	:param threshold: Minimum intensity of IonChromatogram allowable to fill (Default 1000)
+	:param threshold: Minimum intensity of IonChromatogram allowable to fill. Default ``1000``
 	:type threshold: int, optional
-	:param  rt_window: Window in seconds around average RT to look for (Default 1)
+	:param  rt_window: Window in seconds around average RT to look for. Default ``1``
 	:type rt_window: float, optional
 	:param filetype: either `MZML` (default) or `NETCDF`
 	:type filetype: int, optional
@@ -294,14 +294,10 @@ def write_filled_csv(sample_list: Sample, area_file: Union[str, pathlib.Path], f
 	:author: Dominic Davis-Foster (pathlib support)
 	"""
 
-	if not isinstance(filled_area_file, (str, pathlib.Path)):
+	if not is_path(filled_area_file):
 		raise TypeError("'filled_area_file' must be a string or a pathlib.Path object")
 
-	if not isinstance(filled_area_file, pathlib.Path):
-		filled_area_file = pathlib.Path(filled_area_file)
-
-	if not filled_area_file.parent.is_dir():
-		filled_area_file.parent.mkdir(parents=True)
+	filled_area_file = prepare_filepath(filled_area_file)
 
 	old_matrix = file2matrix(area_file)
 

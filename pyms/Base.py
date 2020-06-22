@@ -24,7 +24,6 @@ Base for PyMassSpec classes
 ################################################################################
 
 # stdlib
-import pathlib
 import pickle
 
 # this package
@@ -41,15 +40,14 @@ class pymsBaseClass:
 
 	def dump(self, file_name: Union[str, pathlib.Path], protocol: int = 3):
 		"""
-		Dumps an object to a file through pickle.dump()
+		Dumps an object to a file through :func:`pickle.dump()`
 
-		:param file_name: Name of the file for the object dump
-		:type file_name: str or pathlib.Path
-		:param protocol: The pickle protocol to use. Default 3
+		:param file_name: Filename to save the dump as
+		:type file_name: str or os.PathLike
+		:param protocol: The pickle protocol to use. Default ``3``
 		:type protocol: int, optional
 
-		:author: Vladimir Likic
-		:author: Dominic Davis-Foster (pathlib and pickle protocol support)
+		:authors: Vladimir Likic, Dominic Davis-Foster (pathlib and pickle protocol support)
 		"""
 
 		if not is_path(file_name):

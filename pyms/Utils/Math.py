@@ -217,9 +217,10 @@ def is_float(s: Union[str,List[str]]) -> Union[bool, List[bool]]:
 
     if isinstance(s, (tuple, list)):
         if not all(isinstance(i, str) for i in s):
-            raise TypeError("Input {} is not a list of strings".format(s))
+            raise TypeError(f"Input {s} is not a list of strings")
+
         if len(s) == 0:
-            raise ValueError('Input {} is empty'.format(s))
+            raise ValueError(f'Input {s} is empty')
         else:
             return_list = [True] * len(s)
             for i in range(0, len(s)):

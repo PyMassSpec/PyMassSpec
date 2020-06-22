@@ -1,5 +1,5 @@
 """
-Models a GC-MS experiment represented by a list of signal peaks
+Models a GC-MS experiment, represented by a list of signal peaks
 """
 
 ################################################################################
@@ -26,7 +26,6 @@ Models a GC-MS experiment represented by a list of signal peaks
 # stdlib
 import copy
 import os
-import pathlib
 import pickle
 
 # 3rd party
@@ -39,7 +38,7 @@ from pyms import __version__, Peak
 from pyms.Base import pymsBaseClass
 from pyms.Peak.List.Function import is_peak_list, sele_peaks_by_rt
 from pyms.Utils.IO import prepare_filepath
-from pyms.Utils.Utils import is_path
+from pyms.Utils.Utils import is_path, is_sequence
 
 
 class Experiment(pymsBaseClass):
@@ -49,11 +48,9 @@ class Experiment(pymsBaseClass):
 	:param expr_code: Unique identifier for the experiment
 	:type expr_code: str
 	:param peak_list: A list of peak objects
-	:type peak_list: :class:`list` of :class:`pyms.Peak.Class.Peak` objects
+	:type peak_list: List[~pyms.Peak.Class.Peak] objects
 
-	:author: Vladimir Likic
-	:author: Andrew Isaac
-	:author: Dominic Davis-Foster (type assertions, properties and pathlib support)
+	:author: Vladimir Likic, Andrew Isaac,  Dominic Davis-Foster (type assertions, properties and pathlib support)
 	"""
 
 	def __init__(self, expr_code, peak_list):
@@ -63,6 +60,7 @@ class Experiment(pymsBaseClass):
 
 		if not isinstance(expr_code, str):
 			raise TypeError("'expr_code' must be a string")
+
 		if not is_peak_list(peak_list):
 			raise TypeError("'peak_list' must be a list of Peak objects")
 
@@ -116,7 +114,6 @@ class Experiment(pymsBaseClass):
 		"""
 		Returns the expr_code of the experiment
 
-		:return: The expr_code of the experiment
 		:rtype: str
 		"""
 
@@ -129,9 +126,9 @@ class Experiment(pymsBaseClass):
 		"""
 		Returns the expr_code of the experiment
 
-		:return: The expr_code of the experiment
 		:rtype: str
 		"""
+
 		return self.expr_code
 
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
@@ -141,8 +138,7 @@ class Experiment(pymsBaseClass):
 		"""
 		Returns the peak list
 
-		:return: A list of peaks
-		:rtype: :class;`list` of :class:`pyms.Peak.Class.Peak` objects
+		:rtype: List[~pyms.Peak.Class.Peak]
 		"""
 
 		return self.peak_list
@@ -152,8 +148,7 @@ class Experiment(pymsBaseClass):
 		"""
 		Returns the peak list
 
-		:return: A list of peaks
-		:rtype: :class;`list` of :class:`pyms.Peak.Class.Peak` objects
+		:rtype: List[~pyms.Peak.Class.Peak]
 		"""
 
 		return self._peak_list
@@ -162,12 +157,12 @@ class Experiment(pymsBaseClass):
 		"""
 		Discards all peaks which have the retention time outside the specified range
 
-		:param rt_range: Min, max retention time given as a list [rt_min,rt_max]
-		:type rt_range: list
+		:param rt_range: Min, max retention time given as a list [rt_min, rt_max]
+		:type rt_range: ~collections.abc.Sequence
 		"""
 
-		if not isinstance(rt_range, list):
-			raise TypeError("'rt_range' must be a list")
+		if not is_sequence(rt_range):
+			raise TypeError("'rt_range' must be a Sequence")
 
 		peaks_sele = sele_peaks_by_rt(self._peak_list, rt_range)
 		self._peak_list = peaks_sele
@@ -180,11 +175,9 @@ class Experiment(pymsBaseClass):
 		stores an experiment to a file
 
 		:param file_name: The name of the file
-		:type file_name: str or pathlib.Path
+		:type file_name: str or os.PathLike
 
-		:author: Vladimir Likic
-		:author: Andrew Isaac
-		:author: Dominic Davis-Foster (pathlib support)
+		:author: Vladimir Likic, Andrew Isaac, Dominic Davis-Foster (pathlib support)
 		"""
 
 		if not is_path(file_name):
@@ -202,7 +195,7 @@ def read_expr_list(file_name: Union[str, pathlib.Path]) -> Experiment:
 	Reads the set of experiment files and returns a list of :class:`pyms.Experiment.Experiment` objects
 
 	:param file_name: The name of the file which lists experiment dump file names, one file per line
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 
 	:return: A list of Experiment instances
 	:rtype: list of pyms.Experiment.Experiment
@@ -237,14 +230,12 @@ def load_expr(file_name: Union[str, pathlib.Path]) -> Experiment:
 	Loads an experiment saved with :meth:`pyms.Experiment.store_expr`
 
 	:param file_name: Experiment file name
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 
 	:return: The loaded experiment
 	:rtype: pyms.Experiment.Experiment
 
-	:author: Vladimir Likic
-	:author: Andrew Isaac
-	:author: Dominic Davis-Foster (type assertions and pathlib support)
+	:author: Vladimir Likic, Andrew Isaac, Dominic Davis-Foster (type assertions and pathlib support)
 	"""
 
 	if not is_path(file_name):
@@ -274,9 +265,7 @@ def store_expr(file_name: str, expr: Experiment):
 	:param expr: An experiment object
 	:type expr: pyms.Experiment.Experiment
 
-	:author: Vladimir Likic
-	:author: Andrew Isaac
-	:author: Dominic Davis-Foster (type assertions)
+	:author: Vladimir Likic, Andrew Isaac, Dominic Davis-Foster (type assertions)
 	"""
 
 	if not isinstance(expr, Experiment):

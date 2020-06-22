@@ -29,7 +29,6 @@ import pathlib
 from numbers import Number
 from typing import List, Any, Iterator, Union, Optional
 from warnings import warn
-import enum
 
 # 3rd party
 import deprecation
@@ -42,12 +41,18 @@ from pyms.IonChromatogram import IonChromatogram
 from pyms.Mixins import GetIndexTimeMixin, IntensityArrayMixin, MassListMixin, TimeListMixin
 from pyms.Spectrum import MassSpectrum
 from pyms.Utils.IO import prepare_filepath, save_data
-from pyms.Utils.Utils import is_sequence_of, is_sequence, is_path
+from pyms.Utils.Utils import is_path, is_sequence, is_sequence_of
 
+import aenum
 
-class AsciiFiletypes(enum.Enum):
-	ASCII_DAT = 1
-	ASCII_CSV = 0
+class AsciiFiletypes(aenum.Enum):
+	"""
+	Enumeration of supported ASCII filetypes for :meth:`~pyms.IntensityMatrix.IntensityMatrix.export_ascii`
+	"""
+
+	_init_ = 'value __doc__'
+	ASCII_DAT = 1, "Tab-delimited ASCII file"
+	ASCII_CSV = 0, "Comma-separated values file"
 
 	def __int__(self):
 		return self.value
@@ -68,12 +73,12 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 	:type mass_list: list
 
 	:param intensity_array: Binned intensity values per scan
-	:type intensity_array: a :class:`list` of lists of numbers; or a :class:`numpy.ndarray`
+	:type intensity_array: List[~numbers.Number] or numpy.ndarray[~numbers.Number]
 
 	:authors: Andrew Isaac, Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, time_list: List, mass_list: List, intensity_arrayList[numpy.ndarray]):
+	def __init__(self, time_list: List, mass_list: List, intensity_array: Union[List, numpy.ndarray]):
 		"""
 		Initialize the IntensityMatrix data
 		"""
@@ -207,7 +212,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		return self.size
 
 	@property
-	def size(self) -> Any
+	def size(self) -> Any:
 		"""
 		Gets the size of intensity matrix
 
@@ -458,15 +463,15 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		Crops mass spectrum
 
 		:param mass_min: Minimum mass value
-		:type mass_min: int or float
+		:type mass_min: ~numbers.Number
 		:param mass_max: Maximum mass value
-		:type mass_max: int or float
+		:type mass_max: ~numbers.Number
 
 		:author: Andrew Isaac
 		"""
 
 		if not isinstance(mass_min, Number) or not isinstance(mass_max, Number):
-			raise TypeError("'mass_min' and 'mass_max' must be numbers")
+			raise TypeError("'mass_min' and 'mass_max' must be Numbers")
 		if mass_min >= mass_max:
 			raise ValueError("'mass_min' must be less than 'mass_max'")
 		if mass_min < self._min_mass:
@@ -517,7 +522,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		for spec_jj in range(len(im)):
 			im[spec_jj][ii] = 0
 
-	def reduce_mass_spectra(self, n_intensit: int = 5):
+	def reduce_mass_spectra(self, n_intensities: int = 5):
 		"""
 		Reduces the mass spectra by retaining the top `n_intensities`,
 		discarding all other intensities.
@@ -553,7 +558,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 			self._intensity_array[ii] = intensity_list_new
 
-	def export_ascii(self, root_name: Union[str, pathlib.Path], fmt: int = ASCII_DAT):
+	def export_ascii(self, root_name: Union[str, pathlib.Path], fmt: Union[AsciiFiletypes, int] = AsciiFiletypes.ASCII_DAT):
 		"""
 		Exports the intensity matrix, retention time vector, and m/z vector to the ascii format.
 
@@ -561,12 +566,12 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		and NAME.mz.dat where these are the intensity matrix, retention time
 		vector, and m/z vector in tab delimited format.
 
-		If format=ASCII_CSV, the files will be in the CSV format, named
+		If ``format`` == ``<AsciiFiletypes.ASCII_CSV>``, the files will be in the CSV format, named
 		NAME.im.csv, NAME.rt.csv, and NAME.mz.csv.
 
 		:param root_name: Root name for the output files
-		:type root_name: str or pathlib.Path
-		:param fmt: Format of the output file, either ``ASCII_DAT`` or ``ASCII_CSV``
+		:type root_name: str or os.PathLike
+		:param fmt: Format of the output file, either ``<AsciiFiletypes.ASCII_DAT>`` or ``<AsciiFiletypes.ASCII_CSV>``
 		:type fmt: int
 
 		:authors: Milica Ng, Andrew Isaac, Vladimir Likic, Dominic Davis-Foster (pathlib support)
@@ -603,7 +608,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		Exports data in LECO CSV format
 
 		:param file_name: The name of the output file
-		:type file_name: str or pathlib.Path
+		:type file_name: str or os.PathLike
 
 		:authors: Andrew Isaac, Vladimir Likic, Dominic Davis-Foster (pathlib support)
 		"""
@@ -657,7 +662,7 @@ def import_leco_csv(file_name: Union[str, pathlib.Path]) -> IntensityMatrix:
 	Imports data in LECO CSV format
 
 	:param file_name: Path of the file to read
-	:type file_name: str or pathlib.Path
+	:type file_name: str or os.PathLike
 
 	:return: Data as an IntensityMatrix
 	:rtype: pyms.IntensityMatrix.IntensityMatrix
@@ -753,11 +758,11 @@ def build_intensity_matrix(data: GCMS_data, bin_interval: Union[int, float] = 1,
 
 	:param data: Raw GCMS data
 	:type data: pyms.GCMS.Class.GCMS_data
-	:param bin_interval: interval between bin centres (default 1)
+	:param bin_interval: interval between bin centres. Default ``1``
 	:type bin_interval: int or float
-	:param bin_left: left bin boundary offset (default 0.5)
+	:param bin_left: left bin boundary offset. Default ``0.5``
 	:type bin_left: float
-	:param bin_right: right bin boundary offset (default 0.5)
+	:param bin_right: right bin boundary offset. Default ``0.5``
 	:type bin_right: float
 	:param min_mass: Minimum mass to bin (default minimum mass from data)
 	:type min_mass: bool
@@ -795,9 +800,9 @@ def build_intensity_matrix_i(data: GCMS_data, bin_left: float = 0.3, bin_right: 
 
 	:param data: Raw GCMS data
 	:type data: pyms.GCMS.Class.GCMS_data
-	:param bin_left: left bin boundary offset (default 0.3)
+	:param bin_left: left bin boundary offset. Default ``0.3``
 	:type bin_left: float
-	:param bin_right: right bin boundary offset (default 0.7)
+	:param bin_right: right bin boundary offset. Default ``0.7``
 	:type bin_right: float
 
 	:return: Binned IntensityMatrix object

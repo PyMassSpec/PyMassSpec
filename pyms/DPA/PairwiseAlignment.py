@@ -49,6 +49,7 @@ Please install one of them and try again.""")
 
 # this package
 from pyms.DPA.Alignment import Alignment
+from pyms.Utils.Utils import is_sequence_of
 
 
 class PairwiseAlignment:
@@ -71,10 +72,12 @@ class PairwiseAlignment:
 		Models pairwise alignment of alignments
 		"""
 
-		if not isinstance(alignments, list) or not isinstance(alignments[0], Alignment):
-			raise TypeError("'alignments' must be a list")
+		if not is_sequence_of(alignments, Alignment):
+			raise TypeError("'alignments' must be a Sequence of Alignment objects")
+
 		if not isinstance(D, float):
 			raise TypeError("'D' must be a float")
+
 		if not isinstance(gap, float):
 			raise TypeError("'gap' must be a float")
 
@@ -231,8 +234,10 @@ def dp(S, gap_penalty: float) -> dict:
 
 	try:
 		row_length = len(S[:, 0])
+
 	except IndexError:
 		raise IndexError('Zero length alignment found: Samples with no peaks cannot be aligned')
+
 	col_length = len(S[0, :])
 
 	# D contains the score of the optimal alignment
@@ -338,10 +343,12 @@ def position_similarity(pos1, pos2, D) -> float:
 			aspec = a.mass_spectrum.mass_spec
 			art = a.rt
 			once = True
+
 			for b in pos2:
 				if b is not None:
 					brt = b.rt
 					# in range?
+
 					if abs(art - brt) > cutoff:
 						score += 1.0  # NB score of 1 is worst
 					else:
@@ -350,14 +357,17 @@ def position_similarity(pos1, pos2, D) -> float:
 							mass_spect1 = numpy.array(aspec, dtype='d')
 							mass_spect1_sum = numpy.sum(mass_spect1**2, axis=0)
 							once = False
+
 						bspec = b.mass_spectrum.mass_spec
 						mass_spect2 = numpy.array(bspec, dtype='d')
 						mass_spect2_sum = numpy.sum(mass_spect2**2, axis=0)
+
 						try:
 							top = numpy.dot(mass_spect1, mass_spect2)
 						except ValueError:
 							raise ValueError("""Mass Spectra are of different lengths.
-Use IntensityMatrix.crop_mass() to set same length for all Mass Spectra""")
+Use `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra""")
+
 						bot = numpy.sqrt(mass_spect1_sum * mass_spect2_sum)
 						if bot > 0:
 							cos = top / bot

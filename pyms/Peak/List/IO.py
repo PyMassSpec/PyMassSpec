@@ -43,7 +43,7 @@ def store_peaks(peak_list: Peak, file_name: Union[str, pathlib.Path], protocol=1
     :param peak_list: A list of peak objects
     :type peak_list: list of :class:`pyms.Peaks.Class.Peak`
     :param file_name: File name to store peak list
-    :type file_name: str or pathlib.Path
+    :type file_name: str or os.PathLike
     :param protocol:
     :type protocol:
 
@@ -70,7 +70,7 @@ def load_peaks(file_name: Union[str, pathlib.Path]) -> Peak:
     Loads the peak_list stored with 'store_peaks'
 
     :param file_name: File name of peak list
-    :type file_name: str or pathlib.Path
+    :type file_name: str or os.PathLike
 
     :return: The list of Peak objects
     :rtype: :class:`list` of :class:`pyms.Peak.Class.Peak`

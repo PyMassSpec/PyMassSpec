@@ -2,3 +2,5 @@ include __pkginfo__.py
 include LICENSE
 include requirements.txt
 recursive-exclude **/__pycache__ *
+recursive-include pyms/ *.pyi
+recursive-include pyms/ py.typed

@@ -24,10 +24,9 @@ Classes to model Mass Spectra and Scans
 ################################################################################
 
 # stdlib
-import pathlib
 import re
 import warnings
-from collections import Sequence
+from collections.abc import Sequence
 
 # 3rd party
 from numbers import Number
@@ -52,7 +51,7 @@ def array_as_numeric(array: Union[Sequence, numpy.ndarray]) -> numpy.ndarray:
 
 	If the data in the array is already in a numeric data type no changes will be made.
 
-	If ``array`` is a python :class:`~python:collections.Sequence` then it will first be
+	If ``array`` is a python :class:`~python:collections.abc.Sequence` then it will first be
 	converted to a numpy array.
 
 	:param array:
@@ -77,9 +76,9 @@ class Scan(pymsBaseClass, MassListMixin):
 	Generic object for a single Scan's raw data
 
 	:param mass_list: A sequence of mass values
-	:type mass_list: Sequence[:class:`python:numbers.Number`] or :class:`numpy.ndarray`
+	:type mass_list: ~collections.abc.Sequence[numbers.Number] or numpy.ndarray
 	:param intensity_list: A sequence intensity values
-	:type intensity_list: Sequence[:class:`python:numbers.Number`] or :class:`numpy.ndarray`
+	:type intensity_list: ~collections.abc.Sequence[numbers.Number] or numpy.ndarray
 
 	:authors: Andrew Isaac, Qiao Wang, Vladimir Likic, Dominic Davis-Foster
 	"""
@@ -449,7 +448,7 @@ class MassSpectrum(Scan):
 		Create a MassSpectrum from a JCAMP-DX file
 
 		:param file_name: Path of the file to read
-		:type file_name: str or pathlib.Path
+		:type file_name: str or os.PathLike
 
 		:return: MassSpectrum
 		:rtype: :class:`pyms.Spectrum.MassSpectrum`

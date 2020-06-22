@@ -1,10 +1,10 @@
 # stdlib
 import json
+import os
 import pathlib
 import sys
 import tempfile
 import urllib.parse
-import os
 
 # 3rd party
 import github

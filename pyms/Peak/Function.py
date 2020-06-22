@@ -118,6 +118,7 @@ def peak_pt_bounds(im, peak):
 
 	if not isinstance(im, IntensityMatrix):
 		raise TypeError("'im' must be an IntensityMatrix object")
+
 	if not isinstance(peak, Peak):
 		raise TypeError("'peak' must be a Peak object")
 
@@ -171,10 +172,13 @@ def peak_top_ion_areas(im, peak, n_top_ions=5, max_bound=0):
 
 	if not isinstance(im, IntensityMatrix):
 		raise TypeError("'im' must be an IntensityMatrix object")
+
 	if not isinstance(peak, Peak):
 		raise TypeError("'peak' must be a Peak object")
+
 	if not isinstance(n_top_ions, int):
 		raise TypeError("'n_top_ions' must be an integer")
+
 	if not isinstance(max_bound, int):
 		raise TypeError("'max_bound' must be an integer")
 
@@ -219,6 +223,7 @@ def top_ions_v1(peak, num_ions=5):
 
 	if not isinstance(peak, Peak):
 		raise TypeError("'peak' must be a Peak object")
+
 	if not isinstance(num_ions, int):
 		raise TypeError("'n_top_ions' must be an integer")
 

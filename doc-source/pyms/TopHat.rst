@@ -3,5 +3,6 @@
 *********************
 
 .. automodule:: pyms.TopHat
-    :members:
-    :inherited-members:
+	:members:
+	:inherited-members:
+	:autosummary:

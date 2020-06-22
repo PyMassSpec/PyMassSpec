@@ -189,11 +189,11 @@ class Peak(pymsBaseClass):
 
 		:param value: A list containing left, apex, and right
 			peak boundaries in points, left and right are offsets
-		:type value: list
+		:type value: ~collections.abc.Sequence
 		"""
 
 		if not is_sequence(value):
-			raise TypeError("'Peak.bounds' must be a list")
+			raise TypeError("'Peak.bounds' must be a Sequence")
 
 		if len(value) != 3:
 			raise ValueError("'Peak.bounds' must have exactly 3 elements")
@@ -209,15 +209,16 @@ class Peak(pymsBaseClass):
 		Crops mass spectrum
 
 		:param mass_min: Minimum mass value
-		:type mass_min: int or float
+		:type mass_min: Number
 		:param mass_max: Maximum mass value
-		:type mass_max: int or float
+		:type mass_max: Number
 
 		:author: Andrew Isaac
 		"""
 
-		if not isinstance(mass_min, (float, int)) or not isinstance(mass_max, (float, int)):
+		if not isinstance(mass_min, Number) or not isinstance(mass_max, Number):
 			raise TypeError("'mass_min' and 'mass_max' must be numbers")
+
 		if mass_min >= mass_max:
 			raise ValueError("'mass_min' must be less than 'mass_max'")
 
@@ -225,6 +226,7 @@ class Peak(pymsBaseClass):
 
 		if mass_min < min(mass_list):
 			raise ValueError(f"'mass_min' is less than the smallest mass: {min(mass_list)}")
+
 		if mass_max > max(mass_list):
 			raise ValueError(f"'mass_max' is greater than the largest mass: {max(mass_list)}")
 

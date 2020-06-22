@@ -5,5 +5,6 @@
 .. contents:: Table of Contents
 
 .. automodule:: pyms.Simulator
-    :members:
-    :inherited-members:
+	:members:
+	:inherited-members:
+	:autosummary:

@@ -304,12 +304,12 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		Writes the ion chromatogram to the specified file
 
 		:param file_name: The name of the output file
-		:type file_name: str or pathlib.Path
+		:type file_name: str or os.PathLike
 		:param minutes: A boolean value indicating whether to write
 			time in minutes
 		:type minutes: bool
 		:param formatting: A boolean value indicating whether to
-			format the numbers in the output (default True)
+			format the numbers in the output. Default ``True``
 		:type minutes: bool
 
 		:authors: Lewis Lee, Vladimir Likic, Dominic Davis-Foster (pathlib support)
@@ -320,18 +320,16 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		file_name = prepare_filepath(file_name)
 
-		fp = file_name.open("w")
+		with file_name.open("w") as fp:
 
-		time_list = copy.deepcopy(self._time_list)
+			time_list = copy.deepcopy(self._time_list)
 
-		if minutes:
+			if minutes:
+				for ii in range(len(time_list)):
+					time_list[ii] = time_list[ii] / 60.0
+
 			for ii in range(len(time_list)):
-				time_list[ii] = time_list[ii] / 60.0
-
-		for ii in range(len(time_list)):
-			if formatting:
-				fp.write(f"{time_list[ii]:8.4f} {self._intensity_array[ii]:#.6e}\n")
-			else:
-				fp.write(f"{time_list[ii]} {self._intensity_array[ii]}\n")
-
-		fp.close()
+				if formatting:
+					fp.write(f"{time_list[ii]:8.4f} {self._intensity_array[ii]:#.6e}\n")
+				else:
+					fp.write(f"{time_list[ii]} {self._intensity_array[ii]}\n")

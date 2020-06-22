@@ -3,5 +3,6 @@
 *************************
 
 .. automodule:: pyms.IonChromatogram
-    :members:
-    :inherited-members:
+	:members:
+	:inherited-members:
+	:autosummary:

@@ -3,34 +3,36 @@
 
 # This file is managed by `git_helper`. Don't edit it directly
 
+# stdlib
 import os
 import re
 import sys
+import warnings
+
+# 3rd party
+from sphinx.locale import _
 
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 
-from sphinx.locale import _
-
 from __pkginfo__ import __version__
+
 
 import ipynb2rst
 nitpicky = True
-autodoc_default_options = {'autosummary': True}
 
 github_url = f"https://github.com/domdfcoding/PyMassSpec"
 
 rst_prolog = f""".. |pkgname| replace:: PyMassSpec
 .. |pkgname2| replace:: ``PyMassSpec``
 .. |browse_github| replace:: `Browse the GitHub Repository <{github_url}>`__
-.. |ghurl| replace:: {github_url}
 """
 
 author = "PyMassSpec Authors"
 project = "PyMassSpec"
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = __version__
-copyright = "Copyright 2019-2020 Dominic Davis-Foster"
+copyright = "2019-2020 Dominic Davis-Foster"  # pylint: disable=redefined-builtin
 language = 'en'
 package_root = "pyms"
 
@@ -43,9 +45,13 @@ extensions = [
 		"sphinxcontrib.extras_require",
 		"sphinx.ext.todo",
 		"sphinxemoji.sphinxemoji",
+		"notfound.extension",
+		"sphinx_tabs.tabs",
+		"sphinx-prompt",
+		"sphinx_autodoc_typehints",
+		"sphinx.ext.autosummary",
 		'autodocsumm',
-'nbsphinx',
-
+		'nbsphinx',
 		]
 
 sphinxemoji_style = 'twemoji'
@@ -62,42 +68,39 @@ pygments_style = 'default'
 
 intersphinx_mapping = {
 		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
-		'sphinx': ('http://www.sphinx-doc.org/en/stable/', None),
+		'sphinx': ('https://www.sphinx-doc.org/en/stable/', None),
 		'python': ('https://docs.python.org/3/', None),
 		"NumPy": ('https://numpy.org/doc/stable/', None),
 		"SciPy": ('https://docs.scipy.org/doc/scipy/reference', None),
 		"matplotlib": ('https://matplotlib.org', None),
 		"h5py": ('https://docs.h5py.org/en/latest/', None),
-		"Sphinx": ('https://www.sphinx-doc.org/en/stable/', None),
+		"Sphinx": ('https://www.sphinx-doc.org/en/master/', None),
 		"Django": ('https://docs.djangoproject.com/en/dev/', 'https://docs.djangoproject.com/en/dev/_objects/'),
 		"sarge": ('https://sarge.readthedocs.io/en/latest/', None),
 		"attrs": ('https://www.attrs.org/en/stable/', None),
-
 		}
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
-		'logo_only': False,  # True will show just the logo
 		'includehidden': False,
-
+		'logo_only': False,
 		}
 html_theme_path = ["../.."]
 # html_logo = "logo/pyms.png"
 html_show_sourcelink = False  # True will show link to source
 
 html_context = {
-		# Github Settings
-		"display_github": True,  # Integrate GitHub
-		"github_user": "domdfcoding",  # Username
-		"github_repo": "PyMassSpec",  # Repo name
-		"github_version": "master",  # Version
-		"conf_py_path": "/",  # Path in the checkout to the docs root
+		'display_github': True,
+		'github_user': 'domdfcoding',
+		'github_repo': 'PyMassSpec',
+		'github_version': 'master',
+		'conf_py_path': '/',
 		}
 
 htmlhelp_basename = slug
 
 latex_documents = [
-		('index', '{0}.tex'.format(slug), project, author, 'manual'),
+		('index', f'{slug}.tex', project, author, 'manual'),
 		]
 
 man_pages = [

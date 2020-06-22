@@ -53,24 +53,25 @@ def BillerBiemann(im: IntensityMatrix, points: int = 3, scans: int = 1) -> List[
     """
     Deconvolution based on the algorithm of Biller and Biemann (1974)
 
-    :param im: An IntensityMatrix object
-    :type im: pyms.IntensityMatrix.IntensityMatrix
-    :param points: Number of scans over which to consider a maxima to be a peak (Default 3)
+    :param im: An :class:`~pyms.IntensityMatrix.IntensityMatrix` object
+    :type im: ~pyms.IntensityMatrix.IntensityMatrix
+    :param points: Number of scans over which to consider a maxima to be a peak. Default ``3``
     :type points: int, optional
-    :param scans: Number of scans to combine peaks from to compensate for spectra skewing (Default 1)
+    :param scans: Number of scans to combine peaks from to compensate for spectra skewing. Default ``1``
     :type scans: int, optional
 
     :return: List of detected peaks
-    :rtype: :class:`list` of :class:`pyms.Peak.Class.Peak` objects
+    :rtype: List[:class:`pyms.Peak.Class.Peak`]
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :authors: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not isinstance(im, IntensityMatrix):
         raise TypeError("'im' must be an IntensityMatrix object")
+
     if not isinstance(points, int):
         raise TypeError("'points' must be an integer")
+
     if not isinstance(scans, int):
         raise TypeError("'scans' must be an integer")
 
@@ -96,19 +97,19 @@ def get_maxima_indices(ion_intensities: Union[List, tuple, numpy.nd.array], poin
     Find local maxima.
 
     :param ion_intensities: A list of intensities for a single ion
-    :type ion_intensities: list or tuple or numpy.ndarray
-    :param points: Number of scans over which to consider a maxima to be a peak (Default 3)
+    :type ion_intensities: ~collections.abc.Sequence or numpy.ndarray
+    :param points: Number of scans over which to consider a maxima to be a peak. Default ``3``
     :type points: int, optional
 
     :return: A list of scan indices
     :rtype: list
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not is_sequence_of(ion_intensities, Number):
         raise TypeError("'ion_intensities' must be a List of Numbers")
+
     if not isinstance(points, int):
         raise TypeError("'points' must be an integer")
 
@@ -147,25 +148,26 @@ def get_maxima_list(ic: IonChromatogram, points: List = 3) -> int:
     """
     List of retention time and intensity of local maxima for ion
 
-    :param ic: An IonChromatogram object
-    :type ic: pyms.IonChromatogram.IonChromatogram
-    :param points: Number of scans over which to consider a maxima to be a peak (Default 3)
+    :param ic: An :class:`~pyms.IonChromatogram.IonChromatogram` object
+    :type ic: ~pyms.IonChromatogram.IonChromatogram
+    :param points: Number of scans over which to consider a maxima to be a peak. Default ``3``
     :type points: int
 
     :return: A list of retention time and intensity of local maxima for ion
     :rtype: list
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not isinstance(ic, IonChromatogram):
         raise TypeError("'ic' must be an IonChromatogram object")
+
     if not isinstance(points, int):
         raise TypeError("'points' must be an integer")
 
     peak_point = get_maxima_indices(ic.intensity_array, points)
     mlist = []
+
     for index in range(len(peak_point)):
         rt = ic.get_time_at_index(peak_point[index])
         intensity = ic.get_intensity_at_index(peak_point[index])
@@ -180,33 +182,36 @@ def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13,
     Only peaks around a specific retention time are recorded
     Created for use with gap filling algorithm.
 
-    :param ic: An IonChromatogram object
-    :type ic: pyms.IonChromatogram.IonChromatogram
+    :param ic: An :class:`~pyms.IonChromatogram.IonChromatogram` object
+    :type ic: ~pyms.IonChromatogram.IonChromatogram
     :param mp_rt: The retention time of the missing peak
     :type mp_rt: float
-    :param points: Number of scans over which to consider a maxima to be a peak (Default 13)
+    :param points: Number of scans over which to consider a maxima to be a peak. Default ``13``
     :type points: int, optional
-    :param window: The window around the ``mp_rt`` where peaks should be recorded (Default 3)
+    :param window: The window around the ``mp_rt`` where peaks should be recorded. Default ``3``
     :type window: int, optional
 
     :return: A list of retention time and intensity of local maxima for ion
     :rtype: list
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not isinstance(ic, IonChromatogram):
         raise TypeError("'ic' must be an IonChromatogram object")
+
     if not isinstance(mp_rt, Number):
         raise TypeError("'mp_rt' must be an integer")
+
     # if not isinstance(scans, int):
     #    raise TypeError("'scans' must be an integer")
 
     peak_point = get_maxima_indices(ic.intensity_array, points)
     maxima_list = []
+
     for index in range(len(peak_point)):
         rt = ic.get_time_at_index(peak_point[index])
+
         if (rt > float(mp_rt) - window) and (rt < float(mp_rt) + window):
             intensity = ic.get_intensity_at_index(peak_point[index])
             maxima_list.append([rt, intensity])
@@ -220,24 +225,25 @@ def get_maxima_matrix(im: IonChromatogram, points: int = 3, scans: int = 1) -> L
     """
     Get matrix of local maxima for each ion
 
-    :param im: An IntensityMatrix object
-    :type im: pyms.IntensityMatrix.IntensityMatrix
-    :param points: Number of scans over which to consider a maxima to be a peak (Default 3)
+    :param im: An :class:`~pyms.IntensityMatrix.IntensityMatrix`` object
+    :type im: ~pyms.IntensityMatrix.IntensityMatrix
+    :param points: Number of scans over which to consider a maxima to be a peak. Default ``3``
     :type points: int, optional
-    :param scans: Number of scans to combine peaks from to compensate for spectra skewing (Default 1)
+    :param scans: Number of scans to combine peaks from to compensate for spectra skewing. Default ``1``
     :type scans: int, optional
 
     :return: A matrix of each ion and scan and intensity at ion peaks
     :rtype: list
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not isinstance(im, IntensityMatrix):
         raise TypeError("'im' must be an IntensityMatrix object")
+
     if not isinstance(points, int):
         raise TypeError("'points' must be an integer")
+
     if not isinstance(scans, int):
         raise TypeError("'scans' must be an integer")
 
@@ -249,16 +255,19 @@ def get_maxima_matrix(im: IonChromatogram, points: int = 3, scans: int = 1) -> L
     for col in range(numcols):  # assume all rows have same width
         # 1st, find maxima
         maxima = get_maxima_indices(raw_im[:, col], points)
+
         # 2nd, fill intensities
         for row in maxima:
             maxima_im[row, col] = raw_im[row, col]
 
     # combine spectra within 'scans' scans.
     half = int(scans / 2)
+
     for row in range(numrows):
         # tic = 0
         best = 0
         loc = 0
+
         # find best in scans
         for ii in range(scans):
             if 0 <= row - half + ii < numrows:
@@ -267,6 +276,7 @@ def get_maxima_matrix(im: IonChromatogram, points: int = 3, scans: int = 1) -> L
                 if tic > best:
                     best = tic
                     loc = ii
+
         # move and add others to best
         for ii in range(scans):
             if 0 <= row - half + ii < numrows and ii != loc:
@@ -287,22 +297,23 @@ def num_ions_threshold(pl: List, n: int, cutoff: Union[int, float], copy_peaks: 
     :type n: int
     :param cutoff: The minimum intensity threshold
     :type cutoff: int or float
-    :param copy_peaks: Whether a the returned peak list should contain copies of the peaks (Default False)
+    :param copy_peaks: Whether a the returned peak list should contain copies of the peaks. Default ``False``
     :type copy_peaks: bool, optional
 
     :return: A new list of Peak objects
     :rtype: list
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not is_peak_list(pl):
         raise TypeError("'pl' must be a list of Peak objects")
+
     if not isinstance(n, int):
         raise TypeError("'n' must be an integer")
+
     if not isinstance(cutoff, Number):
-        raise TypeError("'cutoff' must be a number")
+        raise TypeError("'cutoff' must be a Number")
 
     if copy_peaks:
         pl = copy.deepcopy(pl)
@@ -327,16 +338,15 @@ def rel_threshold(pl: List, percent: float = 2, copy_peaks: bool = True) -> List
 
     :param pl: A list of Peak objects
     :type pl: list
-    :param percent: Threshold for relative percentage of intensity (Default 2%)
+    :param percent: Threshold for relative percentage of intensity. Default ``2%``
     :type percent: float, optional
-    :param copy_peaks: Whether a the returned peak list should contain copies of the peaks (Default False)
+    :param copy_peaks: Whether a the returned peak list should contain copies of the peaks. Default ``False``
     :type copy_peaks: bool, optional
 
     :return: A new list of Peak objects with threshold ions
     :rtype: list
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not is_peak_list(pl):
@@ -370,24 +380,25 @@ def sum_maxima(im: IntensityMatrix, points: int = 3, scans: int = 1) -> IonChrom
     """
     Reconstruct the TIC as sum of maxima
 
-    :param im: An IntensityMatrix object
-    :type im: pyms.IntensityMatrix.IntensityMatrix
-    :param points: Peak if maxima over 'points' number of scans (Default 3)
+    :param im: An :class:`~pyms.IntensityMatrix.IntensityMatrix` object
+    :type im: ~pyms.IntensityMatrix.IntensityMatrix
+    :param points: Peak if maxima over 'points' number of scans. Default ``3``
     :type points: int, optional
-    :param scans: Number of scans to combine peaks from to compensate for spectra skewing (Default 1)
+    :param scans: Number of scans to combine peaks from to compensate for spectra skewing. Default ``1``
     :type scans: int, optional
 
     :return: The reconstructed TIC
-    :rtype: pyms.IonChromatogram.IonChromatogram
+    :rtype: ~pyms.IonChromatogram.IonChromatogram
 
-    :author: Andrew Isaac
-    :author: Dominic Davis-Foster (type assertions)
+    :author: Andrew Isaac, Dominic Davis-Foster (type assertions)
     """
 
     if not isinstance(im, IntensityMatrix):
         raise TypeError("'im' must be an IntensityMatrix object")
+
     if not isinstance(points, int):
         raise TypeError("'points' must be an integer")
+
     if not isinstance(scans, int):
         raise TypeError("'scans' must be an integer")
 

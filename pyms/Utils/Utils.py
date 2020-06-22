@@ -39,88 +39,88 @@ _path_types = (str, os.PathLike, pathlib.Path)
 
 
 def is_path(obj):
-    """
-    Returns whether the object represents a filesystem path
+	"""
+	Returns whether the object represents a filesystem path
 
-    :param obj:
-    :type obj:
+	:param obj:
+	:type obj:
 
-    :return:
-    :rtype:
-    """
+	:return:
+	:rtype:
+	"""
 
-    if isinstance(obj, _path_types):
-        return True
-    else:
-        return hasattr(obj, " __fspath__")
+	if isinstance(obj, _path_types):
+		return True
+	else:
+		return hasattr(obj, " __fspath__")
 
 
 def is_sequence(obj):
-    """
-    Returns whether the object is a Sequence and not a string
+	"""
+	Returns whether the object is a :class:`~collections.abc.Sequence`, and not a string
 
-    :param obj:
-    :type obj:
+	:param obj:
+	:type obj:
 
-    :return:
-    :rtype: bool
-    """
+	:return:
+	:rtype: bool
+	"""
 
-    return isinstance(obj, _list_types) and not isinstance(obj, str)
+	return isinstance(obj, _list_types) and not isinstance(obj, str)
 
 
 def is_sequence_of(obj: Any, of: Any) -> bool:
     """
-    Returns whether the object is a Sequence and not a string of the given type
+	Returns whether the object is a :class:`~collections.abc.Sequence`, and not a string, of the given type
 
-    :param obj:
-    :type obj: any
-    :param of:
-    :type of: any
+	:param obj:
+	:type obj: any
+	:param of:
+	:type of: any
 
-    :return:
-    :rtype: bool
-    """
+	:return:
+	:rtype: bool
+	"""
 
-    return (
-            isinstance(obj, _list_types)
-            and not isinstance(obj, str)
-            and all(isinstance(x, of) for x in obj)
-            )
+	return (
+			isinstance(obj, _list_types)
+			and not isinstance(obj, str)
+			and all(isinstance(x, of) for x in obj)
+	)
 
 
 def is_positive_int(arg: str) -> bool:
     """
     Determines if the argument is an integer greater than zero
 
-    :param arg: A string to be evaluate as a positive integer
-    :type arg: types.str
+	:param arg: A string to be evaluate as a positive integer
+	:type arg: types.str
 
-    :return: A boolean indicator True or False
-    :rtype:  bool
+	:return: A boolean indicator True or False
+	:rtype:  bool
 
-    :author: Milica Ng
-    """
+	:author: Milica Ng
+	"""
 
-    if not isinstance(arg, int):
-        return False
-    elif not (arg > 0):
-        return False
-    else:
-        return True
+	if not isinstance(arg, int):
+		return False
+	elif not (arg > 0):
+		return False
+	else:
+		return True
 
 
 def is_list_of_dec_nums(arg: str) -> bool:
     """
     Determines if the argument is a list of decimal numbers
 
-    :param arg: A string to be evaluate as a list of decimal numbers
-    :type arg: str
+	:param arg: A string to be evaluate as a list of decimal numbers
+	:type arg: str
 
-    :return: A boolean indicator True or False
-    :rtype:  bool
+	:return: A boolean indicator True or False
+	:rtype:  bool
 
-    :author: Milica Ng
-    """
+	:author: Milica Ng
+	"""
 
-    return is_sequence_of(arg, (float, Decimal))
+	return is_sequence_of(arg, (float, Decimal))

@@ -2,51 +2,98 @@
 PyMassSpec
 ************
 
-.. start shields
+.. start shields 
 
-.. image:: https://img.shields.io/travis/com/domdfcoding/PyMassSpec/master?logo=travis
-    :target: https://travis-ci.com/domdfcoding/PyMassSpec
-    :alt: Travis Build Status
-.. image:: https://readthedocs.org/projects/pymassspec/badge/?version=latest
-    :target: https://pymassspec.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-.. image:: https://img.shields.io/pypi/v/PyMassSpec.svg
-    :target: https://pypi.org/project/PyMassSpec/
-    :alt: PyPI
-.. image:: https://img.shields.io/pypi/pyversions/PyMassSpec.svg
-    :target: https://pypi.org/project/PyMassSpec/
-    :alt: PyPI - Python Version
-.. image:: https://img.shields.io/pypi/wheel/PyMassSpec
-    :target: https://pypi.org/project/PyMassSpec/
-    :alt: PyPI - Wheel
-.. image:: https://img.shields.io/pypi/implementation/PyMassSpec
-    :target: https://pypi.org/project/PyMassSpec/
-    :alt: PyPI - Implementation
-.. image:: https://img.shields.io/conda/v/domdfcoding/PyMassSpec
-    :alt: Conda
-    :target: https://anaconda.org/domdfcoding/PyMassSpec
-.. image:: https://img.shields.io/conda/pn/domdfcoding/PyMassSpec?label=conda%7Cplatform
-    :alt: Conda Platform
-    :target: https://anaconda.org/domdfcoding/PyMassSpec
-.. image:: https://coveralls.io/repos/github/domdfcoding/PyMassSpec/badge.svg?branch=master
-    :target: https://coveralls.io/github/domdfcoding/PyMassSpec?branch=master
-    :alt: Coverage
-.. image:: https://img.shields.io/badge/license-GPLv2-orange
-    :alt: License
-    :target: https://github.com/domdfcoding/PyMassSpec/blob/master/LICENSE
-.. image:: https://img.shields.io/github/languages/top/domdfcoding/PyMassSpec
-    :alt: GitHub top language
-.. image:: https://img.shields.io/github/commits-since/domdfcoding/PyMassSpec/v2.2.21
-    :target: https://github.com/domdfcoding/PyMassSpec/pulse
-    :alt: GitHub commits since tagged version
-.. image:: https://img.shields.io/github/last-commit/domdfcoding/PyMassSpec
-    :target: https://github.com/domdfcoding/PyMassSpec/commit/master
-    :alt: GitHub last commit
-.. image:: https://img.shields.io/maintenance/yes/2020
-    :alt: Maintenance
-.. image:: https://img.shields.io/codefactor/grade/github/domdfcoding/PyMassSpec
-    :target: https://www.codefactor.io/repository/github/domdfcoding/PyMassSpec
-    :alt: CodeFactor Grade
+.. list-table::
+	:stub-columns: 1
+	:widths: 10 90
+
+	* - Docs
+	  - |docs| |docs_check|
+	* - Tests
+	  - |travis| |actions_windows| |actions_macos| |coveralls| |codefactor|
+	* - PyPI
+	  - |pypi-version| |supported-versions| |supported-implementations| |wheel|
+	* - Anaconda
+	  - |conda-version| |conda-platform|
+	* - Activity
+	  - |commits-latest| |commits-since| |maintained|
+	* - Other
+	  - |license| |language| |requires|
+
+.. |docs| image:: https://img.shields.io/readthedocs/pymassspec/latest?logo=read-the-docs
+	:target: https://pymassspec.readthedocs.io/en/latest/?badge=latest
+	:alt: Documentation Status
+	
+.. |docs_check| image:: https://github.com/domdfcoding/PyMassSpec/workflows/Docs%20Check/badge.svg
+	:target: https://github.com/domdfcoding/PyMassSpec/actions?query=workflow%3A%22Docs+Check%22
+	:alt: Docs Check Status
+
+.. |travis| image:: https://img.shields.io/travis/domdfcoding/PyMassSpec/master?logo=travis
+	:target: https://travis-ci.org/domdfcoding/PyMassSpec
+	:alt: Travis Build Status
+
+.. |actions_windows| image:: https://github.com/domdfcoding/PyMassSpec/workflows/Windows%20Tests/badge.svg
+	:target: https://github.com/domdfcoding/PyMassSpec/actions?query=workflow%3A%22Windows+Tests%22
+	:alt: Windows Tests Status
+
+.. |actions_macos| image:: https://github.com/domdfcoding/PyMassSpec/workflows/macOS%20Tests/badge.svg
+	:target: https://github.com/domdfcoding/PyMassSpec/actions?query=workflow%3A%22macOS+Tests%22
+	:alt: macOS Tests Status
+
+.. |requires| image:: https://requires.io/github/domdfcoding/PyMassSpec/requirements.svg?branch=master
+	:target: https://requires.io/github/domdfcoding/PyMassSpec/requirements/?branch=master
+	:alt: Requirements Status
+
+.. |coveralls| image:: https://img.shields.io/coveralls/github/domdfcoding/PyMassSpec/master?logo=coveralls
+	:target: https://coveralls.io/github/domdfcoding/PyMassSpec?branch=master
+	:alt: Coverage
+
+.. |codefactor| image:: https://img.shields.io/codefactor/grade/github/domdfcoding/PyMassSpec?logo=codefactor
+	:target: https://www.codefactor.io/repository/github/domdfcoding/PyMassSpec
+	:alt: CodeFactor Grade
+
+.. |pypi-version| image:: https://img.shields.io/pypi/v/PyMassSpec
+	:target: https://pypi.org/project/PyMassSpec/
+	:alt: PyPI - Package Version
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/PyMassSpec
+	:target: https://pypi.org/project/PyMassSpec/
+	:alt: PyPI - Supported Python Versions
+
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/PyMassSpec
+	:target: https://pypi.org/project/PyMassSpec/
+	:alt: PyPI - Supported Implementations
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/PyMassSpec
+	:target: https://pypi.org/project/PyMassSpec/
+	:alt: PyPI - Wheel
+
+.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/PyMassSpec?logo=anaconda
+	:alt: Conda - Package Version
+	:target: https://anaconda.org/domdfcoding/PyMassSpec
+
+.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/PyMassSpec?label=conda%7Cplatform
+	:alt: Conda - Platform
+	:target: https://anaconda.org/domdfcoding/PyMassSpec
+
+.. |license| image:: https://img.shields.io/github/license/domdfcoding/PyMassSpec
+	:alt: License
+	:target: https://github.com/domdfcoding/PyMassSpec/blob/master/LICENSE
+
+.. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/PyMassSpec
+	:alt: GitHub top language
+
+.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/PyMassSpec/v2.2.21
+	:target: https://github.com/domdfcoding/PyMassSpec/pulse
+	:alt: GitHub commits since tagged version
+
+.. |commits-latest| image:: https://img.shields.io/github/last-commit/domdfcoding/PyMassSpec
+	:target: https://github.com/domdfcoding/PyMassSpec/commit/master
+	:alt: GitHub last commit
+
+.. |maintained| image:: https://img.shields.io/maintenance/yes/2020
+	:alt: Maintenance
 
 .. end shields
 

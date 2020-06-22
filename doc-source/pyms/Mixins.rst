@@ -3,6 +3,6 @@
 **********************
 
 .. automodule:: pyms.Mixins
-    :members:
-    :inherited-members:
-
+	:members:
+	:inherited-members:
+	:autosummary:
