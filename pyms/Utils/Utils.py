@@ -30,6 +30,8 @@ from collections import Sequence
 from decimal import Decimal
 
 # 3rd party
+from typing import Any
+
 import numpy
 
 _list_types = (Sequence, numpy.core.ndarray)
@@ -67,7 +69,7 @@ def is_sequence(obj):
     return isinstance(obj, _list_types) and not isinstance(obj, str)
 
 
-def is_sequence_of(obj, of):
+def is_sequence_of(obj: Any, of: Any) -> bool:
     """
     Returns whether the object is a Sequence and not a string of the given type
 
@@ -87,7 +89,7 @@ def is_sequence_of(obj, of):
             )
 
 
-def is_positive_int(arg):
+def is_positive_int(arg: str) -> bool:
     """
     Determines if the argument is an integer greater than zero
 
@@ -108,7 +110,7 @@ def is_positive_int(arg):
         return True
 
 
-def is_list_of_dec_nums(arg):
+def is_list_of_dec_nums(arg: str) -> bool:
     """
     Determines if the argument is a list of decimal numbers
 

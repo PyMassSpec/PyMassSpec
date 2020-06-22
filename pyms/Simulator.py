@@ -27,13 +27,17 @@ Provides functions for simulation of GCMS data
 import math
 
 # 3rd party
+from typing import List
+
 import numpy
 
 # this package
+from pyms import Peak
 from pyms.IntensityMatrix import IntensityMatrix
+from pyms.IonChromatogram import IonChromatogram
 
 
-def add_gaussc_noise(im, scale):
+def add_gaussc_noise(im: IntensityMatrix, scale: float):
     """
     Adds noise to an IntensityMatrix object
 
@@ -55,7 +59,7 @@ def add_gaussc_noise(im, scale):
         im.set_ic_at_index(i, ic)
 
 
-def add_gaussc_noise_ic(ic, scale):
+def add_gaussc_noise_ic(ic: IonChromatogram,  scale: float):
     """
     Adds noise drawn from a normal distribution with constant scale to an ion chromatogram
 
@@ -73,7 +77,7 @@ def add_gaussc_noise_ic(ic, scale):
     ic.set_intensity_array(i_array_with_noise)
 
 
-def add_gaussv_noise(im, scale, cutoff, prop):
+def add_gaussv_noise(im: IntensityMatrix, scale: float, cutoff: int, prop: float):
     """
     adds noise to an IntensityMatrix object
 
@@ -102,7 +106,7 @@ def add_gaussv_noise(im, scale, cutoff, prop):
         im.set_ic_at_index(i, ic)
 
 
-def add_gaussv_noise_ic(ic, scale, cutoff, prop):
+def add_gaussv_noise_ic(ic: IonChromatogram, scale: int, cutoff: int, prop: float):
     """
     Adds noise to an ic. The noise value is drawn from a normal
               distribution, the scale of this distribution depends on the
@@ -138,9 +142,9 @@ def add_gaussv_noise_ic(ic, scale, cutoff, prop):
     ic.set_intensity_array(i_array_with_noise)
 
 
-def chromatogram(n_scan, x_zero, sigma, peak_scale):
+def chromatogram(n_scan: int, x_zero: int, sigma: float,peak_scale: float) -> List:
     """
-    Returns a simulated ion chromatogram of a pure component
+    Returns a simulated ion chromatogram of a pure component 
               The ion chromatogram contains a single gaussian peak.
 
     :param n_scan: the number of scans
@@ -168,7 +172,7 @@ def chromatogram(n_scan, x_zero, sigma, peak_scale):
     return ic
 
 
-def gaussian(point, mean, sigma, scale):
+def gaussian(point: float, mean: int, sigma: float, scale: float) -> float:
     """
     calculates a point on a gaussian density function
 
@@ -192,7 +196,7 @@ def gaussian(point, mean, sigma, scale):
     return scale * math.exp((-(point - mean) ** 2) / (2 * (sigma ** 2)))
 
 
-def gcms_sim(time_list, mass_list, peak_list):
+def gcms_sim(time_list: List, mass_list: List, peak_list: Peak) -> IntensityMatrix:
     """
     Simulator of GCMS data
 

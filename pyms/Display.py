@@ -27,13 +27,19 @@ Class to Display Ion Chromatograms and TIC
 import warnings
 
 # 3rd party
+from typing import Optional, List
+
 import deprecation
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import axes, figure
 
 # this package
-from pyms import __version__
+from matplotlib.axes import Axes
+from matplotlib.container import BarContainer
+from matplotlib.lines import Line2D
+
+from pyms import __version__, Peak
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Peak.List.Function import is_peak_list
 from pyms.Spectrum import MassSpectrum, normalize_mass_spec
@@ -97,7 +103,7 @@ class Display:
 		# Peak list container
 		self.__peak_list = []
 
-	def do_plotting(self, plot_label=None):
+	def do_plotting(self, plot_label: Optional[str] = None):
 		"""
 		Plots TIC and IC(s) if they have been created by
 		:meth:`~pyms.Display.Display.plot_tic` or
@@ -130,7 +136,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 	# plt.show()
 
 	@staticmethod
-	def get_5_largest(intensity_list):
+	def get_5_largest(intensity_list: List) -> List:
 		"""
 		Computes the indices of the largest 5 ion intensities for writing to console
 
@@ -189,7 +195,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		if event.button != 1 and len(intensity_list) != 0:
 			self.plot_mass_spec(event.xdata, mass_list, intensity_list)
 
-	def plot_ic(self, ic, **kwargs):
+	def plot_ic(self, i: IonChromatogram, **kwargs):
 		"""
 		Plots an Ion Chromatogram
 
@@ -212,7 +218,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		self.__tic_ic_plots.append(plot)
 		return plot
 
-	def plot_mass_spec(self, mass_spec, **kwargs):
+	def plot_mass_spec(self, mass_spec: MassSpectrum, **kwargs):
 		"""
 		Plots a Mass Spectrum
 
@@ -235,7 +241,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		plot = plot_mass_spec(self.ax, mass_spec, **kwargs)
 		return plot
 
-	def plot_peaks(self, peak_list, label="Peaks"):
+	def plot_peaks(self, peak_list: List[Peak] label: str = "Peaks"):
 		"""
 		Plots the locations of peaks as found by PyMassSpec.
 
@@ -253,7 +259,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 
 		return plot
 
-	def plot_tic(self, tic, minutes=False, **kwargs):
+	def plot_tic(self, tic: IonChromatogram, minutes: bool = False, **kwargs):
 		"""
 		Plots a Total Ion Chromatogram
 
@@ -281,7 +287,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		self.__tic_ic_plots.append(plot)
 		return plot
 
-	def save_chart(self, filepath, filetypes=None):
+	def save_chart(self, filepath: str, filetypes: Optional[List[str]] = None):
 		"""
 		Save the chart to the given path with the given filetypes
 
@@ -319,7 +325,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		plt.close()
 
 
-def plot_ic(ax, ic, minutes=False, **kwargs):
+def plot_ic(ax: matplotlib, ic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:
 	"""
 	Plots an Ion Chromatogram
 
@@ -361,7 +367,7 @@ def plot_ic(ax, ic, minutes=False, **kwargs):
 	return plot
 
 
-def plot_mass_spec(ax, mass_spec, **kwargs):
+def plot_mass_spec(ax: Axes, mass_spec: MassSpectrum, **kwargs) -> BarContainer:
 	"""
 	Plots a Mass Spectrum
 
@@ -416,7 +422,7 @@ def plot_mass_spec(ax, mass_spec, **kwargs):
 	return plot
 
 
-def plot_head2tail(ax, top_mass_spec, bottom_mass_spec, top_spec_kwargs=None, bottom_spec_kwargs=None):
+def plot_head2tail(ax: Axes, top_mass_spec: MassSpectrum, bottom_mass_spec: MassSpectrum, top_spec_kwargs: Optional[dict] = None, bottom_spec_kwargs: Optional[dict] = None) -> tuple[BarContainer]:
 	"""
 	Plots two Mass Spectra head to tail
 
@@ -484,7 +490,7 @@ def plot_head2tail(ax, top_mass_spec, bottom_mass_spec, top_spec_kwargs=None, bo
 	return top_plot, bottom_plot
 
 
-def plot_peaks(ax, peak_list, label="Peaks", style="o"):
+def plot_peaks(ax: Axes, peak_list: List[Peak], label: str = "Peaks", style: str = "o") -> List[Line2D]:
 	"""
 	Plots the locations of peaks as found by PyMassSpec.
 
@@ -601,7 +607,7 @@ class ClickEventHandler:
 		# if the selected point is not close enough to peak
 		print("No Peak at this point")
 
-	def get_n_largest(self, intensity_list):
+	def get_n_largest(self, intensity_list: List) -> List:
 		"""
 		Computes the indices of the largest n ion intensities for writing to console
 
@@ -629,7 +635,7 @@ class ClickEventHandler:
 		return largest
 
 
-def invert_mass_spec(mass_spec, inplace=False):
+def invert_mass_spec(mass_spec: MassSpectrum, inplace: bool = False) -> MassSpectrum:
 	"""
 	Invert the mass spectrum for display in a head2tail plot.
 

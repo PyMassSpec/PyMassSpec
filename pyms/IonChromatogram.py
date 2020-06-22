@@ -30,6 +30,8 @@ import warnings
 from numbers import Number
 
 # 3rd party
+from typing import Union, List, Optional
+
 import deprecation
 import numpy
 
@@ -39,6 +41,10 @@ from pyms.Base import pymsBaseClass
 from pyms.Mixins import GetIndexTimeMixin, IntensityArrayMixin, TimeListMixin
 from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Utils import is_path, is_sequence
+
+
+class IonChromatogram(object):
+	pass
 
 
 class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetIndexTimeMixin):
@@ -57,7 +63,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 	:authors: Lewis Lee, Vladimir Likic, Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, ia, time_list, mass=None):
+	def __init__(self, i: numpy.array, time_list: List, mass:Optional[Union[int, float]] = None):
 		"""
 		:param ia: Ion chromatogram intensity values
 		:type ia: numpy.array
@@ -88,7 +94,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		self._min_rt = min(time_list)
 		self._max_rt = max(time_list)
 
-	def __len__(self):
+	def __len__(self) -> int:
 		"""
 		Returns the length of the IonChromatogram object
 
@@ -100,7 +106,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return self._intensity_array.size
 
-	def __sub__(self, other):
+	def __sub__(self, other: IonChromatogram):
 		"""
 		Subtracts another IC from the current one
 
@@ -115,7 +121,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return self
 
-	def __eq__(self, other):
+	def __eq__(self, other: Any) -> bool:
 		"""
 		Return whether this IonChromatogram object is equal to another object
 
@@ -132,7 +138,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return NotImplemented
 
-	def __copy__(self):
+	def __copy__(self) -> IonChromatogram:
 		"""
 		Returns a new IonChromatogram containing a copy of the data in this object
 
@@ -146,8 +152,6 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 	def __deepcopy__(self, memodict={}):
 		return self.__copy__()
-
-	def get_intensity_at_index(self, ix):
 		"""
 		Returns intensity at given index
 
@@ -171,7 +175,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.IonChromatogram.IonChromatogram.mass` instead")
-	def get_mass(self):
+	def get_mass(self) -> int:
 		"""
 		Returns the m/z channel of the IC
 
@@ -186,7 +190,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.IonChromatogram.IonChromatogram.time_step` instead")
-	def get_time_step(self):
+	def get_time_step(self) -> float:
 		"""
 		Returns the time step
 
@@ -199,7 +203,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		return self._time_step
 
 	@IntensityArrayMixin.intensity_array.setter
-	def intensity_array(self, ia):
+	def intensity_array(self, ia: Union[List, tuple, numpy,array]):
 		"""
 		Sets the value for the intensity array
 
@@ -217,10 +221,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		self._intensity_array = ia
 
-	def is_tic(self):
-		"""
-		Returns whether the ion chromatogram is a total ion chromatogram (TIC)
-
+	def is_tic(self) -> bool:
 		:rtype: bool
 
 		:authors: Lewis Lee, Vladimir Likic
@@ -247,7 +248,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.IonChromatogram.IonChromatogram.intensity_array` instead")
-	def set_intensity_array(self, ia):
+	def set_intensity_array(self, ia: numpy.array):
 		"""
 		Sets the value for the intensity array
 
@@ -266,7 +267,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		self._intensity_array = ia
 
 	@property
-	def time_step(self):
+	def time_step(self) -> float:
 		"""
 		Returns the time step
 
@@ -278,7 +279,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return self._time_step
 
-	def __calc_time_step(self):
+	def __calc_time_step(self) -> float:
 		"""
 		Calculates the time step
 
@@ -298,7 +299,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return time_step
 
-	def write(self, file_name, minutes=False, formatting=True):
+	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting=True):
 		"""
 		Writes the ion chromatogram to the specified file
 

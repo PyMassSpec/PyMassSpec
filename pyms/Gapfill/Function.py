@@ -45,7 +45,7 @@ NETCDF = 2
 
 
 # .csv reader (cloned from gcqc project)
-def file2matrix(file_name):
+def file2matrix(file_name: Union[str, pathlib.Path) -> numpy.ndarray:
 	"""
 	Convert a .csv file to a numpy array
 
@@ -81,8 +81,8 @@ def file2matrix(file_name):
 	return numpy.array(matrix)
 
 
-def missing_peak_finder(sample, file_name, points=3, null_ions=None,
-						crop_ions=None, threshold=1000, rt_window=1, filetype=MZML):
+def missing_peak_finder(sample: Sample, file_name: str, points: int = 3, null_ions: Optional[List] = None,
+						crop_ions: Optional[List] = None, threshold: int = 1000, rt_window: float = 1, filetype: int = MZML):
 	"""
 	Integrates raw data around missing peak locations to fill NAs in the data matrix
 
@@ -210,7 +210,7 @@ def missing_peak_finder(sample, file_name, points=3, null_ions=None,
 			mp.set_ci_area('na')
 
 
-def mp_finder(input_matrix):
+def mp_finder(input_matrix: List) -> Sample:
 	"""
 	Finds the 'NA's in the transformed area_ci.csv file and makes
 	:class:`pyms.Gapfill.Class.Sample` objects with them
@@ -258,7 +258,7 @@ def mp_finder(input_matrix):
 	return sample_list
 
 
-def transposed(lists):
+def transposed(lists: List) -> List[lists]:
 	"""
 	transposes a list of lists
 
@@ -278,7 +278,7 @@ def transposed(lists):
 	return map(lambda *row: list(row), *lists)
 
 
-def write_filled_csv(sample_list, area_file, filled_area_file):
+def write_filled_csv(sample_list: Sample, area_file: Union[str, pathlib.Path], filled_area_file: Union[str, pathlib.Path]):
 	"""
 	creates a new area_ci.csv file, replacing NAs with values from the sample_list objects where possible
 
@@ -358,7 +358,7 @@ def write_filled_csv(sample_list, area_file, filled_area_file):
 	fp_new.close()
 
 
-def write_filled_rt_csv(sample_list, rt_file, filled_rt_file):
+def write_filled_rt_csv(sample_list: Sample, rt_file: Union[str, pathlib.Path], filled_rt_file: Union[str, pathlib.Path]):
 	"""
 	creates a new rt.csv file, replacing NAs with values from the sample_list objects where possible
 

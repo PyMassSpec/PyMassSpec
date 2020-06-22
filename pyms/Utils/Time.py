@@ -26,6 +26,9 @@ Time conversion and related functions
 # stdlib
 import math
 import re
+from typing import Union
+
+from pyms.IonChromatogram import IonChromatogram
 
 
 def is_str_num(arg):
@@ -84,7 +87,7 @@ def time_str_secs(time_str):
     return time
 
 
-def window_sele_points(ic, window_sele, half_window=False):
+def window_sele_points(ic: IonChromatogram, window_sele: Union[int,str], half_window: bool = False) -> int:
     """
     Converts window selection parameter into points based
         on the time step in an ion chromatogram

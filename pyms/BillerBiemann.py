@@ -28,6 +28,8 @@ import copy
 from numbers import Number
 
 # 3rd party
+from typing import List, Union
+
 import numpy
 
 # this package
@@ -47,7 +49,7 @@ from pyms.Utils.Utils import is_sequence_of
 #######################
 
 
-def BillerBiemann(im, points=3, scans=1):
+def BillerBiemann(im: IntensityMatrix, points: int = 3, scans: int = 1) -> List[Peak]:
     """
     Deconvolution based on the algorithm of Biller and Biemann (1974)
 
@@ -89,7 +91,7 @@ def BillerBiemann(im, points=3, scans=1):
     return peak_list
 
 
-def get_maxima_indices(ion_intensities, points=3):
+def get_maxima_indices(ion_intensities: Union[List, tuple, numpy.nd.array], points: int = 3) -> List:
     """
     Find local maxima.
 
@@ -141,7 +143,7 @@ def get_maxima_indices(ion_intensities, points=3):
     return peak_point
 
 
-def get_maxima_list(ic, points=3):
+def get_maxima_list(ic: IonChromatogram, points: List = 3) -> int:
     """
     List of retention time and intensity of local maxima for ion
 
@@ -172,7 +174,7 @@ def get_maxima_list(ic, points=3):
     return mlist
 
 
-def get_maxima_list_reduced(ic, mp_rt, points=13, window=3):
+def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13, window: int = 3):
     """
     List of retention time and intensity of local maxima for ion.
     Only peaks around a specific retention time are recorded
@@ -214,7 +216,7 @@ def get_maxima_list_reduced(ic, mp_rt, points=13, window=3):
     return maxima_list
 
 
-def get_maxima_matrix(im, points=3, scans=1):
+def get_maxima_matrix(im: IonChromatogram, points: int = 3, scans: int = 1) -> List:
     """
     Get matrix of local maxima for each ion
 
@@ -275,7 +277,7 @@ def get_maxima_matrix(im, points=3, scans=1):
     return maxima_im
 
 
-def num_ions_threshold(pl, n, cutoff, copy_peaks=True):
+def num_ions_threshold(pl: List, n: int, cutoff: Union[int, float], copy_peaks: bool = True) -> List:
     """
     Remove Peaks where there are less than a given number of ion intensities above the given threshold
 
@@ -319,7 +321,7 @@ def num_ions_threshold(pl, n, cutoff, copy_peaks=True):
     return new_pl
 
 
-def rel_threshold(pl, percent=2, copy_peaks=True):
+def rel_threshold(pl: List, percent: float = 2, copy_peaks: bool = True) -> List:
     """
     Remove ions with relative intensities less than the given relative percentage of the maximum intensity.
 
@@ -364,7 +366,7 @@ def rel_threshold(pl, percent=2, copy_peaks=True):
     return new_pl
 
 
-def sum_maxima(im, points=3, scans=1):
+def sum_maxima(im: IntensityMatrix, points: int = 3, scans: int = 1) -> IonChromatogram:
     """
     Reconstruct the TIC as sum of maxima
 

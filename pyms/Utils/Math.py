@@ -33,13 +33,15 @@ from statistics import median, stdev as std, mean
 from numbers import Number
 
 # 3rd party
+from typing import Union, List
+
 import numpy
 
 # this package
 from pyms.Utils.Utils import is_sequence
 
 
-def vector_by_step(start, stop, step):
+def vector_by_step(start: Union[int, float], stop: Union[int, float], step: Union[int, float]) -> List:
     """
     Generates a list by using start, stop, and step values
 
@@ -69,7 +71,7 @@ def vector_by_step(start, stop, step):
     return v
 
 
-def MAD(v):
+def MAD(v: Union[List, tuple, nd.array]) -> float:
     """
     Median absolute deviation
 
@@ -97,7 +99,7 @@ def MAD(v):
     return mad
 
 
-def rmsd(list1, list2):
+def rmsd(list1: Union[List, tuple, nd.array], list2: Union[List, tuple, nd.array]) -> float:
     """
     Calculates RMSD for the 2 lists
 
@@ -203,7 +205,7 @@ def median_outliers(data, m=2.5):
     return s > m
 
 
-def is_float(s):
+def is_float(s: Union[str,List[str]]) -> Union[bool, List[bool]]:
     """
     Test if a string, or list of strings, contains a numeric value(s).
 

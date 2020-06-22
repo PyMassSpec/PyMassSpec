@@ -28,13 +28,15 @@ import pathlib
 import pickle
 
 # this package
+from typing import Union
+
 from pyms.Peak.Class import Peak
 from pyms.Peak.List.Function import is_peak_list
 from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Utils import is_path, is_sequence
 
 
-def store_peaks(peak_list, file_name, protocol=1):
+def store_peaks(peak_list: Peak, file_name: Union[str, pathlib.Path], protocol=1):
     """
         Store the list of peak objects
 
@@ -63,7 +65,7 @@ def store_peaks(peak_list, file_name, protocol=1):
     fp.close()
 
 
-def load_peaks(file_name):
+def load_peaks(file_name: Union[str, pathlib.Path]) -> Peak:
     """
     Loads the peak_list stored with 'store_peaks'
 

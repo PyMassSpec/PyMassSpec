@@ -27,6 +27,8 @@ Savitzky-Golay noise filter
 import copy
 
 # 3rd party
+from typing import Union
+
 import numpy
 
 # this package
@@ -38,7 +40,7 @@ __DEFAULT_WINDOW = 7
 __DEFAULT_POLYNOMIAL_DEGREE = 2
 
 
-def savitzky_golay(ic, window=__DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_DEGREE):
+def savitzky_golay(i: Union[int, str], window: Union[int, str] = __DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_DEGREE) -> IonChromatogram:
 	"""
 	Applies Savitzky-Golay filter on ion chromatogram
 
@@ -84,7 +86,7 @@ def savitzky_golay(ic, window=__DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_DEGR
 	return ic_denoise
 
 
-def savitzky_golay_im(im, window=__DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_DEGREE):
+def savitzky_golay_im(im: IntensityMatrix, window: Union[int, str] = __DEFAULT_WINDOW, degre: int = __DEFAULT_POLYNOMIAL_DEGREE) -> IntensityMatrix:
 	"""
 	Applies Savitzky-Golay filter on Intensity Matrix
 
@@ -125,7 +127,7 @@ def savitzky_golay_im(im, window=__DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_D
 	return im_smooth
 
 
-def __calc_coeff(num_points, pol_degree, diff_order=0):
+def __calc_coeff(num_points: int, pol_degree: int, diff_order: int = 0) -> numpy.ndarray:
 	"""
 	Calculates filter coefficients for symmetric savitzky-golay filter.
 

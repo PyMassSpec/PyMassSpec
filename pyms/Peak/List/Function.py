@@ -27,6 +27,8 @@ Functions related to Peak modification
 import math
 
 # 3rd party
+from typing import List, Union, Sequence
+
 import numpy
 
 # this package
@@ -37,7 +39,7 @@ from pyms.Utils.Time import time_str_secs
 from pyms.Utils.Utils import is_sequence, is_sequence_of
 
 
-def composite_peak(peak_list, ignore_outliers=False):
+def composite_peak(peak_list: List, ignore_outliers: bool = False) -> Peak:
     """
     Create a peak that consists of a composite spectrum from all spectra in the list of peaks.
 
@@ -103,7 +105,7 @@ def composite_peak(peak_list, ignore_outliers=False):
         return None
 
 
-def fill_peaks(data, peak_list, D, minutes=False):
+def fill_peaks(data, peak_list: List, D: float, minutes: bool = False) -> Peak:
     """
     Gets the best matching Retention Time and spectra from 'data' for each peak
     in the peak list.
@@ -217,7 +219,7 @@ def fill_peaks(data, peak_list, D, minutes=False):
     return new_peak_list
 
 
-def is_peak_list(peaks):
+def is_peak_list(peaks: List) -> bool:
     """
     Returns True if 'peaks' is a valid peak list, False otherwise
 
@@ -233,7 +235,7 @@ def is_peak_list(peaks):
     return is_sequence_of(peaks, Peak)
 
 
-def sele_peaks_by_rt(peaks, rt_range):
+def sele_peaks_by_rt(peaks: Union[List, tuple, numpy.ndarray], rt_range: Sequence[str]) -> Peak:
     """
     Selects peaks from a retention time range
 

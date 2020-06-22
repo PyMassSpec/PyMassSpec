@@ -30,10 +30,12 @@ import pathlib
 import pickle
 
 # 3rd party
+from typing import Any, List
+
 import deprecation
 
 # this package
-from pyms import __version__
+from pyms import __version__, Peak
 from pyms.Base import pymsBaseClass
 from pyms.Peak.List.Function import is_peak_list, sele_peaks_by_rt
 from pyms.Utils.IO import prepare_filepath
@@ -67,7 +69,7 @@ class Experiment(pymsBaseClass):
 		self._expr_code = expr_code
 		self._peak_list = peak_list
 
-	def __eq__(self, other):
+	def __eq__(self, other: Any) -> bool:
 		"""
 		Return whether this Experiment object is equal to another object
 
@@ -82,7 +84,7 @@ class Experiment(pymsBaseClass):
 
 		return NotImplemented
 
-	def __len__(self):
+	def __len__(self) -> int:
 		"""
 		Returns the number of peaks in the Experiment
 
@@ -91,7 +93,7 @@ class Experiment(pymsBaseClass):
 
 		return len(self.peak_list)
 
-	def __copy__(self):
+	def __copy__(self) -> Experiment:
 		"""
 		Returns a new Experiment object containing a copy of the data in this object
 
@@ -100,7 +102,7 @@ class Experiment(pymsBaseClass):
 
 		return Experiment(copy.copy(self._expr_code), copy.copy(self.peak_list))
 
-	def __deepcopy__(self, memodict={}):
+	def __deepcopy__(self, memodict={}) -> Experiment:
 		"""
 		Returns a new Experiment object containing a copy of the data in this object
 
@@ -110,7 +112,7 @@ class Experiment(pymsBaseClass):
 		return self.__copy__()
 
 	@property
-	def expr_code(self):
+	def expr_code(self) -> str:
 		"""
 		Returns the expr_code of the experiment
 
@@ -123,7 +125,7 @@ class Experiment(pymsBaseClass):
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.Experiment.Experiment.expr_code` instead")
-	def get_expr_code(self):
+	def get_expr_code(self) -> str:
 		"""
 		Returns the expr_code of the experiment
 
@@ -135,7 +137,7 @@ class Experiment(pymsBaseClass):
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.Experiment.Experiment.peak_list` instead")
-	def get_peak_list(self):
+	def get_peak_list(self) -> List[Peak]:
 		"""
 		Returns the peak list
 
@@ -146,7 +148,7 @@ class Experiment(pymsBaseClass):
 		return self.peak_list
 
 	@property
-	def peak_list(self):
+	def peak_list(self) -> List[Peak]:
 		"""
 		Returns the peak list
 
@@ -156,7 +158,7 @@ class Experiment(pymsBaseClass):
 
 		return self._peak_list
 
-	def sele_rt_range(self, rt_range):
+	def sele_rt_range(self, rt_range) -> List:
 		"""
 		Discards all peaks which have the retention time outside the specified range
 
@@ -173,7 +175,7 @@ class Experiment(pymsBaseClass):
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :meth:`pyms.Experiment.Experiment.dump` instead")
-	def store(self, file_name):
+	def store(self, file_name: str):
 		"""
 		stores an experiment to a file
 
@@ -195,7 +197,7 @@ class Experiment(pymsBaseClass):
 		fp.close()
 
 
-def read_expr_list(file_name):
+def read_expr_list(file_name: Union[str, pathlib.Path]) -> Experiment:
 	"""
 	Reads the set of experiment files and returns a list of :class:`pyms.Experiment.Experiment` objects
 
@@ -230,7 +232,7 @@ def read_expr_list(file_name):
 	return expr_list
 
 
-def load_expr(file_name):
+def load_expr(file_name: Union[str, pathlib.Path]) -> Experiment:
 	"""
 	Loads an experiment saved with :meth:`pyms.Experiment.store_expr`
 
@@ -263,7 +265,7 @@ def load_expr(file_name):
 @deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 						current_version=__version__,
 						details="Use :meth:`pyms.Experiment.Experiment.store` instead")
-def store_expr(file_name, expr):
+def store_expr(file_name: str, expr: Experiment):
 	"""
 	Stores an experiment to a file
 

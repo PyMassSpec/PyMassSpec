@@ -28,11 +28,15 @@ import math
 import sys
 
 # this package
+from typing import Union
+
+from pyms import IonChromatogram
+from pyms.GCMS.Class import GCMS_data
 from pyms.Utils.Math import rmsd
 from pyms.Utils.Time import time_str_secs
 
 
-def diff(data1, data2):
+def diff(data1: GCMS_data, data2: GCMS_data):
 	"""
 	Compares two GCMS_data objects
 
@@ -110,7 +114,7 @@ def diff(data1, data2):
 	print(f"   Max intensity RMSD: {max_intensity_rmsd:.2e}")
 
 
-def ic_window_points(ic, window_sele, half_window=False):
+def ic_window_points(ic: IonChromatogram, window_sele: Union[int, str], half_window: bool = False):
 	"""
 	Converts the window selection parameter into points based on the
 	time step in an ion chromatogram.

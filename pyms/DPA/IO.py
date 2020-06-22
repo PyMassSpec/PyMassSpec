@@ -28,6 +28,10 @@ import operator
 import pathlib
 
 # 3rd party
+from typing import Union, List
+
+from pyms.DPA.Alignment import Alignment
+
 try:
 	from Pycluster import treecluster
 except ModuleNotFoundError:
@@ -49,7 +53,7 @@ from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Utils import is_path
 
 
-def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_name):
+def write_mass_hunter_csv(alignment: Alignment, file_name: Union[str, pathlib.Path], top_ion_list: List):  # , peak_list_name):
 	"""
 	Creates a csv file with UID, common and qualifying ions and their
 		ratios for mass hunter interpretation
@@ -213,7 +217,7 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 	fp.close()
 
 
-def write_excel(alignment, file_name, minutes=True):
+def write_excel(alignment :Alignment, file_name: Union[str, pathlib.Path], minutes: bool = True):
 	"""
 	Writes the alignment to an excel file, with colouring showing possible mis-alignments
 
@@ -305,7 +309,7 @@ def write_excel(alignment, file_name, minutes=True):
 		wb.save(file_name)
 
 
-def write_transposed_output(alignment, file_name, minutes=True):
+def write_transposed_output(alignment: Alignment, file_name: Union[str, pathlib.Path], minutes: bool = True):
 	"""
 
 	:param alignment: :class:`pyms.DPA.Alignment.Alignment` object to write to file

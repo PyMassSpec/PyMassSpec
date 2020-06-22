@@ -27,6 +27,8 @@ Functions for reading mzML format data files
 import pathlib
 
 # 3rd party
+from typing import Union
+
 import pymzml
 
 try:
@@ -40,7 +42,7 @@ from pyms.Spectrum import Scan
 from pyms.Base import is_path
 
 
-def mzML_reader(file_name):
+def mzML_reader(file_name: Union[str, pathlib.Path]) -> GCMS_data:
 	"""
 	A reader for mzML files
 

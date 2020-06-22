@@ -27,7 +27,11 @@ Functions for reading manufacturer specific ANDI-MS data files
 import pathlib
 
 # 3rd party
+from typing import Union
+
 from netCDF4 import Dataset
+
+from pyms import IntensityMatrix
 
 try:
 	from mpi4py import MPI
@@ -50,7 +54,7 @@ __TIME_STRING = "scan_acquisition_time"
 __POINT_COUNT = "point_count"
 
 
-def ANDI_reader(file_name):
+def ANDI_reader(file_name: Union[str, pathlib.Path]) -> GCMS_data:
 	"""
 	A reader for ANDI-MS NetCDF files
 
@@ -107,7 +111,7 @@ def ANDI_reader(file_name):
 	return GCMS_data(time_list, scan_list)
 
 
-def ANDI_writer(file_name, im):
+def ANDI_writer(file_name: str, im): IntensityMatrix
 	"""
 	A writer for ANDI-MS NetCDF files
 

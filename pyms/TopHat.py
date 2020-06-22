@@ -27,6 +27,8 @@ Top-hat baseline corrector
 import copy
 
 # 3rd party
+from typing import Optional, Union
+
 import numpy
 from scipy import ndimage
 
@@ -40,7 +42,7 @@ from pyms.IonChromatogram import IonChromatogram
 _STRUCT_ELM_FRAC = 0.2
 
 
-def tophat(ic, struct=None):
+def tophat(ic: IonChromatogram, struct: Optional[Union[int, str]] = None):
     """
     Top-hat baseline correction on Ion Chromatogram
 

@@ -30,11 +30,13 @@ from numbers import Number
 from statistics import mean, median, stdev
 
 # 3rd party
+from typing import List, Any
+
 import deprecation
 import numpy
 
 # this package
-from pyms import __version__
+from pyms import __version__, Spectrum
 from pyms.Base import pymsBaseClass
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Mixins import GetIndexTimeMixin, MaxMinMassMixin, TimeListMixin
@@ -62,7 +64,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 	:author: Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, time_list, scan_list):
+	def __init__(self, time_list: List, scan_list: List):
 		"""
 		Initialize the GC-MS data
 		"""
@@ -79,7 +81,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		self.__set_min_max_mass()
 		self.__calc_tic()
 
-	def __eq__(self, other):
+	def __eq__(self, other: Any) -> bool:
 		"""
 		Return whether this GCMS_data object is equal to another object
 
@@ -95,7 +97,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 
 		return NotImplemented
 
-	def __len__(self):
+	def __len__(self) -> int:
 		"""
 		Returns the length of the data object, defined as the number of scans
 
@@ -113,7 +115,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 	def __str__(self):
 		return self.__repr__()
 
-	def __calc_tic(self):
+	def __calc_tic(self) -> IonChromatogram:
 		"""
 		Calculate the total ion chromatogram
 
@@ -191,7 +193,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.GCMS.Class.scan_list` instead")
-	def get_scan_list(self):
+	def get_scan_list(self) -> Spectrum.Scan:
 		"""
 		Return a list of the scan objects
 
@@ -207,7 +209,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.GCMS.Class.tic` instead")
-	def get_tic(self):
+	def get_tic(self) -> IonChromatogram:
 		"""
 		Returns the total ion chromatogram
 
@@ -249,7 +251,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		print(f" Median number of m/z values per scan: {mz_median:.0f}")
 
 	@property
-	def scan_list(self):
+	def scan_list(self) -> Spectrum.Scan:
 		"""
 		Return a list of the scan objects
 
@@ -263,7 +265,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return copy.deepcopy(self._scan_list)
 
 	@property
-	def time_list(self):
+	def time_list(self) -> List[float]:
 		"""
 		Return a copy of the time list
 
@@ -273,7 +275,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return self._time_list[:]
 
 	@property
-	def tic(self):
+	def tic(self -> IonChromatogram:
 		"""
 		Returns the total ion chromatogram
 
@@ -295,7 +297,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return self._min_rt
 
 	@property
-	def max_rt(self):
+	def max_rt(self) -> float:
 		"""
 		Returns the maximum retention time for the data in seconds
 
@@ -305,7 +307,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return self._max_rt
 
 	@property
-	def time_step(self):
+	def time_step(self) -> float:
 		"""
 		Returns the time step of the data
 
@@ -315,7 +317,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return self._time_step
 
 	@property
-	def time_step_std(self):
+	def time_step_std(self) -> float:
 		"""
 		Returns the standard deviation of the time step of the data
 
@@ -324,7 +326,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 
 		return self._time_step_std
 
-	def trim(self, begin=None, end=None):
+	def trim(self, begin : Option[Union[int, str]] = None, end : Optional[Union[int, str]] = None):
 		"""
 		trims data in the time domain
 
@@ -399,7 +401,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		self.__set_min_max_mass()
 		self.__calc_tic()
 
-	def write(self, file_root):
+	def write(self, file_root: Union[str, Pathlib.Path]):
 		"""
 		Writes the entire raw data to two CSV files:
 
@@ -449,7 +451,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		fp1.close()
 		fp2.close()
 
-	def write_intensities_stream(self, file_name):
+	def write_intensities_stream(self, file_name: Union[str, pathlib.Path]):
 		"""
 		Loop over all scans and, for each scan, write the intensities to the
 		given file, one intensity per line. Intensities from different scans

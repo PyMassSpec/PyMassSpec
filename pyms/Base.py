@@ -28,6 +28,8 @@ import pathlib
 import pickle
 
 # this package
+from typing import Union
+
 from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Utils import is_path
 
@@ -37,7 +39,7 @@ class pymsBaseClass:
 	Base class
 	"""
 
-	def dump(self, file_name, protocol=3):
+	def dump(self, file_name: Union[str, pathlib.Path], protocol: int = 3):
 		"""
 		Dumps an object to a file through pickle.dump()
 

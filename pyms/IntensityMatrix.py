@@ -27,6 +27,7 @@ Class to model Intensity Matrix
 import copy
 import pathlib
 from numbers import Number
+from typing import List, Any, Iterator, Union, Optional
 from warnings import warn
 import enum
 
@@ -72,7 +73,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 	:authors: Andrew Isaac, Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, time_list, mass_list, intensity_array):
+	def __init__(self, time_list: List, mass_list: List, intensity_arrayList[numpy.ndarray]):
 		"""
 		Initialize the IntensityMatrix data
 		"""
@@ -140,7 +141,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return len(self.time_list)
 
-	def __eq__(self, other):
+	def __eq__(self, other: Any) -> bool:
 		"""
 		Return whether this IntensityMatrix object is equal to another object
 
@@ -160,7 +161,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details=f"Use :class:`pyms.IntensityMatrix.IntensityMatrix.local_size` instead")
-	def get_local_size(self):
+	def get_local_size(self) -> Any:
 		"""
 		Gets the local size of intensity matrix.
 
@@ -173,7 +174,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		return self.local_size
 
 	@property
-	def local_size(self):
+	def local_size(self) -> Any:
 		"""
 		Gets the local size of intensity matrix.
 
@@ -193,7 +194,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details=f"Use :class:`pyms.IntensityMatrix.IntensityMatrix.size` instead")
-	def get_size(self):
+	def get_size(self) -> Any:
 		"""
 		Gets the size of intensity matrix
 
@@ -206,7 +207,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		return self.size
 
 	@property
-	def size(self):
+	def size(self) -> Any
 		"""
 		Gets the size of intensity matrix
 
@@ -245,7 +246,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 			for i in range(0, n_scan):
 				yield i
 
-	def iter_ic_indices(self):
+	def iter_ic_indices(self) -> Iterator[int]:
 		"""
 		Iterate over local column indices
 
@@ -269,7 +270,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 			for i in range(0, n_mz):
 				yield i
 
-	def set_ic_at_index(self, ix, ic):
+	def set_ic_at_index(self, ix: int, ic: IonChromatogram):
 		"""
 		Sets the ion chromatogram specified by index to a new value
 
@@ -308,7 +309,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		for i in range(len(ia)):
 			self._intensity_array[i][ix] = ial[i]
 
-	def get_ic_at_index(self, ix):
+	def get_ic_at_index(self, ix: int) -> IonChromatogram:
 		"""
 		Returns the ion chromatogram at the specified index
 
@@ -363,7 +364,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return self.get_ic_at_index(ix)
 
-	def get_ms_at_index(self, ix):
+	def get_ms_at_index(self, ix: int) -> MassSpectrum:
 		"""
 		Returns a mass spectrum for a given scan index
 
@@ -383,7 +384,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return MassSpectrum(self.mass_list, scan)
 
-	def get_scan_at_index(self, ix):
+	def get_scan_at_index(self, ix: int) -> List:
 		"""
 		Returns the spectral intensities for scan index
 
@@ -404,7 +405,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return self._intensity_array[ix].tolist()
 
-	def get_mass_at_index(self, ix):
+	def get_mass_at_index(self, ix: int) -> int:
 		"""
 		Returns binned mass at index.
 
@@ -425,7 +426,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return self._mass_list[ix]
 
-	def get_index_of_mass(self, mass):
+	def get_index_of_mass(self, mass: float) -> int:
 		"""
 		Returns the index of mass in the list of masses.
 
@@ -452,7 +453,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 				ix = ii
 		return ix
 
-	def crop_mass(self, mass_min, mass_max):
+	def crop_mass(self, mass_min: Union[int, float], mass_max: Union[int, float]):
 		"""
 		Crops mass spectrum
 
@@ -495,7 +496,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		self._min_mass = min(new_mass_list)
 		self._max_mass = max(new_mass_list)
 
-	def null_mass(self, mass):
+	def null_mass(self, mass: Union[int, float]):
 		"""
 		Ignore given (closest) mass in spectra
 
@@ -516,7 +517,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		for spec_jj in range(len(im)):
 			im[spec_jj][ii] = 0
 
-	def reduce_mass_spectra(self, n_intensities=5):
+	def reduce_mass_spectra(self, n_intensit: int = 5):
 		"""
 		Reduces the mass spectra by retaining the top `n_intensities`,
 		discarding all other intensities.
@@ -552,7 +553,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 			self._intensity_array[ii] = intensity_list_new
 
-	def export_ascii(self, root_name, fmt=ASCII_DAT):
+	def export_ascii(self, root_name: Union[str, pathlib.Path], fmt: int = ASCII_DAT):
 		"""
 		Exports the intensity matrix, retention time vector, and m/z vector to the ascii format.
 
@@ -597,7 +598,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		time_list = self._time_list
 		save_data(f"{root_name}.rt.{extension}", time_list, sep=separator)
 
-	def export_leco_csv(self, file_name):
+	def export_leco_csv(self, file_name: Union[str, pathlib.Path]):
 		"""
 		Exports data in LECO CSV format
 
@@ -651,7 +652,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		fp.close()
 
 
-def import_leco_csv(file_name):
+def import_leco_csv(file_name: Union[str, pathlib.Path]) -> IntensityMatrix:
 	"""
 	Imports data in LECO CSV format
 
@@ -746,7 +747,7 @@ def import_leco_csv(file_name):
 	return IntensityMatrix(time_list, mass_list, data)
 
 
-def build_intensity_matrix(data, bin_interval=1, bin_left=0.5, bin_right=0.5, min_mass=None):
+def build_intensity_matrix(data: GCMS_data, bin_interval: Union[int, float] = 1, bin_left: float = 0.5, bin_right: float = 0.5, min_mass: Optional[bool] = None) -> bool:
 	"""
 	Sets the full intensity matrix with flexible bins
 
@@ -788,7 +789,7 @@ def build_intensity_matrix(data, bin_interval=1, bin_left=0.5, bin_right=0.5, mi
 	return __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right)
 
 
-def build_intensity_matrix_i(data, bin_left=0.3, bin_right=0.7):
+def build_intensity_matrix_i(data: GCMS_data, bin_left: float = 0.3, bin_right: float = 0.7) -> IntensityMatrix:
 	"""
 	Sets the full intensity matrix with integer bins
 
@@ -826,7 +827,7 @@ def build_intensity_matrix_i(data, bin_left=0.3, bin_right=0.7):
 	return __fill_bins(data, min_mass, max_mass, 1, bin_left, bin_right)
 
 
-def __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
+def __fill_bins(data: GCMS_data, min_mass: Union[int, float], max_mass: Union[int, float], bin_interval: Union[int, float], bin_left: float, bin_right: float) -> IntensityMatrix:
 	"""
 	Fills the intensity values for all bins
 
@@ -884,7 +885,7 @@ def __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
 	return IntensityMatrix(data.time_list, mass_list, intensity_matrix)
 
 
-def __fill_bins_old(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
+def __fill_bins_old(data: GCMS_data, min_mass: Union[int, float], max_mass: Union[int, float], bin_interval: Union[int, float], bin_left: float, bin_right: float) -> IntensityMatrix:
 	"""
 	Fills the intensity values for all bins
 

@@ -26,6 +26,7 @@ Mixins for pyms Classes
 # stdlib
 import math
 from numbers import Number
+from typing import List
 from warnings import warn
 
 # 3rd party
@@ -40,7 +41,7 @@ class MaxMinMassMixin:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use 'max_mass' attribute instead")
-	def get_max_mass(self):
+	def get_max_mass(self) -> float:
 		"""
 		Get the max mass value
 
@@ -57,7 +58,7 @@ class MaxMinMassMixin:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use 'min_mass' attribute instead")
-	def get_min_mass(self):
+	def get_min_mass(self) -> float:
 		"""
 		Get the min mass value over all scans
 
@@ -72,7 +73,7 @@ class MaxMinMassMixin:
 		return self.min_mass
 
 	@property
-	def min_mass(self):
+	def min_mass(self) -> float:
 		"""
 		Returns the minimum m/z value in the spectrum
 
@@ -85,7 +86,7 @@ class MaxMinMassMixin:
 		return self._min_mass
 
 	@property
-	def max_mass(self):
+	def max_mass(self) -> float:
 		"""
 		Returns the maximum m/z value in the spectrum
 
@@ -101,7 +102,7 @@ class MaxMinMassMixin:
 class MassListMixin(MaxMinMassMixin):
 
 	@property
-	def mass_list(self):
+	def mass_list(self) -> List:
 		"""
 		Returns a list of the masses
 
@@ -118,7 +119,7 @@ class MassListMixin(MaxMinMassMixin):
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use 'mass_list' attribute instead")
-	def get_mass_list(self):
+	def get_mass_list(self) -> List:
 		"""
 		Returns a list of the masses
 
@@ -136,7 +137,7 @@ class MassListMixin(MaxMinMassMixin):
 class TimeListMixin:
 
 	@property
-	def time_list(self):
+	def time_list(self) -> List:
 		"""
 		Returns a copy of the time list
 
@@ -153,7 +154,7 @@ class TimeListMixin:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use 'time_list' attribute instead")
-	def get_time_list(self):
+	def get_time_list(self) -> List:
 		"""
 		Returns a copy of the time list
 
@@ -169,7 +170,7 @@ class TimeListMixin:
 class IntensityArrayMixin:
 
 	@property
-	def intensity_array(self):
+	def intensity_array(self) -> List:
 		"""
 		Returns a copy of the intensity array
 
@@ -183,7 +184,7 @@ class IntensityArrayMixin:
 		return numpy.copy(self._intensity_array)
 
 	@property
-	def intensity_matrix(self):
+	def intensity_matrix(self) -> List:
 		"""
 		Returns a copy of the intensity matrix
 
@@ -200,7 +201,7 @@ class IntensityArrayMixin:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use 'intensity_array' attribute instead")
-	def get_intensity_array(self):
+	def get_intensity_array(self) -> numpy.array:
 		"""
 		Returns the entire intensity array
 
@@ -214,7 +215,7 @@ class IntensityArrayMixin:
 		return self.intensity_array
 
 	@property
-	def intensity_array_list(self):
+	def intensity_array_list(self) -> List:
 		"""
 		Returns a copy of the intensity array as a list of lists of floats
 
@@ -229,7 +230,7 @@ class IntensityArrayMixin:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details=f"Use 'matrix_list' attribute instead")
-	def get_matrix_list(self):
+	def get_matrix_list(self) -> List:
 		"""
 		Returns a copy of the intensity matrix as a list of lists of floats
 
@@ -242,7 +243,7 @@ class IntensityArrayMixin:
 		return self.intensity_array
 
 	@property
-	def matrix_list(self):
+	def matrix_list(self) -> List:
 		"""
 		Returns a the intensity matrix as a list of lists of floats
 
@@ -256,7 +257,7 @@ class IntensityArrayMixin:
 
 
 class GetIndexTimeMixin:
-	def get_index_at_time(self, time):
+	def get_index_at_time(self, time: float) -> int:
 		"""
 		Returns the nearest index corresponding to the given time
 
@@ -291,7 +292,7 @@ class GetIndexTimeMixin:
 
 		return ix_match
 
-	def get_time_at_index(self, ix):
+	def get_time_at_index(self, ix: int) -> float:
 		"""
 		Returns time at given index
 

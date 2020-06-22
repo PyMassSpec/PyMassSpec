@@ -31,6 +31,8 @@ Functions for I/O of data in JCAMP-DX format
 import pathlib
 
 # this package
+from typing import Union
+
 from pyms.GCMS.Class import GCMS_data
 from pyms.Spectrum import Scan
 from pyms.Utils.IO import prepare_filepath
@@ -39,7 +41,7 @@ from pyms.Utils.Math import is_float
 from pyms.Utils.Utils import is_path
 
 
-def JCAMP_reader(file_name):
+def JCAMP_reader(file_name: Union[str, pathlib.Path] -> GCMS_data):
 	"""
 	Generic reader for JCAMP DX files
 
