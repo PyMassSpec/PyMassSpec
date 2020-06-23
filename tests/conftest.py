@@ -25,7 +25,7 @@ from copy import deepcopy
 from pathlib import Path
 
 # 3rs party
-import pytest
+import pytest  # type: ignore
 
 # pyms
 from pyms.BillerBiemann import BillerBiemann, num_ions_threshold, rel_threshold

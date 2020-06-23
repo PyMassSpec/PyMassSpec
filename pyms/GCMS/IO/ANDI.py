@@ -29,12 +29,12 @@ import pathlib
 # 3rd party
 from typing import Union
 
-from netCDF4 import Dataset
+from netCDF4 import Dataset  # type: ignore
 
 from pyms import IntensityMatrix
 
 try:
-	from mpi4py import MPI
+	from mpi4py import MPI  # type: ignore
 except ModuleNotFoundError:
 	pass
 
@@ -111,7 +111,7 @@ def ANDI_reader(file_name: Union[str, pathlib.Path]) -> GCMS_data:
 	return GCMS_data(time_list, scan_list)
 
 
-def ANDI_writer(file_name: str, im): IntensityMatrix
+def ANDI_writer(file_name: str, im: IntensityMatrix):
 	"""
 	A writer for ANDI-MS NetCDF files
 

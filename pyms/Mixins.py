@@ -30,8 +30,8 @@ from typing import List
 from warnings import warn
 
 # 3rd party
-import deprecation
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
 
 # this package
 from pyms import __version__

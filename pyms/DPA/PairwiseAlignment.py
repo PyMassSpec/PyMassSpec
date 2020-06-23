@@ -31,18 +31,18 @@ import functools
 # 3rd party
 from typing import List
 
-import numpy
+import numpy   # type: ignore
 
 try:
-	from mpi4py import MPI
+	from mpi4py import MPI   # type: ignore
 except ModuleNotFoundError:
 	pass
 
 try:
-	from Pycluster import treecluster
+	from Pycluster import treecluster   # type: ignore
 except ModuleNotFoundError:
 	try:
-		from Bio.Cluster import treecluster
+		from Bio.Cluster import treecluster   # type: ignore
 	except ModuleNotFoundError:
 		raise ModuleNotFoundError("""Neither PyCluster or BioPython is installed.
 Please install one of them and try again.""")
@@ -67,7 +67,7 @@ class PairwiseAlignment:
 	:author: Vladimir Likic
 	"""
 
-	def __init__(self, alignments: List, D: float, gap: flost):
+	def __init__(self, alignments: List, D: float, gap: float):
 		"""
 		Models pairwise alignment of alignments
 		"""
@@ -600,7 +600,11 @@ def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float) -> Alignment:
 	return score_matrix
 
 
-def align_with_tree(T: Alignment, min_peaks=1) -> Alignment:
+class Pairwise(object):
+	pass
+
+
+def align_with_tree(T: Pairwise.Alignment, min_peaks=1) -> Alignment:
 	"""
 	Aligns a list of alignments using the supplied guide tree
 

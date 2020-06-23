@@ -24,6 +24,7 @@ Classes to model Mass Spectra and Scans
 ################################################################################
 
 # stdlib
+import pathlib
 import re
 import warnings
 from collections.abc import Sequence
@@ -32,8 +33,8 @@ from collections.abc import Sequence
 from numbers import Number
 from typing import Union, Any, List, Optional
 
-import deprecation
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
 
 # this package
 from pyms import __version__

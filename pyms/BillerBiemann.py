@@ -30,7 +30,7 @@ from numbers import Number
 # 3rd party
 from typing import List, Union
 
-import numpy
+import numpy  # type: ignore
 
 # this package
 from pyms.IntensityMatrix import IntensityMatrix
@@ -176,7 +176,7 @@ def get_maxima_list(ic: IonChromatogram, points: List = 3) -> int:
     return mlist
 
 
-def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13, window: int = 3):
+def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13, window: int = 3) -> List
     """
     List of retention time and intensity of local maxima for ion.
     Only peaks around a specific retention time are recorded
@@ -221,7 +221,7 @@ def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13,
     return maxima_list
 
 
-def get_maxima_matrix(im: IonChromatogram, points: int = 3, scans: int = 1) -> List:
+def get_maxima_matrix(im: IntensityMatrix, points: int = 3, scans: int = 1) -> List:
     """
     Get matrix of local maxima for each ion
 

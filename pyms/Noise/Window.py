@@ -30,7 +30,7 @@ from statistics import median
 # 3rd party
 from typing import Union
 
-import numpy
+import numpy  # type: ignore
 
 # this package
 from pyms.GCMS.Function import ic_window_points
@@ -123,7 +123,7 @@ def window_smooth_im(im: IntensityMatrix, window: Union[int,str] = __DEFAULT_WIN
     return im_smooth
 
 
-def __mean_window(ia: numpy.core.ndarray, wing_length: int) -> numpy.core.ndarray
+def __mean_window(ia: numpy.core.ndarray, wing_length: int) -> numpy.core.ndarray:
     """
     Applies mean-window averaging on the array of intensities.
 

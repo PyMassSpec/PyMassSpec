@@ -24,8 +24,8 @@ import pickle
 from numbers import Number
 
 # 3rd party
-import deprecation
-import pytest
+import deprecation  # type: ignore
+import pytest  # type: ignore
 
 # pyms
 from pyms.Peak import Peak

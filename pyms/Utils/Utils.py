@@ -32,7 +32,7 @@ from decimal import Decimal
 # 3rd party
 from typing import Any
 
-import numpy
+import numpy  # type: ignore
 
 _list_types = (Sequence, numpy.core.ndarray)
 _path_types = (str, os.PathLike, pathlib.Path)
@@ -70,7 +70,7 @@ def is_sequence(obj):
 
 
 def is_sequence_of(obj: Any, of: Any) -> bool:
-    """
+	"""
 	Returns whether the object is a :class:`~collections.abc.Sequence`, and not a string, of the given type
 
 	:param obj:
@@ -90,8 +90,8 @@ def is_sequence_of(obj: Any, of: Any) -> bool:
 
 
 def is_positive_int(arg: str) -> bool:
-    """
-    Determines if the argument is an integer greater than zero
+	"""
+	Determines if the argument is an integer greater than zero
 
 	:param arg: A string to be evaluate as a positive integer
 	:type arg: types.str
@@ -111,8 +111,8 @@ def is_positive_int(arg: str) -> bool:
 
 
 def is_list_of_dec_nums(arg: str) -> bool:
-    """
-    Determines if the argument is a list of decimal numbers
+	"""
+	Determines if the argument is a list of decimal numbers
 
 	:param arg: A string to be evaluate as a list of decimal numbers
 	:type arg: str

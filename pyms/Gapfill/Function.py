@@ -28,7 +28,9 @@ import csv
 import pathlib
 
 # 3rd party
-import numpy
+from typing import Union, Optional, List
+
+import numpy  # type: ignore
 
 # this package
 from pyms.Utils.Utils import is_path
@@ -45,7 +47,7 @@ NETCDF = 2
 
 
 # .csv reader (cloned from gcqc project)
-def file2matrix(file_name: Union[str, pathlib.Path) -> numpy.ndarray:
+def file2matrix(file_name: Union[str, pathlib.Path]) -> numpy.ndarray:
 	"""
 	Convert a .csv file to a numpy array
 
@@ -258,7 +260,7 @@ def mp_finder(input_matrix: List) -> Sample:
 	return sample_list
 
 
-def transposed(lists: List) -> List[lists]:
+def transposed(lists: List) -> List[Lists]:
 	"""
 	transposes a list of lists
 

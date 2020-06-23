@@ -33,15 +33,17 @@ from numbers import Number
 # 3rd party
 from typing import List, Union
 
-import numpy
-import pandas
+import numpy  # type: ignore
+import pandas  # type: ignore
 from pandas import DataFrame
 
+from pyms.Peak import Peak
+
 try:
-	from Pycluster import treecluster
+	from Pycluster import treecluster  # type: ignore
 except ModuleNotFoundError:
 	try:
-		from Bio.Cluster import treecluster
+		from Bio.Cluster import treecluster  # type: ignore
 	except ModuleNotFoundError:
 		raise ModuleNotFoundError("""Neither PyCluster or BioPython is installed.
 Please install one of them and try again.""")
@@ -150,7 +152,7 @@ class Alignment:
 		# each dictionary contains the
 		# top ions and their frequency for each peak
 		# in the alignment
-		list_of_top_ion_dicts = []
+		list_of_top_ion_dicts = [List]
 		empty_count_list = []
 
 		for peak_list in self.peakpos:
@@ -420,8 +422,8 @@ class Alignment:
 			#            [align1_peak2, ................................]
 			#              .............................................
 			#            [align1_peakm,....................,alignn_peakm]  ]
-			areas = []
-			new_peak_lists = []
+			areas = [List[List]]
+			new_peak_lists: List[List[Peak]] = []
 
 			for peak_list in self.peakpos:
 				index = 0

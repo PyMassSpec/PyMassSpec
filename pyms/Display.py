@@ -29,15 +29,15 @@ import warnings
 # 3rd party
 from typing import Optional, List
 
-import deprecation
-import matplotlib
-import matplotlib.pyplot as plt
+import deprecation  # type: ignore
+import matplotlib  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
 from matplotlib import axes, figure
 
 # this package
-from matplotlib.axes import Axes
-from matplotlib.container import BarContainer
-from matplotlib.lines import Line2D
+from matplotlib.axes import Axes  # type: ignore
+from matplotlib.container import BarContainer  # type: ignore
+from matplotlib.lines import Line2D  # type: ignore
 
 from pyms import __version__, Peak
 from pyms.IonChromatogram import IonChromatogram
@@ -241,7 +241,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		plot = plot_mass_spec(self.ax, mass_spec, **kwargs)
 		return plot
 
-	def plot_peaks(self, peak_list: List[Peak] label: str = "Peaks"):
+	def plot_peaks(self, peak_list: List[Peak], label: str = "Peaks"):
 		"""
 		Plots the locations of peaks as found by PyMassSpec.
 

@@ -29,8 +29,8 @@ import copy
 # 3rd party
 from typing import Optional, Union
 
-import numpy
-from scipy import ndimage
+import numpy  # type: ignore
+from scipy import ndimage  # type: ignore
 
 # this package
 from pyms.GCMS.Function import ic_window_points

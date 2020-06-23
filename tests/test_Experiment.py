@@ -22,8 +22,8 @@
 import copy
 
 # 3rd party
-import pytest
-import deprecation
+import pytest  # type: ignore
+import deprecation  # type: ignore
 
 # pyms
 from pyms.Experiment import Experiment, load_expr, read_expr_list, store_expr

@@ -22,8 +22,8 @@
 import copy
 
 # 3rd party
-import numpy
-import pytest
+import numpy  # type: ignore
+import pytest  # type: ignore
 
 # pyms
 from pyms.BillerBiemann import (

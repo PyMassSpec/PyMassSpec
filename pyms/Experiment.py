@@ -26,12 +26,13 @@ Models a GC-MS experiment, represented by a list of signal peaks
 # stdlib
 import copy
 import os
+import pathlib
 import pickle
 
 # 3rd party
-from typing import Any, List
+from typing import Any, List, Union
 
-import deprecation
+import deprecation  # type: ignore
 
 # this package
 from pyms import __version__, Peak
@@ -153,7 +154,7 @@ class Experiment(pymsBaseClass):
 
 		return self._peak_list
 
-	def sele_rt_range(self, rt_range) -> List:
+	def sele_rt_range(self, rt_range):
 		"""
 		Discards all peaks which have the retention time outside the specified range
 

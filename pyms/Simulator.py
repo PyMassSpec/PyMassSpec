@@ -29,7 +29,7 @@ import math
 # 3rd party
 from typing import List
 
-import numpy
+import numpy  # type: ignore
 
 # this package
 from pyms import Peak

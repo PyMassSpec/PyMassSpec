@@ -19,7 +19,8 @@
 #############################################################################
 
 # 3rd party
-import pytest
+import pytest  # type: ignore
+
 
 # pyms
 from pyms.IntensityMatrix import IntensityMatrix

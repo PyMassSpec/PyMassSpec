@@ -24,6 +24,7 @@ Base for PyMassSpec classes
 ################################################################################
 
 # stdlib
+import pathlib
 import pickle
 
 # this package

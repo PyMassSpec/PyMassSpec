@@ -31,19 +31,20 @@ from typing import List, Any, Iterator, Union, Optional
 from warnings import warn
 
 # 3rd party
-import deprecation
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
 
 # this package
 from pyms import __version__
 from pyms.Base import pymsBaseClass
+from pyms.GCMS.Class import GCMS_data
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Mixins import GetIndexTimeMixin, IntensityArrayMixin, MassListMixin, TimeListMixin
 from pyms.Spectrum import MassSpectrum
 from pyms.Utils.IO import prepare_filepath, save_data
 from pyms.Utils.Utils import is_path, is_sequence, is_sequence_of
 
-import aenum
+import aenum  # type: ignore
 
 class AsciiFiletypes(aenum.Enum):
 	"""
@@ -115,7 +116,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		# Try to include parallelism.
 		try:
-			from mpi4py import MPI
+			from mpi4py import MPI  # type: ignore
 			comm = MPI.COMM_WORLD
 			num_ranks = comm.Get_size()
 			rank = comm.Get_rank()

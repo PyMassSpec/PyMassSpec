@@ -19,7 +19,7 @@
 #############################################################################
 
 # 3rd party
-import pytest
+import pytest  # type: ignore
 
 # pyms
 from pyms.Utils.Utils import _list_types, _path_types

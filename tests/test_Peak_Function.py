@@ -19,8 +19,8 @@
 #############################################################################
 
 # 3rd party
-import deprecation
-import pytest
+import deprecation  # type: ignore
+import pytest  # type: ignore
 
 # pyms
 from pyms.Peak.Function import (

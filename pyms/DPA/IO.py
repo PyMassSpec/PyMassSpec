@@ -33,19 +33,19 @@ from typing import Union, List
 from pyms.DPA.Alignment import Alignment
 
 try:
-	from Pycluster import treecluster
+	from Pycluster import treecluster   # type: ignore
 except ModuleNotFoundError:
 	try:
-		from Bio.Cluster import treecluster
+		from Bio.Cluster import treecluster   # type: ignore
 	except ModuleNotFoundError:
 		raise ModuleNotFoundError("""Neither PyCluster or BioPython is installed.
 Please install one of them and try again.""")
 
-from openpyxl import Workbook
-from openpyxl.comments import Comment
-from openpyxl.formatting.rule import ColorScaleRule  # , CellIsRule, FormulaRule
-from openpyxl.styles import PatternFill
-from openpyxl.utils import get_column_letter
+from openpyxl import Workbook   # type: ignore
+from openpyxl.comments import Comment   # type: ignore
+from openpyxl.formatting.rule import ColorScaleRule  # , CellIsRule, FormulaRule   # type: ignore
+from openpyxl.styles import PatternFill   # type: ignore
+from openpyxl.utils import get_column_letter   # type: ignore
 
 # this package
 from pyms.Peak.List.Function import composite_peak
@@ -93,8 +93,8 @@ def write_mass_hunter_csv(alignment: Alignment, file_name: Union[str, pathlib.Pa
 	#            [align1_peak2, ................................]
 	#              .............................................
 	#            [align1_peakm,....................,alignn_peakm]  ]
-	areas = []
-	new_peak_lists = []
+	areas = []   # type: ignore
+	new_peak_lists = []  # type: ignore
 	rtmax = []
 	rtmin = []
 

@@ -29,7 +29,7 @@ import math
 # 3rd party
 from typing import List, Union, Sequence
 
-import numpy
+import numpy  # type: ignore
 
 # this package
 from pyms.Peak import Peak

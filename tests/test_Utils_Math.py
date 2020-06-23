@@ -4,7 +4,7 @@ import statistics
 from decimal import Decimal
 from fractions import Fraction
 
-import pytest
+import pytest  # type: ignore
 
 from pyms.Utils import Math
 

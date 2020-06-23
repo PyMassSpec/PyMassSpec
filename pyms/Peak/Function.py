@@ -30,8 +30,8 @@ from numbers import Number
 from statistics import median
 
 # 3rd party
-import deprecation
-from numpy import percentile
+import deprecation  # type: ignore
+from numpy import percentile  # type: ignore
 
 # this package
 from pyms import __version__

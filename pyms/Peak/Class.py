@@ -29,7 +29,7 @@ from numbers import Number
 from warnings import warn
 
 # 3rd party
-import deprecation
+import deprecation  # type: ignore
 
 # this package
 from pyms import __version__

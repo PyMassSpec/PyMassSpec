@@ -29,10 +29,10 @@ import pathlib
 # 3rd party
 from typing import Union
 
-import pymzml
+import pymzml  # type: ignore
 
 try:
-	from mpi4py import MPI
+	from mpi4py import MPI  # type: ignore
 except ModuleNotFoundError:
 	pass
 

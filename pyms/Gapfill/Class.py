@@ -24,7 +24,7 @@ Provides a class for handling Missing Peaks in an output file (i.e. area.csv)
 ################################################################################
 
 # 3rd party
-import deprecation
+import deprecation  # type: ignore
 
 # this package
 from pyms import __version__
@@ -161,7 +161,7 @@ class MissingPeak:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.Gapfill.Class.MissingPeak.qual_ion1` instead")
-	def get_qual_ion1(self) Int:
+	def get_qual_ion1(self) ->int:
 		"""
 		Returns the top (most abundant) ion for the peak object
 
@@ -176,7 +176,7 @@ class MissingPeak:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.Gapfill.Class.MissingPeak.qual_ion2` instead")
-	def get_qual_ion2(self) -> int
+	def get_qual_ion2(self) -> int:
 		"""
 		Returns the second most abundant ion for the peak object
 

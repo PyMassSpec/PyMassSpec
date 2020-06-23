@@ -19,7 +19,7 @@
 #############################################################################
 
 # 3rd party
-import pytest
+import pytest  # type: ignore
 
 # pyms
 from pyms.Noise.Analysis import window_analyzer

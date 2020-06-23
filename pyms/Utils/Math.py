@@ -34,8 +34,8 @@ from numbers import Number
 
 # 3rd party
 from typing import Union, List
-
-import numpy
+# type: ignore
+import nump  # type: ignore
 
 # this package
 from pyms.Utils.Utils import is_sequence

@@ -24,8 +24,8 @@ import pathlib
 import requests
 
 # 3rd party
-import pytest
-import numpy
+import pytest  # type: ignore
+import numpy  # type: ignore
 
 # pyms
 from pyms.Spectrum import MassSpectrum

@@ -25,8 +25,9 @@ import operator
 from numbers import Number
 
 # 3rd party
-import numpy
-import pytest
+import numpy  # type: ignore
+
+import pytest  # type: ignore
 
 # pyms
 from pyms.BillerBiemann import BillerBiemann, num_ions_threshold, rel_threshold

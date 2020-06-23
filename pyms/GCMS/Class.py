@@ -30,10 +30,10 @@ from numbers import Number
 from statistics import mean, median, stdev
 
 # 3rd party
-from typing import List, Any
+from typing import List, Any, Union, Optional
 
-import deprecation
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
 
 # this package
 from pyms import __version__, Spectrum
@@ -46,6 +46,10 @@ from pyms.Utils.Time import time_str_secs
 from pyms.Utils.Utils import is_path, is_sequence_of
 
 MassSpectrum = MassSpectrum  # For legacy imports. Stops PyCharm complaining TODO: Remove eventually
+
+
+class Pathlib(object):
+	pass
 
 
 class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin):
@@ -275,7 +279,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return self._time_list[:]
 
 	@property
-	def tic(self -> IonChromatogram:
+	def tic(self) -> IonChromatogram:
 		"""
 		Returns the total ion chromatogram
 
@@ -326,7 +330,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 
 		return self._time_step_std
 
-	def trim(self, begin : Option[Union[int, str]] = None, end : Optional[Union[int, str]] = None):
+	def trim(self, begin : Optional[Union[int, str]] = None, end : Optional[Union[int, str]] = None):
 		"""
 		trims data in the time domain
 
@@ -401,7 +405,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		self.__set_min_max_mass()
 		self.__calc_tic()
 
-	def write(self, file_root: Union[str, Pathlib.Path]):
+	def write(self, file_root: Union[str, pathlib.Path]):
 		"""
 		Writes the entire raw data to two CSV files:
 

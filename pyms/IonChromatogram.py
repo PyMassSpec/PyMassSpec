@@ -30,10 +30,10 @@ import warnings
 from numbers import Number
 
 # 3rd party
-from typing import Union, List, Optional
+from typing import Union, List, Optional, Any
 
-import deprecation
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
 
 # this package
 from pyms import __version__
@@ -203,7 +203,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		return self._time_step
 
 	@IntensityArrayMixin.intensity_array.setter
-	def intensity_array(self, ia: Union[List, tuple, numpy,array]):
+	def intensity_array(self, ia: Union[List, tuple, numpy.ndarray]):
 		"""
 		Sets the value for the intensity array
 
@@ -222,6 +222,9 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		self._intensity_array = ia
 
 	def is_tic(self) -> bool:
+		"""
+		Returns whether the ion chromatogram is a total ion chromatogram (TIC)
+
 		:rtype: bool
 
 		:authors: Lewis Lee, Vladimir Likic
@@ -230,7 +233,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		return self._mass is None
 
 	@property
-	def mass(self):
+	def mass(self) -> Union[int, float]:
 		"""
 		Returns the m/z channel of the IC
 

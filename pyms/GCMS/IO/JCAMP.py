@@ -28,6 +28,7 @@ Functions for I/O of data in JCAMP-DX format
 ################################################################################
 
 # stdlib
+import os
 import pathlib
 
 # this package
@@ -41,7 +42,7 @@ from pyms.Utils.Math import is_float
 from pyms.Utils.Utils import is_path
 
 
-def JCAMP_reader(file_name: Union[str, pathlib.Path] -> GCMS_data):
+def JCAMP_reader(file_name: Union[str, os.PathLike]) -> GCMS_data:
 	"""
 	Generic reader for JCAMP DX files
 

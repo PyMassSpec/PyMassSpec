@@ -24,9 +24,9 @@ import pickle
 import types
 
 # 3rd party
-import numpy
-import pytest
-import deprecation
+import numpy  # type: ignore
+import pytest  # type: ignore
+import deprecation  # type: ignore
 
 # pyms
 from pyms.IntensityMatrix import (

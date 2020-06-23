@@ -29,7 +29,7 @@ import copy
 # 3rd party
 from typing import Union
 
-import numpy
+import numpy  # type: ignore
 
 # this package
 from pyms.GCMS.Function import ic_window_points
@@ -40,7 +40,7 @@ __DEFAULT_WINDOW = 7
 __DEFAULT_POLYNOMIAL_DEGREE = 2
 
 
-def savitzky_golay(i: Union[int, str], window: Union[int, str] = __DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_DEGREE) -> IonChromatogram:
+def savitzky_golay(ic: IonChromatogram, window: Union[int, str] = __DEFAULT_WINDOW, degree=__DEFAULT_POLYNOMIAL_DEGREE) -> IonChromatogram:
 	"""
 	Applies Savitzky-Golay filter on ion chromatogram
 
@@ -88,7 +88,7 @@ def savitzky_golay(i: Union[int, str], window: Union[int, str] = __DEFAULT_WINDO
 	return ic_denoise
 
 
-def savitzky_golay_im(im: IntensityMatrix, window: Union[int, str] = __DEFAULT_WINDOW, degre: int = __DEFAULT_POLYNOMIAL_DEGREE) -> IntensityMatrix:
+def savitzky_golay_im(im: IntensityMatrix, window: Union[int, str] = __DEFAULT_WINDOW, degree: int = __DEFAULT_POLYNOMIAL_DEGREE) -> IntensityMatrix:
 	"""
 	Applies Savitzky-Golay filter on Intensity Matrix
 
