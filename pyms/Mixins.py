@@ -201,7 +201,7 @@ class IntensityArrayMixin:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use 'intensity_array' attribute instead")
-	def get_intensity_array(self) -> numpy.array:
+	def get_intensity_array(self) -> numpy.ndarray:
 		"""
 		Returns the entire intensity array
 

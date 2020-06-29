@@ -31,7 +31,7 @@ import pathlib
 from numbers import Number
 
 # 3rd party
-from typing import List, Union
+from typing import List, Union, Dict
 
 import numpy  # type: ignore
 import pandas  # type: ignore
@@ -246,7 +246,7 @@ class Alignment:
 		self.peakpos = numpy.transpose(self.peakalgt)
 
 	@staticmethod
-	def get_highest_mz_ion(ion_dict: dict) -> int:
+	def get_highest_mz_ion(ion_dict: Dict) -> int:
 		"""
 		Returns the preferred ion for quantitiation
 			Looks at the list of candidate ions, selects those which have

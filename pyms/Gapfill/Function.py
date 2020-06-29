@@ -260,6 +260,10 @@ def mp_finder(input_matrix: List) -> Sample:
 	return sample_list
 
 
+class Lists(object):
+	pass
+
+
 def transposed(lists: List) -> List[Lists]:
 	"""
 	transposes a list of lists

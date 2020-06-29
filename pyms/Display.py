@@ -27,7 +27,7 @@ Class to Display Ion Chromatograms and TIC
 import warnings
 
 # 3rd party
-from typing import Optional, List
+from typing import Optional, List, Dict, Tuple
 
 import deprecation  # type: ignore
 import matplotlib  # type: ignore
@@ -195,7 +195,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		if event.button != 1 and len(intensity_list) != 0:
 			self.plot_mass_spec(event.xdata, mass_list, intensity_list)
 
-	def plot_ic(self, i: IonChromatogram, **kwargs):
+	def plot_ic(self, ic: IonChromatogram, **kwargs):
 		"""
 		Plots an Ion Chromatogram
 
@@ -422,7 +422,7 @@ def plot_mass_spec(ax: Axes, mass_spec: MassSpectrum, **kwargs) -> BarContainer:
 	return plot
 
 
-def plot_head2tail(ax: Axes, top_mass_spec: MassSpectrum, bottom_mass_spec: MassSpectrum, top_spec_kwargs: Optional[dict] = None, bottom_spec_kwargs: Optional[dict] = None) -> tuple[BarContainer]:
+def plot_head2tail(ax: Axes, top_mass_spec: MassSpectrum, bottom_mass_spec: MassSpectrum, top_spec_kwargs: Optional[Dict] = None, bottom_spec_kwargs: Optional[dict] = None) -> Tuple[BarContainer]:
 	"""
 	Plots two Mass Spectra head to tail
 

@@ -33,15 +33,15 @@ from statistics import median, stdev as std, mean
 from numbers import Number
 
 # 3rd party
-from typing import Union, List
+from typing import Union, List, Sequence
 # type: ignore
-import nump  # type: ignore
+import numpy  # type: ignore
 
 # this package
 from pyms.Utils.Utils import is_sequence
 
 
-def vector_by_step(start: Union[int, float], stop: Union[int, float], step: Union[int, float]) -> List:
+def vector_by_step(start: float, stop: float, step: float) -> List:
     """
     Generates a list by using start, stop, and step values
 
@@ -71,7 +71,7 @@ def vector_by_step(start: Union[int, float], stop: Union[int, float], step: Unio
     return v
 
 
-def MAD(v: Union[List, tuple, nd.array]) -> float:
+def MAD(v: Union[Sequence, numpy.ndarray]) -> float:
     """
     Median absolute deviation
 
@@ -99,7 +99,7 @@ def MAD(v: Union[List, tuple, nd.array]) -> float:
     return mad
 
 
-def rmsd(list1: Union[List, tuple, nd.array], list2: Union[List, tuple, nd.array]) -> float:
+def rmsd(list1: Union[Sequence, numpy.ndarray], list2: Union[Sequence, numpy.ndarray]) -> float:
     """
     Calculates RMSD for the 2 lists
 

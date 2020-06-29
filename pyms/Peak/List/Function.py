@@ -236,7 +236,7 @@ def is_peak_list(peaks: List) -> bool:
     return is_sequence_of(peaks, Peak)
 
 
-def sele_peaks_by_rt(peaks: Union[List, tuple, numpy.ndarray], rt_range: Sequence[str]) -> Peak:
+def sele_peaks_by_rt(peaks: Union[Sequence, numpy.ndarray], rt_range: Sequence[str]) -> Peak:
     """
     Selects peaks from a retention time range
 

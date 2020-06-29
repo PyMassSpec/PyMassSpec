@@ -459,7 +459,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 				ix = ii
 		return ix
 
-	def crop_mass(self, mass_min: Union[int, float], mass_max: Union[int, float]):
+	def crop_mass(self, mass_min: float, mass_max: float):
 		"""
 		Crops mass spectrum
 
@@ -502,7 +502,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		self._min_mass = min(new_mass_list)
 		self._max_mass = max(new_mass_list)
 
-	def null_mass(self, mass: Union[int, float]):
+	def null_mass(self, mass: float):
 		"""
 		Ignore given (closest) mass in spectra
 
@@ -753,7 +753,7 @@ def import_leco_csv(file_name: Union[str, pathlib.Path]) -> IntensityMatrix:
 	return IntensityMatrix(time_list, mass_list, data)
 
 
-def build_intensity_matrix(data: GCMS_data, bin_interval: Union[int, float] = 1, bin_left: float = 0.5, bin_right: float = 0.5, min_mass: Optional[bool] = None) -> bool:
+def build_intensity_matrix(data: GCMS_data, bin_interval: float = 1, bin_left: float = 0.5, bin_right: float = 0.5, min_mass: Optional[bool] = None) -> bool:
 	"""
 	Sets the full intensity matrix with flexible bins
 
@@ -833,7 +833,7 @@ def build_intensity_matrix_i(data: GCMS_data, bin_left: float = 0.3, bin_right: 
 	return __fill_bins(data, min_mass, max_mass, 1, bin_left, bin_right)
 
 
-def __fill_bins(data: GCMS_data, min_mass: Union[int, float], max_mass: Union[int, float], bin_interval: Union[int, float], bin_left: float, bin_right: float) -> IntensityMatrix:
+def __fill_bins(data: GCMS_data, min_mass: float, max_mass: float, bin_interval: Union[int, float], bin_left: float, bin_right: float) -> IntensityMatrix:
 	"""
 	Fills the intensity values for all bins
 
@@ -891,7 +891,7 @@ def __fill_bins(data: GCMS_data, min_mass: Union[int, float], max_mass: Union[in
 	return IntensityMatrix(data.time_list, mass_list, intensity_matrix)
 
 
-def __fill_bins_old(data: GCMS_data, min_mass: Union[int, float], max_mass: Union[int, float], bin_interval: Union[int, float], bin_left: float, bin_right: float) -> IntensityMatrix:
+def __fill_bins_old(data: GCMS_data, min_mass: float, max_mass: float, bin_interval: float, bin_left: float, bin_right: float) -> IntensityMatrix:
 	"""
 	Fills the intensity values for all bins
 

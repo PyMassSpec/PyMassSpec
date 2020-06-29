@@ -63,7 +63,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 	:authors: Lewis Lee, Vladimir Likic, Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, i: numpy.array, time_list: List, mass:Optional[Union[int, float]] = None):
+	def __init__(self, i: numpy.ndarray, time_list: List, mass:Optional[float] = None):
 		"""
 		:param ia: Ion chromatogram intensity values
 		:type ia: numpy.array
@@ -203,7 +203,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		return self._time_step
 
 	@IntensityArrayMixin.intensity_array.setter
-	def intensity_array(self, ia: Union[List, tuple, numpy.ndarray]):
+	def intensity_array(self, ia: Union[Sequence, numpy.ndarray]):
 		"""
 		Sets the value for the intensity array
 
@@ -233,7 +233,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		return self._mass is None
 
 	@property
-	def mass(self) -> Union[int, float]:
+	def mass(self) -> float:
 		"""
 		Returns the m/z channel of the IC
 
@@ -251,7 +251,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.IonChromatogram.IonChromatogram.intensity_array` instead")
-	def set_intensity_array(self, ia: numpy.array):
+	def set_intensity_array(self, ia: numpy.ndarray):
 		"""
 		Sets the value for the intensity array
 
@@ -302,7 +302,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return time_step
 
-	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting=True):
+	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting = True):
 		"""
 		Writes the ion chromatogram to the specified file
 

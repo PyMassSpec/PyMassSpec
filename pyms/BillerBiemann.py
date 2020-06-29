@@ -28,7 +28,7 @@ import copy
 from numbers import Number
 
 # 3rd party
-from typing import List, Union
+from typing import List, Union, Sequence
 
 import numpy  # type: ignore
 
@@ -92,7 +92,7 @@ def BillerBiemann(im: IntensityMatrix, points: int = 3, scans: int = 1) -> List[
     return peak_list
 
 
-def get_maxima_indices(ion_intensities: Union[List, tuple, numpy.nd.array], points: int = 3) -> List:
+def get_maxima_indices(ion_intensities: Union[Sequence, numpy.nd.array], points: int = 3) -> List:
     """
     Find local maxima.
 
@@ -176,7 +176,7 @@ def get_maxima_list(ic: IonChromatogram, points: List = 3) -> int:
     return mlist
 
 
-def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13, window: int = 3) -> List
+def get_maxima_list_reduced(ic: IonChromatogram, mp_rt: float, points: int = 13, window: int = 3) -> List:
     """
     List of retention time and intensity of local maxima for ion.
     Only peaks around a specific retention time are recorded
@@ -287,7 +287,7 @@ def get_maxima_matrix(im: IntensityMatrix, points: int = 3, scans: int = 1) -> L
     return maxima_im
 
 
-def num_ions_threshold(pl: List, n: int, cutoff: Union[int, float], copy_peaks: bool = True) -> List:
+def num_ions_threshold(pl: List, n: int, cutoff: float, copy_peaks: bool = True) -> List:
     """
     Remove Peaks where there are less than a given number of ion intensities above the given threshold
 

@@ -29,7 +29,7 @@ import math
 import functools
 
 # 3rd party
-from typing import List
+from typing import List, Dict
 
 import numpy   # type: ignore
 
@@ -213,7 +213,7 @@ def score_matrix(a1: Alignment, a2: Alignment, D: float) -> Alignment:
 	return score_matrix
 
 
-def dp(S, gap_penalty: float) -> dict:
+def dp(S, gap_penalty: float) -> Dict:
 	"""
 	Solves optimal path in score matrix based on global sequence
 		alignment

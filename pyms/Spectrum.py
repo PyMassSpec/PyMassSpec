@@ -31,7 +31,7 @@ from collections.abc import Sequence
 
 # 3rd party
 from numbers import Number
-from typing import Union, Any, List, Optional
+from typing import Union, Any, List, Optional, Tuple
 
 import deprecation  # type: ignore
 import numpy  # type: ignore
@@ -84,7 +84,7 @@ class Scan(pymsBaseClass, MassListMixin):
 	:authors: Andrew Isaac, Qiao Wang, Vladimir Likic, Dominic Davis-Foster
 	"""
 
-	def __init__(self, mass_list: Union[Sequence[Number, numpy.ndarray]], intensity_list: Union[Sequence[Number, numpy.ndarray]]):
+	def __init__(self, mass_list: Union[Sequence[Number], numpy.ndarray], intensity_list: Union[Sequence[Number, numpy.ndarray]]):
 		"""
 		Initialise the class
 		"""
@@ -336,7 +336,7 @@ class MassSpectrum(Scan):
 			self._min_mass = None
 			self._max_mass = None
 
-	def crop(self, min_mz: Optional[Union[int, float]] = None, max_mz: Optional[Union[int, float]] = None, inplace: bool = False) -> MassSpectrum:
+	def crop(self, min_mz: Optional[float] = None, max_mz: Optional[float] = None, inplace: bool = False) -> MassSpectrum:
 		"""
 		Crop the Mass Spectrum between the given mz values
 
@@ -362,7 +362,7 @@ class MassSpectrum(Scan):
 
 		return self.icrop(min_mz_idx, max_mz_idx, inplace)
 
-	def icrop(self, min_index: Union[int, float] = 0, max_index: Union[int, float] = -1, inplace: bool = False) -> MassSpectrum:
+	def icrop(self, min_index: [float] = 0, max_index: [float] = -1, inplace: bool = False) -> MassSpectrum:
 		"""
 		Crop the Mass Spectrum between the given indices
 
@@ -501,7 +501,7 @@ class MassSpectrum(Scan):
 		return cls(mass_list, intensity_list)
 
 	@classmethod
-	def from_mz_int_pairs(cls, mz_int_pairs: List[tuple]):
+	def from_mz_int_pairs(cls, mz_int_pairs: List[Tuple[float, float]]):
 		"""
 		Construct a MassSpectrum from a list of (m/z, intensity) tuples.
 
@@ -530,7 +530,7 @@ class MassSpectrum(Scan):
 		return cls(mass_list, intensity_list)
 
 
-def normalize_mass_spec(mass_spec: MassSpectrum, relative_to: Optional[Union[int, float]] = None, inplace: bool = False, max_intensity: Union[int, float] = 100) -> MassSpectrum:
+def normalize_mass_spec(mass_spec: MassSpectrum, relative_to: Optional[float] = None, inplace: bool = False, max_intensity: float = 100) -> MassSpectrum:
 	"""
 	Normalize the intensities in the given Mass Spectrum to values between 0 and ``max_intensity``,
 	which by default is 100.0.
