@@ -300,7 +300,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return time_step
 
-	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting = bool):
+	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting: bool = True):
 		"""
 		Writes the ion chromatogram to the specified file
 

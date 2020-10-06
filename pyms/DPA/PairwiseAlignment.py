@@ -183,7 +183,7 @@ def align(a1: Alignment, a2: Alignment, D: float, gap: float) -> Alignment:
 	return ma
 
 
-def score_matrix(a1: numpy.ndarray, a2: numpy.ndarray, D: float) -> Alignment:
+def score_matrix(a1: Alignment, a2: Alignment, D: float) -> numpy.ndarray:
 	"""
 	Calculates the score matrix between two alignments
 
@@ -599,11 +599,7 @@ def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float) -> Alignment:
 	return score_matrix
 
 
-
-	pass
-
-
-def align_with_tree(T: pyms.DPA.PairwiseAlignment.PairwiseAlignment, min_peaks=1) -> Alignment:
+def align_with_tree(T: PairwiseAlignment, min_peaks: int = 1) -> Alignment:
 	"""
 	Aligns a list of alignments using the supplied guide tree
 

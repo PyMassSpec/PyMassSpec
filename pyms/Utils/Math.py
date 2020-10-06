@@ -35,6 +35,7 @@ from numbers import Number
 # 3rd party
 
 import numpy  # type: ignore
+from typing import Union, List, Sequence
 
 # this package
 from pyms.Utils.Utils import is_sequence
