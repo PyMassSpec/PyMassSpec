@@ -48,10 +48,6 @@ from pyms.Utils.Utils import is_path, is_sequence_of
 MassSpectrum = MassSpectrum  # For legacy imports. Stops PyCharm complaining TODO: Remove eventually
 
 
-class Pathlib(object):
-	pass
-
-
 class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin):
 	"""
 	Generic object for GC-MS data. Contains raw data

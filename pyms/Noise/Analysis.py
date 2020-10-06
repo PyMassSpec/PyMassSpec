@@ -39,7 +39,7 @@ _DEFAULT_WINDOW = 256
 _DEFAULT_N_WINDOWS = 1024
 
 
-def window_analyzer(ic: IonChromatogram, window: Union[int, str] = _DEFAULT_WINDOW, n_windows: int = _DEFAULT_N_WINDOWS, rand_seed: Optional[Union[int, str]] = None) -> float:
+def window_analyzer(ic: IonChromatogram, window: Union[int, str] = _DEFAULT_WINDOW, n_windows: int = _DEFAULT_N_WINDOWS, rand_seed: Optional[Union[int, str, None]] = None) -> float:
 	"""
 	A simple estimator of the signal noise based on randomly placed windows and
 	median absolute deviation

@@ -325,7 +325,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		plt.close()
 
 
-def plot_ic(ax: matplotlib, ic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:
+def plot_ic(ax: matplotlib.axes.Axes, ic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:
 	"""
 	Plots an Ion Chromatogram
 
@@ -422,7 +422,7 @@ def plot_mass_spec(ax: Axes, mass_spec: MassSpectrum, **kwargs) -> BarContainer:
 	return plot
 
 
-def plot_head2tail(ax: Axes, top_mass_spec: MassSpectrum, bottom_mass_spec: MassSpectrum, top_spec_kwargs: Optional[Dict] = None, bottom_spec_kwargs: Optional[dict] = None) -> Tuple[BarContainer]:
+def plot_head2tail(ax: Axes, top_mass_spec: MassSpectrum, bottom_mass_spec: MassSpectrum, top_spec_kwargs: Optional[Dict] = None, bottom_spec_kwargs: Optional[Dict] = None) -> Tuple[BarContainer]:
 	"""
 	Plots two Mass Spectra head to tail
 

@@ -28,7 +28,7 @@ import gzip
 import pathlib
 import pickle
 from numbers import Number
-
+from pyms.Utils.Utils import is_path
 # this package
 from typing import Union, Any, List
 
@@ -74,7 +74,6 @@ def dump_object(obj: Any, file_name: Union[str, pathlib.Path]) :
 	:author: Vladimir Likic
 	:author: Dominic Davis-Foster (pathlib support)
 	"""
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -98,7 +97,6 @@ def load_object(file_name: Union[str, pathlib.Path]):
 	:author: Vladimir Likic
 	:author: Dominic Davis-Foster (pathlib support)
 	"""
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -126,8 +124,6 @@ def file_lines(file_name: Union[str, pathlib.Path], strip: bool = False) -> List
 	:author: Vladimir Likic
 	:author: Dominic Davis-Foster (pathlib support)
 	"""
-
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -157,7 +153,7 @@ def file_lines(file_name: Union[str, pathlib.Path], strip: bool = False) -> List
 	return lines
 
 
-def save_data(file_name: Union[str, pathlib.Path],data: List, format_st: str = "%.6f", prepend: str = "", sep: str = " ", compressed: bool = False):
+def save_data(file_name: Union[str, pathlib.Path],data: List, format_str: str = "%.6f", prepend: str = "", sep: str = " ", compressed: bool = False):
 	"""
 	Saves a list of numbers or a list of lists of numbers to a file with specific formatting
 
@@ -177,8 +173,6 @@ def save_data(file_name: Union[str, pathlib.Path],data: List, format_st: str = "
 	:author: Vladimir Likic
 	:author: Dominic Davis-Foster (pathlib support)
 	"""
-
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")

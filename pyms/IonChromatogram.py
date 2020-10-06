@@ -43,10 +43,6 @@ from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Utils import is_path, is_sequence
 
 
-class IonChromatogram(object):
-	pass
-
-
 class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetIndexTimeMixin):
 	"""
 	Models an ion chromatogram
@@ -152,6 +148,8 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 	def __deepcopy__(self, memodict={}):
 		return self.__copy__()
+
+	def get_intensity_at_index(self, ix: int) -> float:
 		"""
 		Returns intensity at given index
 
@@ -302,7 +300,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		return time_step
 
-	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting = True):
+	def write(self, file_name : Union[str, pathlib.Path], minutes: bool = False, formatting = bool):
 		"""
 		Writes the ion chromatogram to the specified file
 

@@ -152,7 +152,7 @@ class Alignment:
 		# each dictionary contains the
 		# top ions and their frequency for each peak
 		# in the alignment
-		list_of_top_ion_dicts = [List]
+		list_of_top_ion_dicts: List = []
 		empty_count_list = []
 
 		for peak_list in self.peakpos:
@@ -422,7 +422,7 @@ class Alignment:
 			#            [align1_peak2, ................................]
 			#              .............................................
 			#            [align1_peakm,....................,alignn_peakm]  ]
-			areas = [List[List]]
+			areas: List[List]=[]
 			new_peak_lists: List[List[Peak]] = []
 
 			for peak_list in self.peakpos:

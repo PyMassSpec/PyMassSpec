@@ -67,7 +67,7 @@ class PairwiseAlignment:
 	:author: Vladimir Likic
 	"""
 
-	def __init__(self, alignments: List, D: float, gap: float):
+	def __init__(self, alignments: List[Alignment], D: float, gap: float):
 		"""
 		Models pairwise alignment of alignments
 		"""
@@ -183,7 +183,7 @@ def align(a1: Alignment, a2: Alignment, D: float, gap: float) -> Alignment:
 	return ma
 
 
-def score_matrix(a1: Alignment, a2: Alignment, D: float) -> Alignment:
+def score_matrix(a1: numpy.ndarray, a2: numpy.ndarray, D: float) -> Alignment:
 	"""
 	Calculates the score matrix between two alignments
 
@@ -195,7 +195,6 @@ def score_matrix(a1: Alignment, a2: Alignment, D: float) -> Alignment:
 	:type D: float
 
 	:return: Aligned alignments
-	:rtype: pyms.DPA.Alignment.Alignment
 
 	:author: Qiao Wang
 	:author: Andrew Isaac
@@ -600,18 +599,18 @@ def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float) -> Alignment:
 	return score_matrix
 
 
-class Pairwise(object):
+
 	pass
 
 
-def align_with_tree(T: Pairwise.Alignment, min_peaks=1) -> Alignment:
+def align_with_tree(T: pyms.DPA.PairwiseAlignment.PairwiseAlignment, min_peaks=1) -> Alignment:
 	"""
 	Aligns a list of alignments using the supplied guide tree
 
 	:param T: The pairwise alignment object
 	:type T: pyms.DPA.PairwiseAlignment.PairwiseAlignment
 	:param min_peaks:
-	:type min_peaks:
+	:type min_peaks: int
 
 	:return: The final alignment consisting of aligned input alignments
 	:rtype: pyms.DPA.Alignment.Alignment

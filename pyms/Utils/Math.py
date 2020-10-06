@@ -33,8 +33,7 @@ from statistics import median, stdev as std, mean
 from numbers import Number
 
 # 3rd party
-from typing import Union, List, Sequence
-# type: ignore
+
 import numpy  # type: ignore
 
 # this package

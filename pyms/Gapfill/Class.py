@@ -24,6 +24,8 @@ Provides a class for handling Missing Peaks in an output file (i.e. area.csv)
 ################################################################################
 
 # 3rd party
+from typing import Dict
+
 import deprecation  # type: ignore
 
 # this package
@@ -265,7 +267,7 @@ class MissingPeak:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.Gapfill.Class.MissingPeak.exact_rt` instead")
-	def set_exact_rt(self, rt) -> float:
+	def set_exact_rt(self, rt: float):
 		"""
 		sets the retention time of a peak
 
@@ -290,7 +292,7 @@ class Sample:
 	:author: Dominic Davis-Foster (properties)
 	"""
 
-	def __init__(self, sample_name, matrix_position: int):
+	def __init__(self, sample_name: str, matrix_position: int):
 		"""
 		A collection of MissingPeak objects
 		"""
@@ -326,7 +328,7 @@ class Sample:
 	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
 							current_version=__version__,
 							details="Use :attr:`pyms.Gapfill.Class.Sample.rt_areas` instead")
-	def get_mp_rt_area_dict(self) -> dict:
+	def get_mp_rt_area_dict(self) -> Dict:
 		"""
 		Returns a dictionary containing rt:area pairs
 
@@ -395,7 +397,7 @@ class Sample:
 		return self.__sample_name
 
 	@property
-	def rt_areas(self) -> dict:
+	def rt_areas(self) -> Dict:
 		"""
 		returns a dictionary containing rt:area pairs
 
