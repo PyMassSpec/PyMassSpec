@@ -69,10 +69,10 @@ new_peak_list = num_ions_threshold(pl, n, cutoff)
 print("Number of filtered peaks: ", len(new_peak_list))
 
 # TIC from raw data
-tic = data.get_tic()
+tic = data.tic
 
 # Get Ion Chromatograms for all m/z channels
-n_mz = len(im.get_mass_list())
+n_mz = len(im.mass_list)
 
 # Create a subplot
 fig, ax = plt.subplots(1, 1)

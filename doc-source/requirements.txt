@@ -1,15 +1,19 @@
-Pillow >=6.0.0
-autodocsumm
-extras_require
-jupyter
-nbconvert
-nbsphinx
-pypandoc
-sphinx >=3.0.3
-sphinx-notfound-page
-sphinx-prompt >=1.2.0
-sphinx-tabs >=1.1.13
-sphinx_autodoc_typehints >=1.11.0
-sphinx_rtd_theme
-sphinxcontrib-httpdomain >=1.7.0
-sphinxemoji >=0.1.6
+autodocsumm>=0.2.0
+default_values>=0.2.0
+domdf_sphinx_theme>=0.1.0
+extras_require>=0.2.0
+jupyter>=1.0.0
+nbconvert>=6.0.7
+nbsphinx>=0.7.1
+Pillow>=6.0.0
+pypandoc>=1.5
+seed_intersphinx_mapping>=0.1.1
+sphinx>=3.0.3
+sphinx-copybutton>=0.2.12
+sphinx-notfound-page>=0.5
+sphinx-prompt>=1.1.0
+sphinx-tabs>=1.1.13
+sphinx-toolbox>=1.5.1
+sphinxcontrib-httpdomain>=1.7.0
+sphinxemoji>=0.1.6
+toctree_plus>=0.0.4

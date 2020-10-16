@@ -3,7 +3,4 @@
 **********************
 
 .. automodule:: pyms.Experiment
-	:members:
 	:inherited-members:
-	:autosummary:
-

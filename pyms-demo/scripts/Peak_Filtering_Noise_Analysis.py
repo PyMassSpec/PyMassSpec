@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # # Noise analysis for peak filtering
-# 
+#
 # In the previous example the cutoff parameter for peak filtering was set by the
 # user. This can work well for individual data files, but can cause problems when
 # applied to large experiments with many individual data files. Where experimental
@@ -10,13 +10,13 @@
 # over the GC-MS run may also change. This means that an inflexible cutoff value
 # can work for some data files, while excluding too many, or including too many
 # peaks in other files.
-# 
+#
 # An alternative to manually setting the value for cutoff is to use the
 # |window_analyzer()| function. This function examines a Total Ion Chromatogram
 # (TIC) and computes a value for the median absolute deviation in troughs between
 # peaks. This gives an approximate threshold value above which false peaks from
 # noise should be filtered out.
-# 
+#
 # First, build the Peak list as before
 
 # In[1]:
@@ -63,7 +63,7 @@ print(noise_level)
 
 
 # Filter the Peak listusing this noise value as the cutoff.
-# 
+#
 
 # In[3]:
 
@@ -79,4 +79,4 @@ print(filtered_peak_list[:10])
 len(filtered_peak_list)
 
 
-# 
+#

@@ -22,6 +22,7 @@ Constants required for reading JCAMP files
 #                                                                              #
 ################################################################################
 
+__all__ = ["JcampTagWarning", "header_info_fields", "xydata_tags"]
 
 header_info_fields = [
 		"TITLE",
@@ -61,11 +62,20 @@ xydata_tags = {"XYDATA", "DATA TABLE", "XYPOINTS, PEAK TABLE", "PEAK TABLE", "XY
 
 
 class JcampTagWarning(UserWarning):
-	def __init__(self, tag):
+	"""
+	Warning emitted when an unrecognised Jcamp tag is detected,
+
+	:param tag: The name of the tag.
+	"""
+
+	#: The name of the tag.
+	tag: str
+
+	def __init__(self, tag: str):
 		self.tag = str(tag)
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return f"JcampTagWarning(Unrecognised tag. tag={self.tag})"
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return f"Unrecognised tag {self.tag}."

@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # ## Example: Peak Detection
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader and build_intensity_matrix.
 
 # In[16]:
@@ -63,13 +63,13 @@ len(peak_list)
 
 # Note that this is nearly as many peaks as there are scans in the data
 # (9865 scans). This is due to noise and the simplicity of the technique.
-# 
+#
 # The number of detected peaks can be constrained by the selection of better
 # parameters. Parameters can be determined by counting the number of points
 # across a peak, and examining where peaks are found. For example, the peak
 # list can be found with the parameters of a window of 9 points and by
 # combining 2 neighbouring scans if they apex next to each other:
-# 
+#
 
 # In[21]:
 
@@ -87,17 +87,17 @@ len(peak_list)
 # The number of detected peaks has been reduced, but there are still many more
 # than would be expected from the sample. Functions to filter the peak list are
 # covered in the next example.
-# 
+#
 # ## Example: Peak List Filtering
-# 
+#
 # There are two functions to filter the list of Peak objects.
-# 
+#
 # The first, |rel_threshold()| modifies the mass spectrum stored in each peak so
 # any intensity that is less than a given percentage of the maximum intensity for the peak is removed.
-# 
+#
 # The second, |num_ions_threshold()|, removes any peak that has less than a given
 # number of ions above a given threshold.
-# 
+#
 # Once the peak list has been constructed, the filters can be applied as follows:
 
 # In[23]:

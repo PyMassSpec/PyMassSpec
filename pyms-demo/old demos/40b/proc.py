@@ -27,5 +27,5 @@ im.null_mass(73)
 im.null_mass(147)
 
 # test if all intensities zeroed
-print(sum(im.get_ic_at_mass(73).get_intensity_array()))
-print(sum(im.get_ic_at_mass(147).get_intensity_array()))
+print(sum(im.get_ic_at_mass(73).intensity_array))
+print(sum(im.get_ic_at_mass(147).intensity_array))

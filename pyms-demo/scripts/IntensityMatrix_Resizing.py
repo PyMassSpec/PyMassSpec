@@ -2,11 +2,11 @@
 # coding: utf-8
 
 # # Example: IntensityMatrix Resizing
-# 
-# Once an IntensityMatrix has been constructed from the raw GC-MS data, the 
+#
+# Once an IntensityMatrix has been constructed from the raw GC-MS data, the
 # entries of the matrix can be modified. These modifications can operate on the
 # entire matrix, or individual masses or scans.
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader and build_intensity_matrix.
 
 # In[26]:
@@ -33,12 +33,12 @@ im = build_intensity_matrix(data)
 
 
 # ## Retention time range
-# 
+#
 # A basic operation on the GC-MS data is to select a specific time range for
 # processing. In PyMassSpec, any data outside the chosen time range is discarded.
 # The |trim()| method operates on the raw data, so any subsequent processing only
 # refers to the trimmed data.
-# 
+#
 # The data can be trimmed to specific scans:
 
 # In[28]:
@@ -58,12 +58,12 @@ data.info()
 
 
 # ## Mass Spectrum range and entries
-# 
+#
 # An |IntensityMatrix| object has a set mass range and interval that is derived
 # from the data at the time of building the intensity matrix. The range of mass
 # values can be cropped. This is done, primarily, to ensure that the range of
 # masses used are consistent when comparing samples.
-# 
+#
 # The mass range of the intensity matrix can be "cropped" to a new (smaller)
 # range as follows:
 

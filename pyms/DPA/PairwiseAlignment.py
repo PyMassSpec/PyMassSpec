@@ -6,7 +6,7 @@ Classes for peak alignment by dynamic programming
 #                                                                              #
 #    PyMassSpec software for processing of mass-spectrometry data              #
 #    Copyright (C) 2005-2012 Vladimir Likic                                    #
-#    Copyright (C) 2019 Dominic Davis-Foster                                   #
+#    Copyright (C) 2019-2020 Dominic Davis-Foster                              #
 #                                                                              #
 #    This program is free software; you can redistribute it and/or modify      #
 #    it under the terms of the GNU General Public License version 2 as         #
@@ -25,29 +25,39 @@ Classes for peak alignment by dynamic programming
 
 # stdlib
 import copy
-import math
 import functools
+import math
+from typing import Dict, List
 
 # 3rd party
-import numpy
+import numpy  # type: ignore
+
+# this package
+from pyms.Peak import Peak
 
 try:
-	from mpi4py import MPI
+	# 3rd party
+	from mpi4py import MPI  # type: ignore
 except ModuleNotFoundError:
 	pass
 
-try:
-	from Pycluster import treecluster
-except ModuleNotFoundError:
-	try:
-		from Bio.Cluster import treecluster
-	except ModuleNotFoundError:
-		raise ModuleNotFoundError("""Neither PyCluster or BioPython is installed.
-Please install one of them and try again.""")
-
 # this package
 from pyms.DPA.Alignment import Alignment
+from pyms.DPA.clustering import treecluster
 from pyms.Utils.Utils import is_sequence_of
+
+__all__ = [
+		"PairwiseAlignment",
+		"align",
+		"score_matrix",
+		"dp",
+		"position_similarity",
+		"merge_alignments",
+		"alignment_similarity",
+		"alignment_compare",
+		"score_matrix_mpi",
+		"align_with_tree",  # "align_with_tree_mpi",
+		]
 
 
 class PairwiseAlignment:
@@ -55,17 +65,13 @@ class PairwiseAlignment:
 	Models pairwise alignment of alignments
 
 	:param alignments: A list of alignments
-	:type alignments: list
 	:param D: Retention time tolerance parameter for pairwise alignments
-	:type D: float
 	:param gap: Gap parameter for pairwise alignments
-	:type gap: float
 
-	:author: Woon Wai Keen
-	:author: Vladimir Likic
+	:authors: Woon Wai Keen, Vladimir Likic
 	"""
 
-	def __init__(self, alignments, D, gap):
+	def __init__(self, alignments: List[Alignment], D: float, gap: float):
 		"""
 		Models pairwise alignment of alignments
 		"""
@@ -87,12 +93,11 @@ class PairwiseAlignment:
 		self._dist_matrix()
 		self._guide_tree()
 
-	def _sim_matrix(self):
+	def _sim_matrix(self) -> None:
 		"""
-		Calculates the similarity matrix for the set of alignments
+		Calculates the similarity matrix for the set of alignments.
 
-		:author: Woon Wai Keen
-		:author: Vladimir Likic
+		:authors: Woon Wai Keen, Vladimir Likic
 		"""
 
 		n = len(self.alignments)
@@ -111,12 +116,11 @@ class PairwiseAlignment:
 				total_n = total_n - 1
 				print(f" -> {total_n:d} pairs remaining")
 
-	def _dist_matrix(self):
+	def _dist_matrix(self) -> None:
 		"""
-		Converts similarity matrix into a distance matrix
+		Converts similarity matrix into a distance matrix.
 
-		:author: Woon Wai Keen
-		:author: Vladimir Likic
+		:authors: Woon Wai Keen, Vladimir Likic
 		"""
 
 		# change similarity matrix entries (i,j) to max{matrix}-(i,j)
@@ -127,12 +131,11 @@ class PairwiseAlignment:
 		for i in range(len(self.dist_matrix)):
 			self.dist_matrix[i, i] = 0
 
-	def _guide_tree(self):
+	def _guide_tree(self) -> None:
 		"""
-		Build a guide tree from the distance matrix
+		Build a guide tree from the distance matrix.
 
-		:author: Woon Wai Keen
-		:author: Vladimir Likic
+		:authors: Woon Wai Keen, Vladimir Likic
 		"""
 
 		n = len(self.dist_matrix)
@@ -142,24 +145,18 @@ class PairwiseAlignment:
 		print("Done")
 
 
-def align(a1, a2, D, gap):
+def align(a1: Alignment, a2: Alignment, D: float, gap: float) -> Alignment:
 	"""
 	Aligns two alignments
 
 	:param a1: The first alignment
-	:type a1: pyms.Peak.List.Class.Alignment
 	:param a2: The second alignment
-	:type a2: pyms.Peak.List.Class.Alignment
 	:param D: Retention time tolerance
-	:type D: float
 	:param gap: Gap penalty
-	:type gap: float
 
 	:return: Aligned alignments
-	:rtype: pyms.Peak.List.Class.Alignment
 
-	:author: Woon Wai Keen
-	:author: Vladimir Likic
+	:authors: Woon Wai Keen, Vladimir Likic
 	"""
 
 	# comm = MPI.COMM_WORLD
@@ -181,22 +178,17 @@ def align(a1, a2, D, gap):
 	return ma
 
 
-def score_matrix(a1, a2, D):
+def score_matrix(a1: Alignment, a2: Alignment, D: float) -> numpy.ndarray:
 	"""
 	Calculates the score matrix between two alignments
 
 	:param a1: The first alignment
-	:type a1: pyms.DPA.Alignment.Alignment
 	:param a2: The second alignment
-	:type a2: pyms.DPA.Alignment.Alignment
 	:param D: Retention time tolerance
-	:type D: float
 
 	:return: Aligned alignments
-	:rtype: pyms.DPA.Alignment.Alignment
 
-	:author: Qiao Wang
-	:author: Andrew Isaac
+	:authors: Qiao Wang, Andrew Isaac
 	"""
 
 	# sim_score = 0
@@ -211,28 +203,24 @@ def score_matrix(a1, a2, D):
 	return score_matrix
 
 
-def dp(S, gap_penalty):
+def dp(S, gap_penalty: float) -> Dict:
 	"""
-	Solves optimal path in score matrix based on global sequence
-		alignment
+	Solves optimal path in score matrix based on global sequence alignment.
 
 	:param S: Score matrix
-	:type S:
 	:param gap_penalty: Gap penalty
-	:type gap_penalty: float
 
 	:return: A dictionary of results
-	:rtype: dict
 
 	:author: Tim Erwin
 	"""
+
 	# comm = MPI.COMM_WORLD
 	# rank = comm.Get_rank()
 	# print " In DP.py, I am rank", rank
 
 	try:
 		row_length = len(S[:, 0])
-
 	except IndexError:
 		raise IndexError('Zero length alignment found: Samples with no peaks cannot be aligned')
 
@@ -240,10 +228,12 @@ def dp(S, gap_penalty):
 
 	# D contains the score of the optimal alignment
 	D = numpy.zeros((row_length + 1, col_length + 1), dtype='d')
+
 	for i in range(1, row_length + 1):
 		D[i, 0] = gap_penalty * i
 	for j in range(1, col_length + 1):
 		D[0, j] = gap_penalty * j
+
 	D[0, 0] = 0.0
 	D[1:(row_length + 1), 1:(col_length + 1)] = S.copy()
 
@@ -308,24 +298,19 @@ def dp(S, gap_penalty):
 	return {'p': p, 'q': q, 'trace': trace, 'matches': matches, 'D': D, 'phi': trace_matrix}
 
 
-def position_similarity(pos1, pos2, D):
+def position_similarity(pos1, pos2, D) -> float:
 	"""
 	Calculates the similarity between the two alignment positions.
+
 	A score of 0 is best and 1 is worst.
 
-	:param pos1: The position of the first alignment
-	:type pos1:
-	:param pos2: The position of the second alignment
-	:type pos2:
-	:param D: Retention time tolerance
-	:type D:
+	:param pos1: The position of the first alignment.
+	:param pos2: The position of the second alignment.
+	:param D: Retention time tolerance.
 
-	:return: The similarity value for the current position
-	:rtype: float
+	:return: The similarity value for the current position.
 
-	:author: Qiao Wang
-	:author: Vladimir Likic
-	:author: Andrew Isaac
+	:authors: Qiao Wang, Vladimir Likic, Andrew Isaac
 	"""
 
 	score = 0.0
@@ -363,8 +348,10 @@ def position_similarity(pos1, pos2, D):
 						try:
 							top = numpy.dot(mass_spect1, mass_spect2)
 						except ValueError:
-							raise ValueError("""Mass Spectra are of different lengths.
-Use `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra""")
+							raise ValueError(
+									"""Mass Spectra are of different lengths.
+Use `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra"""
+									)
 
 						bot = numpy.sqrt(mass_spect1_sum * mass_spect2_sum)
 						if bot > 0:
@@ -383,23 +370,17 @@ Use `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra""")
 	return score
 
 
-def merge_alignments(A1, A2, traces):
+def merge_alignments(A1: Alignment, A2: Alignment, traces) -> Alignment:
 	"""
-	Merges two alignments with gaps added in from DP traceback
+	Merges two alignments with gaps added in from DP traceback.
 
-	:param A1: First alignment
-	:type A1:
-	:param A2: Second alignment
-	:type A2:
-	:param traces: DP traceback
-	:type traces:
+	:param A1: First alignment.
+	:param A2: Second alignment.
+	:param traces: DP traceback.
 
-	:return: A single alignment from A1 and A2
-	:rtype:
+	:return: A single alignment from ``A1`` and ``A2``.
 
-	:author: Woon Wai Keen
-	:author: Vladimir Likic
-	:author: Qiao Wang
+	:authors: Woon Wai Keen, Vladimir Likic, Qiao Wang
 	"""
 
 	# Create object to hold new merged alignment and fill in its expr_codes
@@ -408,9 +389,7 @@ def merge_alignments(A1, A2, traces):
 
 	# create empty lists of dimension |A1| + |A2|
 	dimension = len(A1.peakpos) + len(A2.peakpos)
-	merged = [[] for _ in range(dimension)]
-	A1 = A1.peakpos
-	A2 = A2.peakpos
+	merged: List[List[Peak]] = [[] for _ in range(dimension)]
 
 	idx1 = idx2 = 0
 
@@ -421,26 +400,26 @@ def merge_alignments(A1, A2, traces):
 	for trace in traces:
 
 		if trace in {0, 1}:
-			for i, _ in enumerate(A1):
-				merged[i].append(A1[i][idx1])
+			for i, _ in enumerate(A1.peakpos):
+				merged[i].append(A1.peakpos[i][idx1])
 
 			idx1 = idx1 + 1
 
 		elif trace == 2:
-			for i, _ in enumerate(A1):
-				merged[i].append(None)
+			for i, _ in enumerate(A1.peakpos):
+				merged[i].append(None)  # type: ignore
 
 		# ---
 
 		if trace in {0, 2}:
-			for j, peak in enumerate(A2):
+			for j, peak in enumerate(A2.peakpos):
 				merged[1 + i + j].append(peak[idx2])
 
 			idx2 = idx2 + 1
 
 		elif trace == 1:
-			for j, _ in enumerate(A2):
-				merged[1 + i + j].append(None)
+			for j, _ in enumerate(A2.peakpos):
+				merged[1 + i + j].append(None)  # type: ignore
 
 	ma.peakalgt = numpy.transpose(merged)
 	# sort according to average peak
@@ -451,25 +430,20 @@ def merge_alignments(A1, A2, traces):
 	return ma
 
 
-def alignment_similarity(traces, score_matrix, gap):
+def alignment_similarity(traces, score_matrix, gap: float):
 	"""
-	Calculates similarity score between two alignments (new method)
+	Calculates similarity score between two alignments (new method).
 
-	:param traces: Traceback from DP algorithm
-	:type traces:
-	:param score_matrix: Score matrix of the two alignments
-	:type score_matrix:
-	:param gap: Gap penalty
-	:type gap:
+	:param traces: Traceback from DP algorithm.
+	:param score_matrix: Score matrix of the two alignments.
+	:param gap: Gap penalty.
 
 	:return: Similarity score (i.e. more similar => higher score)
-	:rtype:
 
-	:author: Woon Wai Keen
-	:author: Vladimir Likic
+	:authors: Woon Wai Keen, Vladimir Likic
 	"""
 
-	score_matrix = 1. - score_matrix
+	score_matrix = 1.0 - score_matrix
 	similarity = 0.
 	idx1 = idx2 = 0
 
@@ -499,12 +473,7 @@ def alignment_compare(x, y):
 	A helper function for sorting peak positions in a alignment
 
 	:param x:
-	:type x:
 	:param y:
-	:type y:
-
-	:return:
-	:rtype:
 	"""
 
 	x = [_.rt for _ in filter(None, x)]
@@ -519,22 +488,17 @@ def alignment_compare(x, y):
 		return 1
 
 
-def score_matrix_mpi(a1, a2, D):
+def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float) -> Alignment:
 	"""
 	Calculates the score matrix between two alignments
 
-	:param a1: The first alignment
-	:type a1: :class:`pyms.DPA.Class.Alignment`
-	:param a2: The second alignment
-	:type a2: :class:`pyms.DPA.Alignment..Alignment`
-	:param D: Retention time tolerance
-	:type D: float
+	:param a1: The first alignment.
+	:param a2: The second alignment.
+	:param D: Retention time tolerance.
 
 	:return: Aligned alignments
-	:rtype: :class:`pyms.DPA.Alignment..Alignment`
 
-	:author: Qiao Wang
-	:author: Andrew Isaac
+	:authors: Qiao Wang, Andrew Isaac
 	"""
 
 	# sim_score = 0
@@ -570,9 +534,7 @@ def score_matrix_mpi(a1, a2, D):
 		score_matrix[0:portion] = score_matrix_part
 		for i in range(1, size):
 			if i == size - 1:
-				recv_buffer = numpy.zeros(
-					(len(a1.peakalgt) - (i * portion), len(a2.peakalgt))
-				)
+				recv_buffer = numpy.zeros((len(a1.peakalgt) - (i * portion), len(a2.peakalgt)))
 				comm.Recv(recv_buffer, i)
 				score_matrix[i * portion:len(a1.peakalgt)] = recv_buffer
 			else:
@@ -598,20 +560,16 @@ def score_matrix_mpi(a1, a2, D):
 	return score_matrix
 
 
-def align_with_tree(T, min_peaks=1):
+def align_with_tree(T: PairwiseAlignment, min_peaks: int = 1) -> Alignment:
 	"""
 	Aligns a list of alignments using the supplied guide tree
 
 	:param T: The pairwise alignment object
-	:type T: pyms.DPA.PairwiseAlignment.PairwiseAlignment
 	:param min_peaks:
-	:type min_peaks:
 
 	:return: The final alignment consisting of aligned input alignments
-	:rtype: pyms.DPA.Alignment.Alignment
 
-	:author: Woon Wai Keen
-	:author: Vladimir Likic
+	:authors: Woon Wai Keen, Vladimir Likic
 	"""
 
 	print(f" Aligning {len(T.alignments):d} items with guide tree (D={T.D:.2f}, gap={T.gap:.2f})")
@@ -624,7 +582,7 @@ def align_with_tree(T, min_peaks=1):
 	#   is one less than the number of items.
 
 	# extend As to length 2n to hold the n items, n-1 nodes, and 1 root
-	As = copy.deepcopy(T.alignments) + [None for _ in range(len(T.alignments))]
+	As: List[Alignment] = copy.deepcopy(T.alignments) + [None for _ in range(len(T.alignments))]  # type: ignore
 
 	# align the alignments into positions -1, ... ,-(n-1)
 	total = len(T.tree)
@@ -637,7 +595,7 @@ def align_with_tree(T, min_peaks=1):
 		print(f" -> {total:d} item(s) remaining")
 
 	# the final alignment is in the root. Filter min peaks and return
-	final_algt = As[index]
+	final_algt: Alignment = As[index]
 
 	# useful for within state alignment only
 	if min_peaks > 1:
@@ -646,56 +604,53 @@ def align_with_tree(T, min_peaks=1):
 	return final_algt
 
 
-def align_with_tree_mpi(T, min_peaks=1):
-	"""
-	Aligns a list of alignments using the supplied guide tree
-
-	:param T: The pairwise alignment object
-	:type T: :class:`pyms.DPA.Class.PairwiseAlignment`
-	:param min_peaks:
-	:type min_peaks:
-
-	:return: The final alignment consisting of aligned input alignments
-	:rtype: :class:`pyms.DPA.Class.Alignment`
-
-	:author: Woon Wai Keen
-	:author: Vladimir Likic
-	"""
-
-	try:
-		rank = MPI.COMM_WORLD.Get_rank()
-	except:
-		rank = 0
-
-	if rank == 0:
-		print(f" Aligning {len(T.alignments):d} items with guide tree (D={T.D:.2f}, gap={T.gap:.2f})")
-
-	# For everything else, we align according to the guide tree provided by
-	# Pycluster. From Pycluster documentation:
-	#   Each item and subnode is represented by an integer. For hierarchical
-	#   clustering of n items, we number the original items {0, ... , n-1},
-	#   nodes are numbered {-1, ... , -(n-1)}. Note that the number of nodes
-	#   is one less than the number of items.
-
-	# extend As to length 2n to hold the n items, n-1 nodes, and 1 root
-	As = copy.deepcopy(T.alignments) + [None for _ in range(len(T.alignments))]
-
-	# align the alignments into positions -1, ... ,-(n-1)
-	total = len(T.tree)
-	index = 0
-
-	for node in T.tree[:]:
-		index = index - 1
-		As[index] = align(As[node.left], As[node.right], T.D, T.gap)
-		total = total - 1
-		if rank == 0:
-			print(f" -> {total:d} item(s) remaining")
-
-	# the final alignment is in the root. Filter min peaks and return
-	final_algt = As[index]
-
-	# useful for within state alignment only
-	if min_peaks > 1:
-		final_algt.filter_min_peaks(min_peaks)
-
-	return final_algt
+#
+# def align_with_tree_mpi(T: Alignment, min_peaks: int = 1) -> Alignment:
+# 	"""
+# 	Aligns a list of alignments using the supplied guide tree
+#
+# 	:param T: The pairwise alignment object
+# 	:param min_peaks:
+#
+# 	:return: The final alignment consisting of aligned input alignments
+#
+# 	:authors: Woon Wai Keen, Vladimir Likic
+# 	"""
+#
+# 	try:
+# 		rank = MPI.COMM_WORLD.Get_rank()
+# 	except:
+# 		rank = 0
+#
+# 	if rank == 0:
+# 		print(f" Aligning {len(T.alignments):d} items with guide tree (D={T.D:.2f}, gap={T.gap:.2f})")
+#
+# 	# For everything else, we align according to the guide tree provided by
+# 	# Pycluster. From Pycluster documentation:
+# 	#   Each item and subnode is represented by an integer. For hierarchical
+# 	#   clustering of n items, we number the original items {0, ... , n-1},
+# 	#   nodes are numbered {-1, ... , -(n-1)}. Note that the number of nodes
+# 	#   is one less than the number of items.
+#
+# 	# extend As to length 2n to hold the n items, n-1 nodes, and 1 root
+# 	As = copy.deepcopy(T.alignments) + [None for _ in range(len(T.alignments))]
+#
+# 	# align the alignments into positions -1, ... ,-(n-1)
+# 	total = len(T.tree)
+# 	index = 0
+#
+# 	for node in T.tree[:]:
+# 		index = index - 1
+# 		As[index] = align(As[node.left], As[node.right], T.D, T.gap)
+# 		total = total - 1
+# 		if rank == 0:
+# 			print(f" -> {total:d} item(s) remaining")
+#
+# 	# the final alignment is in the root. Filter min peaks and return
+# 	final_algt = As[index]
+#
+# 	# useful for within state alignment only
+# 	if min_peaks > 1:
+# 		final_algt.filter_min_peaks(min_peaks)
+#
+# 	return final_algt

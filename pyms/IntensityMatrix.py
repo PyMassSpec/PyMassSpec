@@ -25,36 +25,44 @@ Class to model Intensity Matrix
 
 # stdlib
 import copy
-import enum
-from numbers import Number
+import pathlib
+from typing import Any, Iterator, List, Optional, Tuple, Union
 from warnings import warn
 
 # 3rd party
-import deprecation
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
+from enum_tools import IntEnum, document_enum
 
 # this package
 from pyms import __version__
 from pyms.Base import pymsBaseClass
+from pyms.GCMS.Class import GCMS_data
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Mixins import GetIndexTimeMixin, IntensityArrayMixin, MassListMixin, TimeListMixin
 from pyms.Spectrum import MassSpectrum
 from pyms.Utils.IO import prepare_filepath, save_data
-from pyms.Utils.Utils import is_path, is_sequence, is_sequence_of
+from pyms.Utils.Utils import _number_types, is_number, is_path, is_sequence, is_sequence_of
 
-import aenum
+__all__ = [
+		"AsciiFiletypes",
+		"IntensityMatrix",
+		"import_leco_csv",
+		"build_intensity_matrix",
+		"build_intensity_matrix_i",
+		"ASCII_DAT",
+		"ASCII_CSV",
+		]
 
-class AsciiFiletypes(aenum.Enum):
+
+@document_enum
+class AsciiFiletypes(IntEnum):
 	"""
-	Enumeration of supported ASCII filetypes for :meth:`~pyms.IntensityMatrix.IntensityMatrix.export_ascii`
+	Enumeration of supported ASCII filetypes for :meth:`~pyms.IntensityMatrix.IntensityMatrix.export_ascii`.
 	"""
 
-	_init_ = 'value __doc__'
-	ASCII_DAT = 1, "Tab-delimited ASCII file"
-	ASCII_CSV = 0, "Comma-separated values file"
-
-	def __int__(self):
-		return self.value
+	ASCII_DAT = 1  # doc: Tab-delimited ASCII file
+	ASCII_CSV = 0  # doc: Comma-separated values file
 
 
 ASCII_DAT = AsciiFiletypes.ASCII_DAT
@@ -66,31 +74,30 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 	Intensity matrix of binned raw data
 
 	:param time_list: Retention time values
-	:type time_list: list
-
 	:param mass_list: Binned mass values
-	:type mass_list: list
-
-	:param intensity_array: Binned intensity values per scan
-	:type intensity_array: List[~numbers.Number] or numpy.ndarray[~numbers.Number]
+	:param intensity_array: List of lists of binned intensity values per scan
 
 	:authors: Andrew Isaac, Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, time_list, mass_list, intensity_array):
-		"""
-		Initialize the IntensityMatrix data
-		"""
+	_min_mass: float
+	_max_mass: float
 
+	def __init__(
+			self,
+			time_list: List[float],
+			mass_list: List[float],
+			intensity_array: Union[List[List[float]], numpy.ndarray],
+			):
 		# sanity check
-		if not is_sequence_of(time_list, Number):
-			raise TypeError("'time_list' must be a Sequence of Numbers")
+		if not is_sequence_of(time_list, _number_types):
+			raise TypeError("'time_list' must be a Sequence of numbers")
 
-		if not is_sequence_of(mass_list, Number):
-			raise TypeError("'mass_list' must be a Sequence of Numbers")
+		if not is_sequence_of(mass_list, _number_types):
+			raise TypeError("'mass_list' must be a Sequence of numbers")
 
-		if not is_sequence(intensity_array) or not is_sequence_of(intensity_array[0], Number):
-			raise TypeError("'intensity_array' must be a Sequence, of Sequences, of Numbers")
+		if not is_sequence(intensity_array) or not is_sequence_of(intensity_array[0], (int, float)):
+			raise TypeError("'intensity_array' must be a Sequence, of Sequences, of numbers")
 
 		if not isinstance(intensity_array, numpy.ndarray):
 			intensity_array = numpy.array(intensity_array)
@@ -114,7 +121,8 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		# Try to include parallelism.
 		try:
-			from mpi4py import MPI
+			# 3rd party
+			from mpi4py import MPI  # type: ignore
 			comm = MPI.COMM_WORLD
 			num_ranks = comm.Get_size()
 			rank = comm.Get_rank()
@@ -136,41 +144,39 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		except ModuleNotFoundError:
 			pass
 
-	def __len__(self):
+	def __len__(self) -> int:
 		"""
 		Returns the number of scans in the Intensity Matrix
-
-		:rtype: int
 		"""
 
 		return len(self.time_list)
 
-	def __eq__(self, other):
+	def __eq__(self, other: Any) -> bool:
 		"""
 		Return whether this IntensityMatrix object is equal to another object
 
 		:param other: The other object to test equality with
-		:type other: object
-
-		:rtype: bool
 		"""
 
 		if isinstance(other, self.__class__):
-			return self.time_list == other.time_list \
-					and self.mass_list == other.mass_list \
+			return (
+					self.time_list == other.time_list and self.mass_list == other.mass_list
 					and numpy.array_equal(self.intensity_array, other.intensity_array)
+					)
 
 		return NotImplemented
 
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details=f"Use :class:`pyms.IntensityMatrix.IntensityMatrix.local_size` instead")
-	def get_local_size(self):
+	@deprecation.deprecated(
+			deprecated_in="2.1.2",
+			removed_in="2.2.0",
+			current_version=__version__,
+			details=f"Use :class:`pyms.IntensityMatrix.IntensityMatrix.local_size` instead",
+			)
+	def get_local_size(self) -> Tuple[int, int]:
 		"""
 		Gets the local size of intensity matrix.
 
 		:return: Number of rows and cols
-		:rtype: int
 
 		:author: Luke Hodkinson
 		"""
@@ -178,7 +184,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		return self.local_size
 
 	@property
-	def local_size(self):
+	def local_size(self) -> Tuple[int, int]:
 		"""
 		Gets the local size of intensity matrix.
 
@@ -195,15 +201,17 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		# If serial call the regular routine.
 		return self.size
 
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details=f"Use :class:`pyms.IntensityMatrix.IntensityMatrix.size` instead")
-	def get_size(self):
+	@deprecation.deprecated(
+			deprecated_in="2.1.2",
+			removed_in="2.2.0",
+			current_version=__version__,
+			details=f"Use :class:`pyms.IntensityMatrix.IntensityMatrix.size` instead",
+			)
+	def get_size(self) -> Tuple[int, int]:
 		"""
 		Gets the size of intensity matrix
 
 		:return: Number of rows and cols
-		:rtype: int
 
 		:authors: Qiao Wang, Andrew Isaac, Luke Hodkinson, Vladimir Likic
 		"""
@@ -211,12 +219,11 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		return self.size
 
 	@property
-	def size(self):
+	def size(self) -> Tuple[int, int]:
 		"""
 		Gets the size of intensity matrix
 
 		:return: Number of rows and cols
-		:rtype: int
 
 		:authors: Qiao Wang, Andrew Isaac, Luke Hodkinson, Vladimir Likic
 		"""
@@ -226,12 +233,9 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return n_scan, n_mz
 
-	def iter_ms_indices(self):
+	def iter_ms_indices(self) -> Iterator[int]:
 		"""
 		Iterates over local row indices
-
-		:return: Current row index
-		:rtype: int
 
 		:author: Luke Hodkinson
 		"""
@@ -250,12 +254,9 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 			for i in range(0, n_scan):
 				yield i
 
-	def iter_ic_indices(self):
+	def iter_ic_indices(self) -> Iterator[int]:
 		"""
 		Iterate over local column indices
-
-		:return: Current column index
-		:rtype: Iterator[int]
 
 		:author: Luke Hodkinson
 		"""
@@ -274,15 +275,13 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 			for i in range(0, n_mz):
 				yield i
 
-	def set_ic_at_index(self, ix, ic):
+	def set_ic_at_index(self, ix: int, ic: IonChromatogram):
 		"""
 		Sets the ion chromatogram specified by index to a new value
 
 		:param ix: Index of an ion chromatogram in the intensity data matrix to be set
-		:type ix: int
 		:param ic: Ion chromatogram that will be copied at position 'ix'
 			in the data matrix
-		:type: pyms.IonChromatogram.IonChromatogram
 
 		The length of the ion chromatogram must match the appropriate
 		dimension of the intensity matrix.
@@ -313,16 +312,13 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		for i in range(len(ia)):
 			self._intensity_array[i][ix] = ial[i]
 
-	def get_ic_at_index(self, ix):
+	def get_ic_at_index(self, ix: int) -> IonChromatogram:
 		"""
 		Returns the ion chromatogram at the specified index
 
-		:param ix: Index of an ion chromatogram in the intensity data
-			matrix
-		:type ix: int
+		:param ix: Index of an ion chromatogram in the intensity data matrix.
 
 		:return: Ion chromatogram at given index
-		:rtype: pyms.IonChromatogram.IonChromatogram
 
 		:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 		"""
@@ -340,24 +336,22 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return IonChromatogram(ic_ia, rt, mass)
 
-	def get_ic_at_mass(self, mass=None):
+	def get_ic_at_mass(self, mass: Optional[float] = None):
 		"""
 		Returns the ion chromatogram for the nearest binned mass to the specified mass.
 
 		If no mass value is given, the function returns the total ion chromatogram.
 
 		:param mass: Mass value of an ion chromatogram
-		:type mass: int
 
 		:return: Ion chromatogram for given mass
-		:rtype: pyms.IonChromatogram.IonChromatogram
 
 		:authors: Andrew Isaac, Vladimir Likic
 		"""
 
 		if mass is None:
 			return self.tic
-		elif not isinstance(mass, Number):
+		elif not is_number(mass):
 			raise TypeError("'mass' must be a number")
 
 		if mass < self._min_mass or mass > self._max_mass:
@@ -368,15 +362,27 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return self.get_ic_at_index(ix)
 
-	def get_ms_at_index(self, ix):
+	@property
+	def tic(self) -> IonChromatogram:
+		"""
+		Returns the TIC of the intensity matrix.
+
+		.. versionadded:: 2.3.0
+		"""
+
+		intensity_list = []
+		for i in range(len(self._intensity_array)):
+			intensity_list.append(sum(self._intensity_array[i]))
+
+		return IonChromatogram(numpy.array(intensity_list), copy.deepcopy(self._time_list), None)
+
+	def get_ms_at_index(self, ix: int) -> MassSpectrum:
 		"""
 		Returns a mass spectrum for a given scan index
 
 		:param ix: The index of the scan
-		:type ix: int
 
 		:return: Mass spectrum
-		:rtype: pyms.Spectrum.MassSpectrum
 
 		:author: Andrew Isaac
 		"""
@@ -388,15 +394,13 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return MassSpectrum(self.mass_list, scan)
 
-	def get_scan_at_index(self, ix):
+	def get_scan_at_index(self, ix: int) -> List[float]:
 		"""
 		Returns the spectral intensities for scan index
 
 		:param ix: The index of the scan
-		:type ix: int
 
 		:return: Intensity values of scan spectra
-		:rtype: list
 
 		:author: Andrew Isaac
 		"""
@@ -409,15 +413,13 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return self._intensity_array[ix].tolist()
 
-	def get_mass_at_index(self, ix):
+	def get_mass_at_index(self, ix: int) -> float:
 		"""
 		Returns binned mass at index.
 
 		:param ix: Index of binned mass
-		:type ix: int
 
 		:return: Binned mass
-		:rtype: int
 
 		:author: Andrew Isaac
 		"""
@@ -430,22 +432,20 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 		return self._mass_list[ix]
 
-	def get_index_of_mass(self, mass):
+	def get_index_of_mass(self, mass: float) -> int:
 		"""
 		Returns the index of mass in the list of masses.
 
 		The nearest binned mass to given mass is used.
 
 		:param mass: Mass to lookup in list of masses
-		:type mass: float
 
 		:return: Index of mass closest to given mass
-		:rtype: int
 
 		:author: Andrew Isaac
 		"""
 
-		if not isinstance(mass, Number):
+		if not is_number(mass):
 			raise TypeError("'mass' must be a number")
 
 		best = self._max_mass
@@ -457,20 +457,18 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 				ix = ii
 		return ix
 
-	def crop_mass(self, mass_min, mass_max):
+	def crop_mass(self, mass_min: float, mass_max: float):
 		"""
 		Crops mass spectrum
 
 		:param mass_min: Minimum mass value
-		:type mass_min: ~numbers.Number
 		:param mass_max: Maximum mass value
-		:type mass_max: ~numbers.Number
 
 		:author: Andrew Isaac
 		"""
 
-		if not isinstance(mass_min, Number) or not isinstance(mass_max, Number):
-			raise TypeError("'mass_min' and 'mass_max' must be Numbers")
+		if not is_number(mass_min) or not is_number(mass_max):
+			raise TypeError("'mass_min' and 'mass_max' must be numbers")
 		if mass_min >= mass_max:
 			raise ValueError("'mass_min' must be less than 'mass_max'")
 		if mass_min < self._min_mass:
@@ -500,18 +498,17 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		self._min_mass = min(new_mass_list)
 		self._max_mass = max(new_mass_list)
 
-	def null_mass(self, mass):
+	def null_mass(self, mass: float):
 		"""
 		Ignore given (closest) mass in spectra
 
 		:param mass: Mass value to remove
-		:type mass: int or float
 
 		:author: Andrew Isaac
 		"""
 
-		if not isinstance(mass, Number):
-			raise TypeError("'mass' must be a Number")
+		if not is_number(mass):
+			raise TypeError("'mass' must be a number")
 		if mass < self._min_mass or mass > self._max_mass:
 			raise IndexError(f"'mass' not in mass range: {self._min_mass:.3f} to {self._max_mass:.3f}")
 
@@ -521,18 +518,17 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		for spec_jj in range(len(im)):
 			im[spec_jj][ii] = 0
 
-	def reduce_mass_spectra(self, n_intensities=5):
+	def reduce_mass_spectra(self, n_intensities: int = 5):
 		"""
 		Reduces the mass spectra by retaining the top `n_intensities`,
 		discarding all other intensities.
 
 		:param n_intensities: The number of top intensities to keep
-		:type n_intensities: int
 
 		:author: Vladimir Likic
 		"""
 
-		if not isinstance(n_intensities, Number):
+		if not is_number(n_intensities):
 			raise TypeError("'n_intensities' must be a number")
 
 		# loop over all mass spectral scans
@@ -557,7 +553,11 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 
 			self._intensity_array[ii] = intensity_list_new
 
-	def export_ascii(self, root_name, fmt=AsciiFiletypes.ASCII_DAT):
+	def export_ascii(
+			self,
+			root_name: Union[str, pathlib.Path],
+			fmt: AsciiFiletypes = AsciiFiletypes.ASCII_DAT,
+			):
 		"""
 		Exports the intensity matrix, retention time vector, and m/z vector to the ascii format.
 
@@ -569,9 +569,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		NAME.im.csv, NAME.rt.csv, and NAME.mz.csv.
 
 		:param root_name: Root name for the output files
-		:type root_name: str or os.PathLike
 		:param fmt: Format of the output file, either ``<AsciiFiletypes.ASCII_DAT>`` or ``<AsciiFiletypes.ASCII_CSV>``
-		:type fmt: int
 
 		:authors: Milica Ng, Andrew Isaac, Vladimir Likic, Dominic Davis-Foster (pathlib support)
 		"""
@@ -580,13 +578,14 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 			raise TypeError("'root_name' must be a string or a pathlib.Path object")
 
 		root_name = prepare_filepath(root_name, mkdirs=True)
+		fmt = AsciiFiletypes(fmt)
 
-		if fmt:  # dat
+		if fmt is AsciiFiletypes.ASCII_DAT:
 			separator = " "
-			extension = ".dat"
-		else:  # csv
+			extension = "dat"
+		elif fmt is AsciiFiletypes.ASCII_CSV:
 			separator = ","
-			extension = ".csv"
+			extension = "csv"
 
 		# export 2D matrix of intensities
 		vals = self._intensity_array
@@ -602,12 +601,11 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		time_list = self._time_list
 		save_data(f"{root_name}.rt.{extension}", time_list, sep=separator)
 
-	def export_leco_csv(self, file_name):
+	def export_leco_csv(self, file_name: Union[str, pathlib.Path]):
 		"""
 		Exports data in LECO CSV format
 
 		:param file_name: The name of the output file
-		:type file_name: str or os.PathLike
 
 		:authors: Andrew Isaac, Vladimir Likic, Dominic Davis-Foster (pathlib support)
 		"""
@@ -637,7 +635,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		# write header
 		fp.write("\"Scan\",\"Time\"")
 		for ii in mass_list:
-			if isinstance(ii, Number):
+			if is_number(ii):
 				fp.write(f",\"{int(ii):d}\"")
 			else:
 				raise TypeError("mass list datum not a number")
@@ -647,7 +645,7 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		for ii, time_ in enumerate(time_list):
 			fp.write(f"{ii},{time_:#.6e}")
 			for jj in range(len(vals[ii])):
-				if isinstance(vals[ii][jj], Number):
+				if is_number(vals[ii][jj]):
 					fp.write(f",{vals[ii][jj]:#.6e}")
 				else:
 					raise TypeError("datum not a number")
@@ -656,15 +654,13 @@ class IntensityMatrix(pymsBaseClass, TimeListMixin, MassListMixin, IntensityArra
 		fp.close()
 
 
-def import_leco_csv(file_name):
+def import_leco_csv(file_name: Union[str, pathlib.Path]) -> IntensityMatrix:
 	"""
 	Imports data in LECO CSV format
 
 	:param file_name: Path of the file to read
-	:type file_name: str or os.PathLike
 
 	:return: Data as an IntensityMatrix
-	:rtype: pyms.IntensityMatrix.IntensityMatrix
 
 	:authors: Andrew Isaac, Dominic Davis-Foster (pathlib support)
 	"""
@@ -751,27 +747,28 @@ def import_leco_csv(file_name):
 	return IntensityMatrix(time_list, mass_list, data)
 
 
-def build_intensity_matrix(data, bin_interval=1, bin_left=0.5, bin_right=0.5, min_mass=None):
+def build_intensity_matrix(
+		data: GCMS_data,
+		bin_interval: float = 1,
+		bin_left: float = 0.5,
+		bin_right: float = 0.5,
+		min_mass: Optional[float] = None,
+		) -> IntensityMatrix:
 	"""
 	Sets the full intensity matrix with flexible bins
 
 	:param data: Raw GCMS data
-	:type data: pyms.GCMS.Class.GCMS_data
-	:param bin_interval: interval between bin centres. Default ``1``
-	:type bin_interval: int or float
-	:param bin_left: left bin boundary offset. Default ``0.5``
-	:type bin_left: float
-	:param bin_right: right bin boundary offset. Default ``0.5``
-	:type bin_right: float
+	:param bin_interval: interval between bin centres.
+	:param bin_left: left bin boundary offset.
+	:param bin_right: right bin boundary offset.
 	:param min_mass: Minimum mass to bin (default minimum mass from data)
-	:type min_mass: bool
 
 	:return: Binned IntensityMatrix object
-	:rtype: pyms.IntensityMatrix.IntensityMatrix
 
 	:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 	"""
 
+	# this package
 	from pyms.GCMS.Class import GCMS_data
 
 	if not isinstance(data, GCMS_data):
@@ -780,49 +777,60 @@ def build_intensity_matrix(data, bin_interval=1, bin_left=0.5, bin_right=0.5, mi
 	if bin_interval <= 0:
 		raise ValueError("The bin interval must be larger than zero.")
 
-	if not isinstance(bin_left, Number):
-		raise TypeError("'bin_left' must be a Number.")
+	if not is_number(bin_left):
+		raise TypeError("'bin_left' must be a number.")
 
-	if not isinstance(bin_right, Number):
-		raise TypeError("'bin_right' must be a Number.")
+	if not is_number(bin_right):
+		raise TypeError("'bin_right' must be a number.")
 
 	if not min_mass:
 		min_mass = data.min_mass
 	max_mass = data.max_mass
 
+	if max_mass is None:
+		raise ValueError("'max_mass' cannot be None")
+	if min_mass is None:
+		raise ValueError("'min_mass' cannot be None")
+
 	return __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right)
 
 
-def build_intensity_matrix_i(data, bin_left=0.3, bin_right=0.7):
+def build_intensity_matrix_i(
+		data: GCMS_data,
+		bin_left: float = 0.3,
+		bin_right: float = 0.7,
+		) -> IntensityMatrix:
 	"""
 	Sets the full intensity matrix with integer bins
 
 	:param data: Raw GCMS data
-	:type data: pyms.GCMS.Class.GCMS_data
-	:param bin_left: left bin boundary offset. Default ``0.3``
-	:type bin_left: float
-	:param bin_right: right bin boundary offset. Default ``0.7``
-	:type bin_right: float
+	:param bin_left: left bin boundary offset.
+	:param bin_right: right bin boundary offset.
 
 	:return: Binned IntensityMatrix object
-	:rtype: pyms.IntensityMatrix.IntensityMatrix
 
 	:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 	"""
 
+	# this package
 	from pyms.GCMS.Class import GCMS_data
 
 	if not isinstance(data, GCMS_data):
 		raise TypeError("'data' must be a GCMS_data object")
 
-	if not isinstance(bin_left, Number):
+	if not is_number(bin_left):
 		raise TypeError("'bin_left' must be a number.")
 
-	if not isinstance(bin_right, Number):
+	if not is_number(bin_right):
 		raise TypeError("'bin_right' must be a number.")
 
 	min_mass = data.min_mass
 	max_mass = data.max_mass
+
+	if max_mass is None:
+		raise ValueError("'max_mass' cannot be None")
+	if min_mass is None:
+		raise ValueError("'min_mass' cannot be None")
 
 	# Calculate integer min mass based on right boundary
 	bin_right = abs(bin_right)
@@ -831,25 +839,25 @@ def build_intensity_matrix_i(data, bin_left=0.3, bin_right=0.7):
 	return __fill_bins(data, min_mass, max_mass, 1, bin_left, bin_right)
 
 
-def __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
+def __fill_bins(
+		data: GCMS_data,
+		min_mass: float,
+		max_mass: float,
+		bin_interval: Union[int, float],
+		bin_left: float,
+		bin_right: float,
+		) -> IntensityMatrix:
 	"""
 	Fills the intensity values for all bins
 
 	:param data: Raw GCMS data
-	:type data: pyms.GCMS.Class.GCMS_data
 	:param min_mass: minimum mass value
-	:type min_mass: int or float
 	:param max_mass: maximum mass value
-	:type max_mass: int or float
 	:param bin_interval: interval between bin centres
-	:type bin_interval: int or float
 	:param bin_left: left bin boundary offset
-	:type bin_left: float
 	:param bin_right: right bin boundary offset
-	:type bin_right: float
 
 	:return: Binned IntensityMatrix object
-	:rtype: pyms.IntensityMatrix.IntensityMatrix
 
 	:authors: Qiao Wang, Andrew Isaac, Moshe Olshansky, Vladimir Likic
 	"""
@@ -858,7 +866,7 @@ def __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
 		raise ValueError("there should be no gaps or overlap.")
 
 	bin_left = abs(bin_left)
-	bin_right = abs(bin_right)
+	# bin_right = abs(bin_right)
 
 	# To convert to int range, ensure bounds are < 1
 	bl = bin_left - int(bin_left)
@@ -889,25 +897,25 @@ def __fill_bins(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
 	return IntensityMatrix(data.time_list, mass_list, intensity_matrix)
 
 
-def __fill_bins_old(data, min_mass, max_mass, bin_interval, bin_left, bin_right):
+def __fill_bins_old(
+		data: GCMS_data,
+		min_mass: float,
+		max_mass: float,
+		bin_interval: float,
+		bin_left: float,
+		bin_right: float,
+		) -> IntensityMatrix:
 	"""
 	Fills the intensity values for all bins
 
 	:param data: Raw GCMS data
-	:type data: pyms.GCMS.Class.GCMS_data
 	:param min_mass: minimum mass value
-	:type min_mass: int or float
 	:param max_mass: maximum mass value
-	:type max_mass: int or float
 	:param bin_interval: interval between bin centres
-	:type bin_interval: int or float
 	:param bin_left: left bin boundary offset
-	:type bin_left: float
 	:param bin_right: right bin boundary offset
-	:type bin_right: float
 
 	:return: Binned IntensityMatrix object
-	:rtype: pyms.IntensityMatrix.IntensityMatrix
 
 	:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 	"""
@@ -926,14 +934,14 @@ def __fill_bins_old(data, min_mass, max_mass, bin_interval, bin_left, bin_right)
 
 	# fill the bins
 	intensity_matrix = []
-	for scan in data.get_scan_list():
+	for scan in data.scan_list:
 		intensity_list = [0.0] * num_bins
-		masses = scan.get_mass_list()
-		intensities = scan.get_intensity_list()
+		masses = scan.mass_list
+		intensities = scan.intensity_list
 		for mm in range(num_bins):
 			for ii in range(len(scan)):
 				if mass_list[mm] - bin_left <= masses[ii] < mass_list[mm] + bin_right:
 					intensity_list[mm] += intensities[ii]
 		intensity_matrix.append(intensity_list)
 
-	return IntensityMatrix(data.get_time_list(), mass_list, intensity_matrix)
+	return IntensityMatrix(data.time_list, mass_list, intensity_matrix)

@@ -72,7 +72,7 @@ for expr_code in expr_codes:
         area = peak_sum_area(im, peak)
         peak.area = area
         area_dict = peak_top_ion_areas(im, peak)
-        peak.set_ion_areas(area_dict)
+        peak.ion_areas = area_dict
 
     # create an experiment
     expr = Experiment(expr_code, peak_list)

@@ -23,7 +23,7 @@ import os
 from copy import copy, deepcopy
 from timeit import timeit
 
-# pyms
+# this package
 from pyms.GCMS.IO.JCAMP import JCAMP_reader
 from pyms.IntensityMatrix import build_intensity_matrix_i
 from pyms.Peak.Class import Peak

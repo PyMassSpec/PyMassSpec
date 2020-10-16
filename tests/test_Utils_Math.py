@@ -1,15 +1,20 @@
+# stdlib
 import math
 import random
 import statistics
 from decimal import Decimal
 from fractions import Fraction
+from typing import List
 
+# 3rd party
 import pytest
 
+# this package
 from pyms.Utils import Math
 
 
 class TestMean:
+
 	def test_torture_pep(self):
 		# "Torture Test" from PEP-450.
 		assert statistics.mean([1e100, 1, 3, -1e100]) == 1
@@ -42,8 +47,15 @@ class TestMean:
 
 	def test_fractions(self):
 		# Test mean with Fractions.
-		data = [Fraction(1, 2), Fraction(2, 3), Fraction(3, 4), Fraction(4, 5), Fraction(5, 6), Fraction(6, 7),
-				Fraction(7, 8)]
+		data = [
+				Fraction(1, 2),
+				Fraction(2, 3),
+				Fraction(3, 4),
+				Fraction(4, 5),
+				Fraction(5, 6),
+				Fraction(6, 7),
+				Fraction(7, 8)
+				]
 		random.shuffle(data)
 		assert statistics.mean(data) == Fraction(1479, 1960)
 		assert Math.mean(data) == Fraction(1479, 1960)
@@ -109,8 +121,8 @@ class TestMean:
 		# See http://bugs.python.org/issue25177.
 		assert statistics.mean([8.988465674311579e+307, 8.98846567431158e+307]) == 8.98846567431158e+307
 		assert Math.mean([8.988465674311579e+307, 8.98846567431158e+307]) == 8.98846567431158e+307
-		assert statistics.mean([8.988465674311579e+307, 8.98846567431158e+307]) == Math.mean(
-				[8.988465674311579e+307, 8.98846567431158e+307])
+		assert statistics.mean([8.988465674311579e+307, 8.98846567431158e+307]
+								) == Math.mean([8.988465674311579e+307, 8.98846567431158e+307])
 		big = 8.98846567431158e+307
 		tiny = 5e-324
 		for n in (2, 3, 5, 200):
@@ -124,17 +136,10 @@ class TestMean:
 
 class TestMedian:
 
-	def prepare_data(self):
-		"""Overload method from UnivariateCommonMixin."""
-		data = super().prepare_data()
-		if len(data)%2 != 1:
-			data.append(2)
-		return data
-
 	def test_even_ints(self):
 		# Test median with an even number of int data points.
 		data = [1, 2, 3, 4, 5, 6]
-		assert len(data)%2 == 0
+		assert len(data) % 2 == 0
 		assert statistics.median(data) == 3.5
 		assert Math.median(data) == 3.5
 		assert statistics.median(data) == Math.median(data)
@@ -142,7 +147,7 @@ class TestMedian:
 	def test_odd_ints(self):
 		# Test median with an odd number of int data points.
 		data = [1, 2, 3, 4, 5, 6, 9]
-		assert len(data)%2 == 1
+		assert len(data) % 2 == 1
 		assert statistics.median(data) == 4
 		assert Math.median(data) == 4
 		assert statistics.median(data) == Math.median(data)
@@ -150,7 +155,7 @@ class TestMedian:
 	def test_odd_fractions(self):
 		# Test median works with an odd number of Fractions.
 		data = [Fraction(1, 7), Fraction(2, 7), Fraction(3, 7), Fraction(4, 7), Fraction(5, 7)]
-		assert len(data)%2 == 1
+		assert len(data) % 2 == 1
 		random.shuffle(data)
 		assert statistics.median(data) == Fraction(3, 7)
 		assert Math.median(data) == Fraction(3, 7)
@@ -159,7 +164,7 @@ class TestMedian:
 	def test_even_fractions(self):
 		# Test median works with an even number of Fractions.
 		data = [Fraction(1, 7), Fraction(2, 7), Fraction(3, 7), Fraction(4, 7), Fraction(5, 7), Fraction(6, 7)]
-		assert len(data)%2 == 0
+		assert len(data) % 2 == 0
 		random.shuffle(data)
 		assert statistics.median(data) == Fraction(1, 2)
 		assert Math.median(data) == Fraction(1, 2)
@@ -169,7 +174,7 @@ class TestMedian:
 		# Test median works with an odd number of Decimals.
 		D = Decimal
 		data = [Decimal('2.5'), Decimal('3.1'), Decimal('4.2'), Decimal('5.7'), Decimal('5.8')]
-		assert len(data)%2 == 1
+		assert len(data) % 2 == 1
 		random.shuffle(data)
 		assert statistics.median(data) == Decimal('4.2')
 		assert Math.median(data) == Decimal('4.2')
@@ -178,7 +183,7 @@ class TestMedian:
 	def test_even_decimals(self):
 		# Test median works with an even number of Decimals.
 		data = [Decimal('1.2'), Decimal('2.5'), Decimal('3.1'), Decimal('4.2'), Decimal('5.7'), Decimal('5.8')]
-		assert len(data)%2 == 0
+		assert len(data) % 2 == 0
 		random.shuffle(data)
 		assert statistics.median(data) == Decimal('3.65')
 		assert Math.median(data) == Decimal('3.65')
@@ -189,15 +194,15 @@ class TestStdev:
 	# Tests for sample variance.
 	def setUp(self):
 		self.func = statistics.variance
-	
+
 	def test_single_value(self):
 		for x in (81, 203.74, 3.9e14, Fraction(5, 21), Decimal('35.719')):
 			with pytest.raises(statistics.StatisticsError):
-				statistics.stdev([x])
+				statistics.stdev([x])  # type: ignore
 
 	def test_ints(self):
 		# Test sample variance with int data.
-		data = [4, 7, 13, 16]
+		data: List[int] = [4, 7, 13, 16]
 		exact = math.sqrt(30)
 		assert statistics.stdev(data) == exact
 		assert Math.std(data) == exact
@@ -214,7 +219,7 @@ class TestStdev:
 	def test_decimals(self):
 		# Test sample variance with Decimal data.
 		data = [Decimal(2), Decimal(2), Decimal(7), Decimal(9)]
-		exact = (4*Decimal('9.5')/Decimal(3)).sqrt()
+		exact = (4 * Decimal('9.5') / Decimal(3)).sqrt()
 		assert statistics.stdev(data) == exact
 		assert Math.std(data) == exact
 		assert statistics.stdev(data) == Math.std(data)

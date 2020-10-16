@@ -23,5 +23,5 @@ Functions for modelling signal peaks
 #                                                                              #
 ################################################################################
 
-
+# this package
 from pyms.Peak.Class import Peak

@@ -1,8 +1,8 @@
-*******************************
+=========================
 Downloading source code
-*******************************
+=========================
 
-The ``PyMassSpec`` source code resides on publicly accessible GitHub servers,
+The ``PyMassSpec`` source code is available on GitHub,
 and can be accessed from the following URL: https://github.com/domdfcoding/PyMassSpec"
 
 If you have ``git`` installed, you can clone the repository with the following command:
@@ -25,3 +25,17 @@ If you have ``git`` installed, you can clone the repository with the following c
     :alt: Downloading a 'zip' file of the source code.
 
     Downloading a 'zip' file of the source code
+
+
+Building from source
+-----------------------
+
+The recommended way to build ``PyMassSpec`` is to use `tox <https://tox.readthedocs.io/en/latest/>`_:
+
+.. prompt:: bash
+
+	tox -e build
+
+The source and wheel distributions will be in the directory ``dist``.
+
+If you wish, you may also use `pep517.build <https://pypi.org/project/pep517/>`_ or another :pep:`517`-compatible build tool.

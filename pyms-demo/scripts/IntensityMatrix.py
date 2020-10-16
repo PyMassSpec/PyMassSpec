@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # ## Example: Building an Intensity Matrix
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader.
 
 # In[21]:
@@ -27,11 +27,11 @@ data = JCAMP_reader(jcamp_file)
 print(data)
 
 
-# Then the data can be converted to an |IntensityMatrix| using the function 
+# Then the data can be converted to an |IntensityMatrix| using the function
 # |build_intensity_matrix| from |pyms.IntensityMatrix|.
-# 
+#
 # The default operation of |build_intensity_matrix| is to use a bin interval of
-#  one and treat the masses as floating point numbers. The default intensity 
+#  one and treat the masses as floating point numbers. The default intensity
 #  matrix can be built as follows:
 
 # In[23]:
@@ -53,9 +53,9 @@ print(im.size)
 
 
 # There are 9865 scans and 551 bins in this example.
-# 
+#
 # The raw masses have been binned into new mass units based on the minimum mass
-# in the raw data and the bin size. A list of the first ten new masses can be 
+# in the raw data and the bin size. A list of the first ten new masses can be
 # obtained as follows:
 
 # In[25]:
@@ -101,9 +101,9 @@ im.get_mass_at_index(index)
 
 
 # A mass of 73.0 is returned in this example.
-# 
+#
 # ## Build intensity matrix parameters
-# 
+#
 # The bin interval can be set to values other than one, and binning boundaries
 # can also be adjusted. In the example below, to fit the 0.5 bin interval, the
 # upper and lower boundaries are set to ± 0.25.
@@ -131,7 +131,7 @@ print(im.mass_list[:10])
 
 
 # In this example there are 9865 scans (as before), but 1101 bins.
-# 
+#
 # The index and binned mass of the mass closest to 73.3 should also reflect the
 # different binning.
 
@@ -150,10 +150,10 @@ im.get_mass_at_index(index)
 
 
 # ## Build integer mass intensity matrix
-# 
+#
 # It is also possible to build an intensity matrix with integer masses and a bin
-# interval of one using |build_intensity_matrix_i()|. The default range for the 
-# binning is -0.3 and +0.7 mass units. The function is imported from 
+# interval of one using |build_intensity_matrix_i()|. The default range for the
+# binning is -0.3 and +0.7 mass units. The function is imported from
 # |pyms.IntensityMatrix|:
 
 # In[35]:

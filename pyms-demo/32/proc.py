@@ -20,7 +20,7 @@ im = build_intensity_matrix(data)
 #
 
 # save the intensity matrix values to a file
-mat = im.get_matrix_list()
+mat = im.intensity_array
 print("saving intensity matrix intensity values...")
 save_data("output/im.dat", mat)
 

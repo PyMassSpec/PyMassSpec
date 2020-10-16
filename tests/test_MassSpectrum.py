@@ -21,15 +21,15 @@
 # stdlib
 import copy
 import pathlib
-import requests
 
 # 3rd party
 import pytest
-import numpy
+import requests
 
-# pyms
+# this package
 from pyms.Spectrum import MassSpectrum
-# tests
+
+# this package
 from .constants import *
 
 
@@ -37,13 +37,16 @@ def test_MassSpectrum(ms):
 	assert isinstance(ms, MassSpectrum)
 
 
-@pytest.mark.parametrize("obj, expects", [
-		(test_list_ints, ValueError),
-		(test_string, ValueError),
-		(test_list_strs, ValueError),
-		(test_int, TypeError),
-		(test_dict, TypeError),
-		])
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				(test_list_ints, ValueError),
+				(test_string, ValueError),
+				(test_list_strs, ValueError),
+				(test_int, TypeError),
+				(test_dict, TypeError),
+				]
+		)
 def test_errors(ms, obj, expects):
 	with pytest.raises(expects):
 		MassSpectrum(obj, ms.intensity_list)
@@ -88,11 +91,13 @@ def test_mass_spec(ms):
 	# 		ms.intensity_list = types
 
 
-@pytest.mark.parametrize("obj, expects", [
-		(test_string, ValueError),
-		(test_dict, TypeError),
-		(test_list_strs, ValueError),
-		])
+@pytest.mark.parametrize(
+		"obj, expects", [
+				(test_string, ValueError),
+				(test_dict, TypeError),
+				(test_list_strs, ValueError),
+				]
+		)
 def test_mass_spec_errors(ms, obj, expects):
 	with pytest.raises(expects):
 		ms.mass_spec = obj
@@ -114,11 +119,13 @@ def test_mass_list(ms):
 	# 		ms.mass_list = obj
 
 
-@pytest.mark.parametrize("obj, expects", [
-		(test_string, ValueError),
-		(test_dict, TypeError),
-		(test_list_strs, ValueError),
-		])
+@pytest.mark.parametrize(
+		"obj, expects", [
+				(test_string, ValueError),
+				(test_dict, TypeError),
+				(test_list_strs, ValueError),
+				]
+		)
 def test_mass_list_errors(ms, obj, expects):
 	with pytest.raises(expects):
 		ms.mass_list = obj
@@ -131,17 +138,14 @@ def test_from_jcamp():
 		nist_data_dir.mkdir(parents=True)
 
 	# Compounds from nist
-	for cas in [
-			"122-39-4", "71-43-2", "85-98-3",
-			"107-10-8", "50-37-3", "57-13-6",
-			"77-92-9", "118-96-7"
-			]:
+	for cas in ["122-39-4", "71-43-2", "85-98-3", "107-10-8", "50-37-3", "57-13-6", "77-92-9", "118-96-7"]:
 		print(f"Testing CAS {cas}")
 		jcamp_file = nist_data_dir / f"{cas}.jdx"
 
 		if not jcamp_file.exists():
 			r = requests.get(
-					f"https://webbook.nist.gov/cgi/cbook.cgi?JCAMP=C{cas.replace('-', '')}&Index=0&Type=Mass")
+					f"https://webbook.nist.gov/cgi/cbook.cgi?JCAMP=C{cas.replace('-', '')}&Index=0&Type=Mass"
+					)
 			jcamp_file.write_bytes(r.content)
 
 		MassSpectrum.from_jcamp(jcamp_file)
@@ -152,18 +156,66 @@ def test_from_jcamp():
 def test_from_mz_int_pairs():
 	# Diphenylamine
 	mz_int_pairs = [
-			(27, 138),	(28, 210),	(32, 59),	(37, 70),	(38, 273),
-			(39, 895),	(40, 141),	(41, 82),	(50, 710),	(51, 2151),
-			(52, 434),	(53, 49),	(57, 41),	(59, 121),	(61, 73),
-			(62, 229),	(63, 703),	(64, 490),	(65, 1106), (66, 932),
-			(67, 68),	(70, 159),	(71, 266),	(72, 297),	(73, 44),
-			(74, 263),	(75, 233),	(76, 330),	(77, 1636),	(78, 294),
-			(84, 1732),	(87, 70),	(88, 86),	(89, 311),	(90, 155),
-			(91, 219),	(92, 160),	(93, 107),	(101, 65),	(102, 111),
-			(103, 99),	(104, 188),	(113, 107),	(114, 120),	(115, 686),
-			(116, 150),	(117, 91),	(126, 46),	(127, 137),	(128, 201),
-			(129, 73),	(130, 69),	(139, 447),	(140, 364),	(141, 584),
-			(142, 279),	(143, 182),	(152, 37),	(153, 60),	(154, 286),
+			(27, 138),
+			(28, 210),
+			(32, 59),
+			(37, 70),
+			(38, 273),
+			(39, 895),
+			(40, 141),
+			(41, 82),
+			(50, 710),
+			(51, 2151),
+			(52, 434),
+			(53, 49),
+			(57, 41),
+			(59, 121),
+			(61, 73),
+			(62, 229),
+			(63, 703),
+			(64, 490),
+			(65, 1106),
+			(66, 932),
+			(67, 68),
+			(70, 159),
+			(71, 266),
+			(72, 297),
+			(73, 44),
+			(74, 263),
+			(75, 233),
+			(76, 330),
+			(77, 1636),
+			(78, 294),
+			(84, 1732),
+			(87, 70),
+			(88, 86),
+			(89, 311),
+			(90, 155),
+			(91, 219),
+			(92, 160),
+			(93, 107),
+			(101, 65),
+			(102, 111),
+			(103, 99),
+			(104, 188),
+			(113, 107),
+			(114, 120),
+			(115, 686),
+			(116, 150),
+			(117, 91),
+			(126, 46),
+			(127, 137),
+			(128, 201),
+			(129, 73),
+			(130, 69),
+			(139, 447),
+			(140, 364),
+			(141, 584),
+			(142, 279),
+			(143, 182),
+			(152, 37),
+			(153, 60),
+			(154, 286),
 			(166, 718),
 			(167, 3770),
 			(168, 6825),
@@ -184,8 +236,8 @@ def test_from_mz_int_pairs():
 	# Errors
 	for obj in [test_string, test_int, test_list_strs, test_dict, test_list_ints, test_tuple, (["abc", "123"])]:
 		with pytest.raises(TypeError):
-			MassSpectrum.from_mz_int_pairs(obj)
+			MassSpectrum.from_mz_int_pairs(obj)  # type: ignore
 
-	for obj in [[(1, 2, 3)], ([1, 2, 3],), [(1,)], ([1],), [("abc", "123")]]:
+	for obj in [[(1, 2, 3)], ([1, 2, 3], ), [(1, )], ([1], ), [("abc", "123")]]:
 		with pytest.raises(ValueError):
-			MassSpectrum.from_mz_int_pairs(obj)
+			MassSpectrum.from_mz_int_pairs(obj)  # type: ignore

@@ -2,11 +2,11 @@
 # coding: utf-8
 
 # # Noise smoothing
-# 
+#
 # The purpose of noise smoothing is to remove high-frequency noise from
 # data, and thereby increase the contribution of the signal relative to
 # the contribution of the noise.
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader.
 
 # In[1]:
@@ -32,13 +32,13 @@ tic = data.tic
 
 
 # ## Window averaging
-# 
+#
 # A simple approach to noise smoothing is moving average window smoothing.
 # In this approach the window of a fixed size (:math:`2N+1` points) is moved
 # across the ion chromatogram, and the intensity value at each point is
 # replaced with the mean intensity calculated over the window size.
 # The example below illustrates smoothing of TIC by window averaging.
-# 
+#
 # To apply mean window smoothing with a 5-point window:
 
 # In[3]:
@@ -76,16 +76,16 @@ tic2.write(output_directory / "noise_smoothing_tic2.dat",minutes=True)
 
 
 # ## Window Averaging on Intensity Matrix
-# 
+#
 # In the previous section, window averaging was applied to an
 # Ion Chromatogram object (in that case a TIC). Where filtering
 # is to be performed on all Ion Chromatograms, the
 # |window_smooth_im()| function may be used instead.
-# 
+#
 # The use of this function is identical to the Ion Chromatogram
 # |window_smooth()| function, except that an Intensity Matrix
 # is passed to it.
-# 
+#
 # For example, to perform window smoothing on an |IntensityMatrix|
 # object with a 5 point window and mean window smoothing:
 
@@ -111,7 +111,7 @@ ic_smooth1.write(output_directory/"noise_smoothing_ic_smooth1.dat",minutes=True)
 
 
 # ## Savitzky--Golay noise filter
-# 
+#
 # A more sophisticated noise filter is the Savitzky-Golay filter.
 # Given the data loaded as above, this filter can be applied as
 # follows:
@@ -132,9 +132,9 @@ tic4.write(output_directory / "noise_smoothing_tic4.dat",minutes=True)
 
 
 # In this example the default parameters were used.
-# 
+#
 # ### Savitzky-Golay Noise filtering of Intensity Matrix Object
-# 
+#
 # The |savitzky_golay()| function described above acts on a single
 # |IonChromatogram|. Where it is desired to perform Savitzky Golay
 # filtering on the whole |IntensityMatrix| the function
@@ -156,4 +156,4 @@ ic_smooth2 = im_smooth2.get_ic_at_index(73)
 ic_smooth2.write(output_directory/"noise_smoothing_ic_smooth2.dat",minutes=True)
 
 
-# 
+#

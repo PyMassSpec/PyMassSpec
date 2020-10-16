@@ -26,42 +26,38 @@ Functions for writing peak alignment to various file formats
 # stdlib
 import operator
 import pathlib
+from typing import List, Union
 
 # 3rd party
-try:
-	from Pycluster import treecluster
-except ModuleNotFoundError:
-	try:
-		from Bio.Cluster import treecluster
-	except ModuleNotFoundError:
-		raise ModuleNotFoundError("""Neither PyCluster or BioPython is installed.
-Please install one of them and try again.""")
-
-from openpyxl import Workbook
-from openpyxl.comments import Comment
-from openpyxl.formatting.rule import ColorScaleRule  # , CellIsRule, FormulaRule
-from openpyxl.styles import PatternFill
-from openpyxl.utils import get_column_letter
+from openpyxl import Workbook  # type: ignore
+from openpyxl.comments import Comment  # type: ignore
+from openpyxl.formatting.rule import ColorScaleRule  # type: ignore  # , CellIsRule, FormulaRule   # type: ignore
+from openpyxl.styles import PatternFill  # type: ignore
+from openpyxl.utils import get_column_letter  # type: ignore
 
 # this package
+from pyms.DPA.Alignment import Alignment
 from pyms.Peak.List.Function import composite_peak
 from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Utils import is_path
 
+__all__ = ["write_mass_hunter_csv", "write_excel", "write_transposed_output"]
 
-def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_name):
+
+def write_mass_hunter_csv(
+		alignment: Alignment,
+		file_name: Union[str, pathlib.Path],
+		top_ion_list: List[int],
+		):  # , peak_list_name):
 	"""
 	Creates a csv file with UID, common and qualifying ions and their
-		ratios for mass hunter interpretation
+	ratios for mass hunter interpretation.
 
-	:param alignment: :class:`pyms.DPA.Alignment.Alignment` object to write to file
-	:type alignment: :class:`pyms.DPA.Alignment.Alignment`
-	:param file_name: name of the output file
-	:type file_name: str or os.PathLike
+	:param alignment: alignment object to write to file
+	:param file_name: name of the output file.
 
 	:param top_ion_list: a list of the common ions for each peak in the
-		averaged peak list for the alignment
-	:type top_ion_list: list
+		averaged peak list for the alignment.
 	"""
 
 	if not is_path(file_name):
@@ -80,7 +76,7 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 			'"ratio QI2/CI","l window delta","r window delta"\n'
 			)
 
-	rtsums = []
+	rtsums: List[float] = []
 	rtcounts = []
 
 	# The following two arrays will become list of lists
@@ -89,8 +85,8 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 	#            [align1_peak2, ................................]
 	#              .............................................
 	#            [align1_peakm,....................,alignn_peakm]  ]
-	areas = []
-	new_peak_lists = []
+	areas = []  # type: ignore
+	new_peak_lists = []  # type: ignore
 	rtmax = []
 	rtmin = []
 
@@ -148,6 +144,9 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 		# write initial info:
 		# peak unique id, peak average rt
 		compo_peak = composite_peak(new_peak_lists[index])
+		if compo_peak is None:
+			continue
+
 		compo_peaks.append(compo_peak)
 		peak_UID = compo_peak.UID
 		peak_UID_string = f'"{peak_UID}"'
@@ -169,8 +168,6 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 			pass
 
 		ci_intensity = compo_peak.get_int_of_ion(common_ion)
-		if ci_intensity is None:
-			print("No Ci for peak", index)
 		q1_intensity = compo_peak.get_int_of_ion(qual_ion_1)
 		q2_intensity = compo_peak.get_int_of_ion(qual_ion_2)
 
@@ -189,16 +186,18 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 			# shouldn't happen, but does!!
 			q2_ci_ratio = 0.01
 
-		out_strings.append(",".join([
-				peak_UID,
-				f"{common_ion}",
-				f"{qual_ion_1}",
-				f"{q1_ci_ratio * 100:.1f}",
-				f"{qual_ion_2}",
-				f"{q2_ci_ratio * 100:.1f}",
-				f"{(l_window_delta + 1.5) / 60:.2f}",
-				f"{(r_window_delta + 1.5) / 60:.2f}",
-				]))
+		out_strings.append(
+				",".join([
+						peak_UID,
+						f"{common_ion}",
+						f"{qual_ion_1}",
+						f"{q1_ci_ratio * 100:.1f}",
+						f"{qual_ion_2}",
+						f"{q2_ci_ratio * 100:.1f}",
+						f"{(l_window_delta + 1.5) / 60:.2f}",
+						f"{(r_window_delta + 1.5) / 60:.2f}",
+						])
+				)
 
 		index += 1
 
@@ -214,17 +213,18 @@ def write_mass_hunter_csv(alignment, file_name, top_ion_list):  # , peak_list_na
 	fp.close()
 
 
-def write_excel(alignment, file_name, minutes=True):
+def write_excel(
+		alignment: Alignment,
+		file_name: Union[str, pathlib.Path],
+		minutes: bool = True,
+		):
 	"""
-	Writes the alignment to an excel file, with colouring showing possible mis-alignments
+	Writes the alignment to an excel file, with colouring showing possible mis-alignments.
 
-	:param alignment: :class:`pyms.DPA.Alignment.Alignment` object to write to file
-	:type alignment: :class:`pyms.DPA.Alignment.Alignment`
-	:param file_name: The name for the retention time alignment file
-	:type file_name: str or os.PathLike
-	:param minutes: An optional indicator whether to save retention times
-		in minutes. If False, retention time will be saved in seconds
-	:type minutes: bool, optional
+	:param alignment: :class:`pyms.DPA.Alignment.Alignment` object to write to file.
+	:param file_name: The name for the retention time alignment file.
+	:param minutes: Whether to save retention times in minutes.
+		If :py:obj:`False`, retention time will be saved in seconds.
 
 	:author: David Kainer
 	"""
@@ -270,7 +270,7 @@ def write_excel(alignment, file_name, minutes=True):
 				# get the mini-mass spec for this peak, and divide the ion intensities by 1000 to shorten them
 				ia = peak.ion_areas
 				ia.update((mass, int(intensity / 1000)) for mass, intensity in ia.items())
-				sorted_ia = sorted(ia.iteritems(), key=operator.itemgetter(1), reverse=True)
+				sorted_ia = sorted(ia.items(), key=operator.itemgetter(1), reverse=True)
 
 				# write the peak area and mass spec into the comment for the cell
 				comment = Comment(f"Area: {area:.0f} | MassSpec: {sorted_ia}", 'dave')
@@ -286,35 +286,47 @@ def write_excel(alignment, file_name, minutes=True):
 				currcell.comment = comment
 
 		compo_peak = composite_peak(new_peak_list)
-		peak_UID = compo_peak.UID
-		peak_UID_string = f'"{peak_UID}"'
 
-		ws.cell(row=2 + peak_idx, column=1, value=peak_UID_string)
-		ws.cell(row=2 + peak_idx, column=2, value=f"{float(compo_peak.rt / 60):.3f}")
+		if compo_peak is not None:
+			peak_UID = compo_peak.UID
+			peak_UID_string = f'"{peak_UID}"'
+
+			ws.cell(row=2 + peak_idx, column=1, value=peak_UID_string)
+			ws.cell(row=2 + peak_idx, column=2, value=f"{float(compo_peak.rt / 60):.3f}")
 
 	# colour the cells in each row based on their RT percentile for that row
 	i = 0
 	for row in ws.rows:
 		i += 1
 		cell_range = ("{0}" + str(i) + ":{1}" + str(i)).format(get_column_letter(3), get_column_letter(len(row)))
-		ws.conditional_formatting.add(cell_range, ColorScaleRule(
-			start_type='percentile', start_value=1, start_color='E5FFCC',
-			mid_type='percentile', mid_value=50, mid_color='FFFFFF',
-			end_type='percentile', end_value=99, end_color='FFE5CC'
-			))
+		ws.conditional_formatting.add(
+				cell_range,
+				ColorScaleRule(
+						start_type='percentile',
+						start_value=1,
+						start_color='E5FFCC',
+						mid_type='percentile',
+						mid_value=50,
+						mid_color='FFFFFF',
+						end_type='percentile',
+						end_value=99,
+						end_color='FFE5CC'
+						),
+				)
 
 		wb.save(file_name)
 
 
-def write_transposed_output(alignment, file_name, minutes=True):
+def write_transposed_output(
+		alignment: Alignment,
+		file_name: Union[str, pathlib.Path],
+		minutes: bool = True,
+		):
 	"""
 
 	:param alignment: :class:`pyms.DPA.Alignment.Alignment` object to write to file
-	:type alignment: :class:`pyms.DPA.Alignment.Alignment`
 	:param file_name: The name of the file
-		:type file_name: str or os.PathLike
 	:param minutes:
-	:type minutes: bool
 	"""
 
 	if not is_path(file_name):
@@ -362,13 +374,13 @@ def write_transposed_output(alignment, file_name, minutes=True):
 				new_peak_list.append((peak, cell_col, cell_row))
 
 				# write the RT into the cell in the excel file
-				currcell1 = ws1.cell(column=cell_col, row=cell_row, value=round(rt, 3))
-				ws2.cell(column=cell_col, row=cell_row, value=round(area, 3))
+				currcell1 = ws1.cell(column=cell_col, row=cell_row, value=round(rt, 3))  # type: ignore
+				ws2.cell(column=cell_col, row=cell_row, value=round(area, 3))  # type: ignore
 
 				# get the mini-mass spec for this peak, and divide the ion intensities by 1000 to shorten them
 				ia = peak.ion_areas
 				ia.update((mass, int(intensity / 1000)) for mass, intensity in ia.items())
-				sorted_ia = sorted(ia.iteritems(), key=operator.itemgetter(1), reverse=True)
+				sorted_ia = sorted(ia.items(), key=operator.itemgetter(1), reverse=True)
 
 				# write the peak area and mass spec into the comment for the cell
 				comment = Comment(f"Area: {area:.0f} | MassSpec: {sorted_ia}", 'dave')
@@ -385,16 +397,17 @@ def write_transposed_output(alignment, file_name, minutes=True):
 		# this method will create the compo peak, and also mark outlier peaks with a bool is_outlier
 		compo_peak = composite_peak(list(p[0] for p in new_peak_list))
 
-		ws1.cell(column=2 + peak_idx, row=1, value=f'"{compo_peak.UID}"')
-		ws1.cell(column=2 + peak_idx, row=2, value=f"{float(compo_peak.rt / 60):.3f}")
-		ws2.cell(column=2 + peak_idx, row=1, value=f'"{compo_peak.UID}"')
-		ws2.cell(column=2 + peak_idx, row=2, value=f"{float(compo_peak.rt / 60):.3f}")
+		if compo_peak is not None:
+			ws1.cell(column=2 + peak_idx, row=1, value=f'"{compo_peak.UID}"')
+			ws1.cell(column=2 + peak_idx, row=2, value=f"{float(compo_peak.rt / 60):.3f}")
+			ws2.cell(column=2 + peak_idx, row=1, value=f'"{compo_peak.UID}"')
+			ws2.cell(column=2 + peak_idx, row=2, value=f"{float(compo_peak.rt / 60):.3f}")
 
-		# highlight outlier cells in the current peak list
-		for p in new_peak_list:
-			if p[0].isoutlier:
-				# ws[ get_column_letter(p[1]) + str(p[2]) ].style = style_outlier
-				ws1.cell(column=p[1], row=p[2]).fill = style_outlier
-				ws2.cell(column=p[1], row=p[2]).fill = style_outlier
+			# highlight outlier cells in the current peak list
+			for p in new_peak_list:
+				if p[0].is_outlier:
+					# ws[ get_column_letter(p[1]) + str(p[2]) ].style = style_outlier
+					ws1.cell(column=p[1], row=p[2]).fill = style_outlier
+					ws2.cell(column=p[1], row=p[2]).fill = style_outlier
 
 	wb.save(file_name)

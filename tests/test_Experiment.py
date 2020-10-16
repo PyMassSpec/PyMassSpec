@@ -18,19 +18,15 @@
 #                                                                           #
 #############################################################################
 
-# stdlib
-import copy
-
 # 3rd party
 import pytest
-import deprecation
 
-# pyms
-from pyms.Experiment import Experiment, load_expr, read_expr_list, store_expr
+# this package
+from pyms.Experiment import Experiment, load_expr, read_expr_list
 from pyms.Peak.Class import Peak
 from pyms.Utils.Utils import is_sequence_of
 
-# tests
+# this package
 from .constants import *
 
 
@@ -39,11 +35,11 @@ def test_Experiment(expr, filtered_peak_list):
 	# Errors
 	for obj in [*test_numbers, test_dict, *test_lists]:
 		with pytest.raises(TypeError):
-			Experiment(obj, filtered_peak_list)
+			Experiment(obj, filtered_peak_list)  # type: ignore
 
 	for obj in [test_string, test_int, test_dict, *test_lists]:
 		with pytest.raises(TypeError):
-			Experiment(test_string, obj)
+			Experiment(test_string, obj)  # type: ignore
 
 
 def test_equality(expr):
@@ -62,21 +58,9 @@ def test_len(expr):
 	assert len(expr) == 641
 
 
-@deprecation.fail_if_not_removed
-def test_get_expr_code(expr):
-	with pytest.warns(DeprecationWarning):
-		expr.get_expr_code()
-
-
 def test_expr_code(expr):
 	assert isinstance(expr.expr_code, str)
 	assert expr.expr_code == "ELEY_1_SUBTRACT"
-
-
-@deprecation.fail_if_not_removed
-def test_get_peak_list(expr):
-	with pytest.warns(DeprecationWarning):
-		expr.get_peak_list()
 
 
 def test_peak_list(expr, filtered_peak_list):
@@ -86,8 +70,6 @@ def test_peak_list(expr, filtered_peak_list):
 
 
 def test_sele_rt_range(expr, filtered_peak_list):
-	expr = copy.copy(expr)
-
 	expr.sele_rt_range(["6.5m", "21m"])
 	assert expr.peak_list != filtered_peak_list
 
@@ -100,37 +82,20 @@ def test_sele_rt_range(expr, filtered_peak_list):
 			expr.sele_rt_range(obj)
 
 
-@deprecation.fail_if_not_removed
-def test_store_expr(expr, outputdir):
-	with pytest.warns(DeprecationWarning):
-		store_expr(str(outputdir / "ELEY_1_SUBTRACT_DEPRECATION.expr"), expr)
-
-	for obj in [*test_numbers, test_dict, *test_lists]:
-		with pytest.warns(DeprecationWarning):
-			with pytest.raises(TypeError):
-				store_expr(obj, expr)
-
-	for obj in [*test_numbers, test_string, test_dict, *test_lists]:
-		with pytest.warns(DeprecationWarning):
-			with pytest.raises(TypeError):
-				store_expr(test_string, obj)
-
-
 @pytest.fixture(scope="function")
-def expr_filename(expr, outputdir):
-	filename = outputdir / "ELEY_1_SUBTRACT.expr"
-	expr.store(filename)
-	return filename
+def expr_filename(expr, tmp_pathplus):
+	filename = tmp_pathplus / "ELEY_1_SUBTRACT.expr"
+	expr.dump(filename)
+	yield filename
 
 
-def test_store_errors(expr):
-
+def test_dump_errors(expr):
 	for obj in [*test_numbers, test_dict, *test_lists]:
 		with pytest.raises(TypeError):
-			expr.store(obj)
+			expr.dump(obj)
 
 
-def test_load_expr(filtered_peak_list, datadir, expr_filename):
+def test_load_expr(filtered_peak_list, pyms_datadir, expr_filename):
 	expr = load_expr(expr_filename)
 	assert isinstance(expr, Experiment)
 
@@ -146,16 +111,17 @@ def test_load_expr(filtered_peak_list, datadir, expr_filename):
 	# Errors
 	for obj in [*test_numbers, test_dict, *test_lists]:
 		with pytest.raises(TypeError):
-			load_expr(obj)
+			load_expr(obj)  # type: ignore
 
 	with pytest.raises(IOError):
-		load_expr(datadir / "non-existent.expr")
+		load_expr(pyms_datadir / "non-existent.expr")
 	with pytest.raises(IOError):
-		load_expr(datadir / "not-an-experiment.expr")
+		load_expr(pyms_datadir / "not-an-experiment.expr")
 
 
-def test_read_expr_list(filtered_peak_list, datadir, expr_filename):
-	expr_list = read_expr_list(datadir / "read_expr_list.txt")
+def test_read_expr_list(filtered_peak_list, pyms_datadir, expr_filename, tmp_pathplus):
+	(tmp_pathplus / "read_expr_list.txt").write_lines([str(expr_filename)] * 5)
+	expr_list = read_expr_list(tmp_pathplus / "read_expr_list.txt")
 	assert isinstance(expr_list, list)
 	assert is_sequence_of(expr_list, Experiment)
 
@@ -172,11 +138,11 @@ def test_read_expr_list(filtered_peak_list, datadir, expr_filename):
 	# Errors
 	for obj in [*test_numbers, test_dict, *test_lists]:
 		with pytest.raises(TypeError):
-			read_expr_list(obj)
+			read_expr_list(obj)  # type: ignore
 
 	with pytest.raises(IOError):
 		read_expr_list("non-existent.expr")
-	with pytest.raises((IOError, UnicodeDecodeError)):
+	with pytest.raises((IOError, UnicodeDecodeError)):  # type: ignore
 		read_expr_list("not-an-experiment.expr")
-	with pytest.raises(IOError):
+	with pytest.raises(IOError):  # type: ignore
 		read_expr_list("__init__.py")

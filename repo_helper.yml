@@ -1,0 +1,77 @@
+modname: PyMassSpec
+import_name: pyms
+repo_name: PyMassSpec
+pypi_name: PyMassSpec
+copyright_years: "2019-2020"
+author: "Dominic Davis-Foster"
+rtfd_author: "PyMassSpec Authors"
+email: "dominic@davis-foster.co.uk"
+# Original Author Sean O'Callaghan <spoc@unimelb.edu.au>
+version: "2.2.21"
+username: "domdfcoding"
+license: 'GPLv2'
+short_desc: 'Python Toolkit for Mass Spectrometry'
+conda_description: 'Python Toolkit for Mass Spectrometry'
+travis_site: "org"
+
+#enable_conda: False
+
+conda_channels:
+  - bioconda
+  - conda-forge
+  - domdfcoding
+
+python_deploy_version: 3.6
+
+# Versions to run tests for
+python_versions:
+  - '3.6'
+  - '3.7'
+  - '3.8'
+
+# travis secure password for PyPI
+travis_pypi_secure: "c8kiGOCPwUvcXtgyY++1cRqhzxc0HGRolbiHRNZO9N8oOxX79poRvwbI/D0eW94xXWGF9V9MoKhalDvxq/jQ/AU7YMg0qnaQhleBkxSJGvEC3QSxUpiG4JOtuxJIdFXGEuH2chwqY9YLK2XyBT7NFkz8qXBvB3FVb42H7d3SCE5FWURETnq4srJknblEwNKepQeKcRrN4cyrBRbMQrn3nzdU5L0XdaO+Cy9GbCV+vhJyMuUI0YYxnpPZz6/y7X5lqSzxzkXIwaxQAazhQFSKB5vEmR0BF3DZmYl62TDNY6hUtjvrfn0mWQEIXqG8iU7g0wU/XvpqLfyO4+y3604d50gEx3G0y5wpVG7iyllsos6iLKX4spomo1qQGoEkE/Sp8EeNGP3y/iBg3uBEq54CYG5wR9QYUWqOhuh9lziJRhUpq+t1P0FOfkM8cSXGvdr9tCjStrDeac2syLKindVZy1Juc5grdJi5q686SCT7Ts46wRR4YWDxurjzDWyIvMpnRI7OXuEziPgLmeT7jRPNP3TKWcGQNuDFQ1SlPDBgaGIRO85AGpTwImXiRQMlO95emhvCVwvG+3rAvXuRpPkrJvx2XL8trDIPXqGcXkXohw/2n7jbZ4HjCUNNgZZxkyokgVbp5UL1M861KhWjIrylis4ReTt+t66Ab8kB9vSNESM="
+
+# additional lines for MANIFEST.in
+#manifest_additional:
+#  -
+
+classifiers:
+  - "Development Status :: 5 - Production/Stable"
+#  - "Development Status :: 6 - Mature"
+#  - "Development Status :: 7 - Inactive"
+  - 'Intended Audience :: Developers'
+  - "Intended Audience :: Education"
+  - "Intended Audience :: End Users/Desktop"
+  - "Intended Audience :: Science/Research"
+  - 'Operating System :: OS Independent'
+  - "Topic :: Education"
+  - "Topic :: Scientific/Engineering :: Bio-Informatics"
+  - "Topic :: Scientific/Engineering :: Chemistry"
+  - "Topic :: Software Development :: Libraries :: Python Modules"
+
+
+additional_ignore:
+  - Scribble
+  - "*/output"
+  - "**/nist_jdx_files"
+
+extra_sphinx_extensions:
+  - 'autodocsumm'
+  - 'nbsphinx'
+  - 'enum_tools.autoenum'
+  - sphinx.ext.autosectionlabel
+
+html_theme_options:  # Must be strings to preserve booleans
+  includehidden: False
+
+sphinx_conf_preamble:
+  # Built rst from jupyter notebooks
+  - import ipynb2rst
+  - nitpicky = True
+  - "exclude_patterns = ['../pyms-demo/old/', 'demo_rst/reading_andi.rst', 'chapter09.rst', 'chapter10.rst']"
+
+exclude_files:
+  - pre-commit
+
+enable_devmode: false

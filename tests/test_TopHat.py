@@ -21,12 +21,12 @@
 # 3rd party
 import pytest
 
-# pyms
+# this package
 from pyms.IntensityMatrix import IntensityMatrix
 from pyms.IonChromatogram import IonChromatogram
 from pyms.TopHat import tophat, tophat_im
 
-# tests
+# this package
 from .constants import *
 
 
@@ -62,19 +62,23 @@ class TestErrors:
 
 	@pytest.mark.parametrize("obj", [test_string, *test_numbers, *test_sequences])
 	class TestobjErrors:
+
 		def test_im_errors(self, obj):
 			with pytest.raises(TypeError):
-				tophat_im(obj, "1m")
+				tophat_im(obj, "1m")  # type: ignore
 
 		def test_ic_errors(self, obj):
 			with pytest.raises(TypeError):
-				tophat(obj, "1m")
+				tophat(obj, "1m")  # type: ignore
 
-	@pytest.mark.parametrize("struct, expects", [
-			(test_float, TypeError),
-			(test_string, ValueError),
-			] + [(struct, TypeError) for struct in test_sequences])
+	@pytest.mark.parametrize(
+			"struct, expects", [
+					(test_float, TypeError),
+					(test_string, ValueError),
+					] + [(struct, TypeError) for struct in test_sequences]
+			)
 	class TeststructErrors:
+
 		def test_im_errors(self, im, struct, expects):
 			with pytest.raises(expects):
 				tophat_im(im, struct)

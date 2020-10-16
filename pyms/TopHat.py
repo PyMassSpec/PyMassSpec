@@ -25,86 +25,80 @@ Top-hat baseline corrector
 
 # stdlib
 import copy
+from typing import Optional, Union
 
 # 3rd party
-import numpy
-from scipy import ndimage
+import numpy  # type: ignore
+from scipy import ndimage  # type: ignore
 
 # this package
 from pyms.GCMS.Function import ic_window_points
 from pyms.IntensityMatrix import IntensityMatrix
 from pyms.IonChromatogram import IonChromatogram
 
+__all__ = ["tophat", "tophat_im"]
 
 # default structural element as a fraction of total number of points
 _STRUCT_ELM_FRAC = 0.2
 
 
-def tophat(ic, struct=None):
-    """
-    Top-hat baseline correction on Ion Chromatogram
+def tophat(ic: IonChromatogram, struct: Union[int, str, None] = None):
+	"""
+	Top-hat baseline correction on Ion Chromatogram
 
-    :param ic: The input ion chromatogram
-    :type ic: pyms.IonChromatogram.IonChromatogram
-    :param struct: Top-hat structural element as time string
-    :type struct: int or str or NoneType, optional
+	:param ic: The input ion chromatogram
+	:param struct: Top-hat structural element as time string
 
-    :return: Top-hat corrected ion chromatogram
-    :rtype: pyms.IonChromatogram.IonChromatogram
+	:return: Top-hat corrected ion chromatogram
 
-    :author: Woon Wai Keen
-    :author: Vladimir Likic
-    :author: Dominic Davis-Foster (type assertions)
-    """
+	:authors: Woon Wai Keen, Vladimir Likic, Dominic Davis-Foster (type assertions)
+	"""
 
-    if not isinstance(ic, IonChromatogram):
-        raise TypeError("'ic' must be an IonChromatogram object")
+	if not isinstance(ic, IonChromatogram):
+		raise TypeError("'ic' must be an IonChromatogram object")
 
-    ia = copy.deepcopy(ic.intensity_array)
+	ia = copy.deepcopy(ic.intensity_array)
 
-    if struct:
-        struct_pts = ic_window_points(ic, struct)
-    else:
-        struct_pts = int(round(ia.size * _STRUCT_ELM_FRAC))
+	if struct:
+		struct_pts = ic_window_points(ic, struct)
+	else:
+		struct_pts = int(round(ia.size * _STRUCT_ELM_FRAC))
 
-    #    print(" -> Top-hat: structural element is %d point(s)" % ( struct_pts ))
+	# print(f" -> Top-hat: structural element is {struct_pts:d} point(s)")
 
-    str_el = numpy.repeat([1], struct_pts)
-    ia = ndimage.white_tophat(ia, footprint=str_el)
+	str_el = numpy.repeat([1], struct_pts)
+	ia = ndimage.white_tophat(ia, footprint=str_el)
 
-    ic_bc = copy.deepcopy(ic)
-    ic_bc.intensity_array = ia
+	ic_bc = copy.deepcopy(ic)
+	ic_bc.intensity_array = ia
 
-    return ic_bc
+	return ic_bc
 
 
-def tophat_im(im, struct=None):
-    """
-    Top-hat baseline correction on Intensity Matrix
+def tophat_im(im: IntensityMatrix, struct: Optional[str] = None):
+	"""
+	Top-hat baseline correction on Intensity Matrix
 
-    Wraps around the TopHat function above
+	Wraps around the TopHat function above
 
-    :param im: The input Intensity Matrix
-    :type im: pyms.IntensityMatrix.IntensityMatrix
-    :param struct: Top-hat structural element as time string
-    :type struct: str
+	:param im: The input Intensity Matrix
+	:param struct: Top-hat structural element as time string
 
-    :return: Top-hat corrected IntensityMatrix Matrix
-    :rtype: pyms.IntensityMatrix.IntensityMatrix
+	:return: Top-hat corrected IntensityMatrix Matrix
 
-    :author: Sean O'Callaghan
-    """
+	:author: Sean O'Callaghan
+	"""
 
-    if not isinstance(im, IntensityMatrix):
-        raise TypeError("'im' must be an IntensityMatrix object")
+	if not isinstance(im, IntensityMatrix):
+		raise TypeError("'im' must be an IntensityMatrix object")
 
-    n_scan, n_mz = im.size
+	n_scan, n_mz = im.size
 
-    im_smooth = copy.deepcopy(im)
+	im_smooth = copy.deepcopy(im)
 
-    for ii in range(n_mz):
-        ic = im_smooth.get_ic_at_index(ii)
-        ic_smooth = tophat(ic, struct)
-        im_smooth.set_ic_at_index(ii, ic_smooth)
+	for ii in range(n_mz):
+		ic = im_smooth.get_ic_at_index(ii)
+		ic_smooth = tophat(ic, struct)
+		im_smooth.set_ic_at_index(ii, ic_smooth)
 
-    return im_smooth
+	return im_smooth

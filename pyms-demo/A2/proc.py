@@ -43,7 +43,7 @@ for ii in range(n_mz):
     ic_smooth = savitzky_golay(ic)
     ic_bc = tophat(ic_smooth, struct="1.5m")
     im.set_ic_at_index(ii, ic_bc)
-    
+
 # Detect Peaks
 peak_list = BillerBiemann(im, points=15, scans=3)
 print("Number of peaks found: ", len(peak_list))
@@ -73,7 +73,7 @@ print("Peak areas")
 print("UID, RT, height, area")
 for peak in new_peak_list:
     rt = peak.rt
-    
+
     # determine and set area
     area = peak_sum_area(im, peak)
     peak.area = area
@@ -81,22 +81,22 @@ for peak in new_peak_list:
     # print some details
     UID = peak.UID
     # height as sum of the intensities of the apexing ions
-    height = sum(peak.get_mass_spectrum().mass_spec.tolist())
+    height = sum(peak.mass_spectrum.mass_spec.tolist())
     print(UID + f", {rt:.2f}, {height:.2f}, {peak.area:.2f}")
 
 # TIC from raw data
-tic = data.get_tic()
+tic = data.tic
 # baseline correction for TIC
 tic_bc = tophat(tic, struct="1.5m")
 
 # Get Ion Chromatograms for all m/z channels
-n_mz = len(im.get_mass_list())
+n_mz = len(im.mass_list)
 ic_list = []
 
 for m in range(n_mz):
     ic_list.append(im.get_ic_at_index(m))
 
-# Create a new display object, this time plot the ICs 
+# Create a new display object, this time plot the ICs
 # and the TIC, as well as the peak list
 display = Display()
 display.plot_tic(tic_bc, 'TIC BC')

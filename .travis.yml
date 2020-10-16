@@ -1,21 +1,25 @@
-# This file is managed by `git_helper`. Don't edit it directly
+# This file is managed by 'repo_helper'. Don't edit it directly.
+---
 
 language: python
-dist: xenial
+dist: focal
 cache: pip
 python:
   - '3.6'
   - '3.7'
   - '3.8'
 
+arch:
+  - amd64
+  - arm64
 install:
 
-  - pip install pip  --upgrade
+  - pip install --upgrade pip
   - pip install tox tox-travis
-  - pip install coveralls
+  - pip install coveralls coverage_pyver_pragma
 
 script:
-  - tox
+  - tox -vv
 after_success:
   - coveralls
 
@@ -24,10 +28,23 @@ stages:
   - test
   - deploy_pypi
   - deploy_conda
-  - deploy_releases
+
 
 jobs:
+  allow_failures:
+    - arch: arm64
+
+  exclude:
+    - python: '3.7'
+      arch: arm64
+    - python: '3.8'
+      arch: arm64
+
   include:
+    - stage: test
+      dist: bionic
+      python: 3.8
+
     - stage: deploy_pypi
       python: "3.6"
       script: skip
@@ -53,18 +70,5 @@ jobs:
         - chmod +x .ci/travis_deploy_conda.sh
       script: skip
       deploy:
-        on:
-          repo: domdfcoding/PyMassSpec
         provider: script
         script: .ci/travis_deploy_conda.sh || return 1;
-
-    - stage: deploy_releases
-      python: "3.6"
-      install:
-        - pip install PyGithub requests
-      script: skip
-      deploy:
-        on:
-          repo: domdfcoding/PyMassSpec
-        provider: script
-        script: python .ci/copy_pypi_2_github.py || return 1;

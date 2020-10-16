@@ -54,7 +54,7 @@ for peak in new_peak_list:
     if rt >= 29.5*60.0 and rt <= 32.5*60.0:
         # determine and set ion areas, use default num of ions =5
         areas_dict = peak_top_ion_areas(im, peak)
-        peak.set_ion_areas(areas_dict)
+        peak.ion_areas = areas_dict
 
         area_dict = peak.ion_areas
         # print the top 5 ions for each peak

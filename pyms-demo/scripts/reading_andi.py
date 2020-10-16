@@ -2,12 +2,12 @@
 # coding: utf-8
 
 # # Example: Reading ANDI GC-MS data
-# 
+#
 # The PyMS package |pyms.GCMS.IO.ANDI| provides capabilities to read the raw
 # GC-MS data stored in the ANDI-MS format.
-# 
-# 
-# First, setup the paths to the datafile and the output directory, 
+#
+#
+# First, setup the paths to the datafile and the output directory,
 # then import AMDI_reader
 
 # In[1]:
@@ -33,17 +33,17 @@ print(data)
 
 
 # ### A GCMS_data Object
-# 
+#
 # The object ``data`` (from the two previous examples) stores the raw data as a
-# |pyms.GCMS.Class.GCMS_data| object. 
+# |pyms.GCMS.Class.GCMS_data| object.
 # Within the |GCMS_data|
-# object, raw data are stored as a list of 
-# |pyms.Spectrum.Scan| objects and a list of 
-# retention times. There are several methods available to access data and 
+# object, raw data are stored as a list of
+# |pyms.Spectrum.Scan| objects and a list of
+# retention times. There are several methods available to access data and
 # attributes of the |GCMS_data|
 # and |Scan| objects.
-# 
-# The |GCMS_data| object's methods relate to the raw data. 
+#
+# The |GCMS_data| object's methods relate to the raw data.
 # The main properties relate to the masses, retention times and scans. For example, the
 # minimum and maximum mass from all of the raw data can be returned by the
 # following:
@@ -69,7 +69,7 @@ print(data.time_list[:10])
 
 
 # The index of a specific retention time (in seconds) can be returned with:
-# 
+#
 
 # In[6]:
 
@@ -79,7 +79,7 @@ data.get_index_at_time(400.0)
 
 # Note that this returns the index of the retention time in the
 # data closest to the given retention time of 400.0 seconds.
-# 
+#
 # The |GCMS_data.tic| attribute
 # returns a total ion chromatogram (TIC) of the data
 # as an |IonChromatogram| object:
@@ -91,13 +91,13 @@ print(data.tic)
 
 
 # The |IonChromatogram| object is explained in a later example.
-# 
+#
 # ### A Scan Object
-# 
-# A |pyms.Spectrum.Scan| object contains a list of masses and a corresponding list of intensity values 
-# from a single mass-spectrum scan in the raw data. Typically only non-zero (or non-threshold) intensities and 
+#
+# A |pyms.Spectrum.Scan| object contains a list of masses and a corresponding list of intensity values
+# from a single mass-spectrum scan in the raw data. Typically only non-zero (or non-threshold) intensities and
 # corresponding masses are stored in the raw data.
-# 
+#
 # A list of the first 10 |pyms.Spectrum.Scan| objects can be returned with:
 
 # In[8]:
@@ -139,14 +139,14 @@ print(scans[0].max_mass)
 
 
 # ### Exporting data and obtaining information about a data set
-# 
+#
 # Often it is of interest to find out some basic information about the
 # data set, e.g. the number of scans, the retention time range, and
 # m/z range and so on. The |GCMS_data|
 # class provides a method |info()|
 # that can be used for this purpose.
-# 
-# The entire raw data of a |GCMS_data| object can be exported to a file 
+#
+# The entire raw data of a |GCMS_data| object can be exported to a file
 # with the method |write()|:
 
 # In[13]:

@@ -27,13 +27,13 @@ print("retention time of 1st scan: ", time[0], "sec")
 print("index of 400sec in time_list: ", data.get_index_at_time(400.0))
 
 # TIC
-tic = data.get_tic()
+tic = data.tic
 print(tic)
 print("number of scans in TIC: ", len(tic))
 print("start time of TIC: ", tic.get_time_at_index(0), "sec")
 
 # raw scans
-scans = data.get_scan_list()
+scans = data.scan_list
 print(scans)
 print(scans[0].mass_list)
 print("1st mass value for 1st scan: ", scans[0].mass_list[0])

@@ -3,6 +3,4 @@
 **********************
 
 .. automodule:: pyms.Mixins
-	:members:
-	:inherited-members:
-	:autosummary:
+	:undoc-members:

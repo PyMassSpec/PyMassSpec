@@ -2,9 +2,9 @@
 # coding: utf-8
 
 # # Pre-processing the IntensityMatrix
-# 
+#
 # Noise smoothing and baseline correction can be applied to each |IonChromatogram| in an |IntensityMatrix|.
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import the required functions.
 
 # In[1]:
@@ -33,7 +33,7 @@ im = build_intensity_matrix(data)
 
 
 # Perform Savitzky-Golay smoothing and Tophat baseline correction
-# 
+#
 
 # In[4]:
 
@@ -51,4 +51,4 @@ for ii in range(n_mz):
 # Alternatively, the filtering may be performed on the |IntensityMatrix| without
 # using a ``for`` loop, as outlined in previous examples. However filtering by
 # |IonChromatogram| in a ``for`` loop as described here is much faster.
-# 
+#

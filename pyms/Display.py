@@ -25,19 +25,32 @@ Class to Display Ion Chromatograms and TIC
 
 # stdlib
 import warnings
+from typing import Dict, List, Optional, Tuple
 
 # 3rd party
-import deprecation
-import matplotlib
-import matplotlib.pyplot as plt
+import deprecation  # type: ignore
+import matplotlib  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
 from matplotlib import axes, figure
+from matplotlib.axes import Axes  # type: ignore
+from matplotlib.container import BarContainer  # type: ignore
+from matplotlib.lines import Line2D  # type: ignore
 
 # this package
-from pyms import __version__
+from pyms import Peak, __version__
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Peak.List.Function import is_peak_list
 from pyms.Spectrum import MassSpectrum, normalize_mass_spec
 
+__all__ = [
+		"Display",
+		"plot_ic",
+		"plot_mass_spec",
+		"plot_head2tail",
+		"plot_peaks",
+		"ClickEventHandler",
+		"invert_mass_spec",
+		]
 
 default_filetypes = ["png", "pdf", "svg"]
 
@@ -48,9 +61,9 @@ class Display:
 	:class:`pyms.IonChromatogram.IonChromatogram` using :mod:`matplotlib.pyplot`.
 
 	:param fig: figure object to use
-	:type fig: matplotlib.figure.Figure, optional
+	:type fig: matplotlib.figure.Figure
 	:param ax: axes object to use
-	:type ax: matplotlib.axes.Axes, optional
+	:type ax: matplotlib.axes.Axes
 
 	If ``fig`` is not given then ``fig`` and ``ax`` default to:
 
@@ -68,8 +81,11 @@ class Display:
 	"""
 
 	@deprecation.deprecated(
-			"2.2.8", "2.3.0", current_version=__version__,
-			details="Functionality has moved to other functions and classes in this module.")
+			"2.2.8",
+			"2.3.0",
+			current_version=__version__,
+			details="Functionality has moved to other functions and classes in this module.",
+			)
 	def __init__(self, fig=None, ax=None):
 		"""
 		Initialises an instance of Display class
@@ -97,7 +113,7 @@ class Display:
 		# Peak list container
 		self.__peak_list = []
 
-	def do_plotting(self, plot_label=None):
+	def do_plotting(self, plot_label: Optional[str] = None):
 		"""
 		Plots TIC and IC(s) if they have been created by
 		:meth:`~pyms.Display.Display.plot_tic` or
@@ -107,13 +123,15 @@ class Display:
 		:meth:`~pyms.Display.Display.plot_peaks`
 
 		:param plot_label: Label for the plot to show e.g. the data origin
-		:type plot_label: str, optional
 		"""
 
 		# if no plots have been created advise user
 		if len(self.__tic_ic_plots) == 0:
-			warnings.warn("""No plots have been created.
-Please call a plotting function before calling 'do_plotting()'""", UserWarning)
+			warnings.warn(
+					"""No plots have been created.
+Please call a plotting function before calling 'do_plotting()'""",
+					UserWarning,
+					)
 			return
 
 		if plot_label is not None:
@@ -130,7 +148,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 	# plt.show()
 
 	@staticmethod
-	def get_5_largest(intensity_list):
+	def get_5_largest(intensity_list: List) -> List:
 		"""
 		Computes the indices of the largest 5 ion intensities for writing to console
 
@@ -172,8 +190,8 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		for peak in self.__peak_list:
 			# if event.xdata > 0.9999*peak.rt and event.xdata < 1.0001*peak.rt:
 			if 0.9999 * peak.rt < event.xdata < 1.0001 * peak.rt:
-				intensity_list = peak.get_mass_spectrum().mass_spec
-				mass_list = peak.get_mass_spectrum().mass_list
+				intensity_list = peak.mass_spectrum.mass_spec
+				mass_list = peak.mass_spectrum.mass_list
 
 		largest = self.get_5_largest(intensity_list)
 
@@ -187,9 +205,10 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		# Check if a button other than left was pressed, if so plot mass spectrum
 		# Also check that a peak was selected, not just whitespace
 		if event.button != 1 and len(intensity_list) != 0:
-			self.plot_mass_spec(event.xdata, mass_list, intensity_list)
+			# self.plot_mass_spec(event.xdata, mass_list, intensity_list)
+			self.plot_mass_spec(MassSpectrum(mass_list, intensity_list))
 
-	def plot_ic(self, ic, **kwargs):
+	def plot_ic(self, ic: IonChromatogram, **kwargs):
 		"""
 		Plots an Ion Chromatogram
 
@@ -212,7 +231,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		self.__tic_ic_plots.append(plot)
 		return plot
 
-	def plot_mass_spec(self, mass_spec, **kwargs):
+	def plot_mass_spec(self, mass_spec: MassSpectrum, **kwargs):
 		"""
 		Plots a Mass Spectrum
 
@@ -235,15 +254,12 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		plot = plot_mass_spec(self.ax, mass_spec, **kwargs)
 		return plot
 
-	def plot_peaks(self, peak_list, label="Peaks"):
+	def plot_peaks(self, peak_list: List[Peak.Peak], label: str = "Peaks"):
 		"""
 		Plots the locations of peaks as found by PyMassSpec.
 
 		:param peak_list: List of peaks to plot
-		:type peak_list: :class:`list` of :class:`pyms.Peak.Class.Peak` objects
-
-		:param label: label for plot legend. Default ``Peaks``
-		:type label: str, optional
+		:param label: label for plot legend.
 		"""
 
 		plot = plot_peaks(self.ax, peak_list, label)
@@ -253,14 +269,12 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 
 		return plot
 
-	def plot_tic(self, tic, minutes=False, **kwargs):
+	def plot_tic(self, tic: IonChromatogram, minutes: bool = False, **kwargs):
 		"""
 		Plots a Total Ion Chromatogram
 
 		:param tic: Total Ion Chromatogram
-		:type tic: :class:`pyms.IonChromatogram.IonChromatogram`
-		:param minutes: Whether to show the time in minutes. Default ``False``
-		:type minutes: bool, optional
+		:param minutes: Whether to show the time in minutes.
 
 		:Other Parameters: :class:`matplotlib.lines.Line2D` properties.
 			Used to specify properties like a line label (for auto legends),
@@ -281,14 +295,12 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		self.__tic_ic_plots.append(plot)
 		return plot
 
-	def save_chart(self, filepath, filetypes=None):
+	def save_chart(self, filepath: str, filetypes: Optional[List[str]] = None):
 		"""
 		Save the chart to the given path with the given filetypes
 
 		:param filepath: Path and filename to save the chart as. Should not include extension
-		:type filepath: str
 		:param filetypes: List of filetypes to use
-		:type filetypes: :class:`list` of :class:`str`, optional
 
 		:author: Dominic Davis-Foster
 		"""
@@ -302,7 +314,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 
 		for filetype in filetypes:
 			# plt.savefig(filepath + ".{}".format(filetype))
-			self.fig.savefig(filepath + ".{}".format(filetype))
+			self.fig.savefig(filepath + f".{filetype}")
 		plt.close()
 
 	def show_chart(self):
@@ -319,7 +331,7 @@ Please call a plotting function before calling 'do_plotting()'""", UserWarning)
 		plt.close()
 
 
-def plot_ic(ax, ic, minutes=False, **kwargs):
+def plot_ic(ax: matplotlib.axes.Axes, ic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:
 	"""
 	Plots an Ion Chromatogram
 
@@ -328,7 +340,6 @@ def plot_ic(ax, ic, minutes=False, **kwargs):
 	:param ic: Ion Chromatograms m/z channels for plotting
 	:type ic: pyms.IonChromatogram.IonChromatogram
 	:param minutes: Whether the x-axis should be plotted in minutes. Default False (plotted in seconds)
-	:type minutes: bool, optional
 
 	:Other Parameters: :class:`matplotlib.lines.Line2D` properties.
 		Used to specify properties like a line label (for auto legends),
@@ -361,7 +372,7 @@ def plot_ic(ax, ic, minutes=False, **kwargs):
 	return plot
 
 
-def plot_mass_spec(ax, mass_spec, **kwargs):
+def plot_mass_spec(ax: Axes, mass_spec: MassSpectrum, **kwargs) -> BarContainer:
 	"""
 	Plots a Mass Spectrum
 
@@ -416,7 +427,13 @@ def plot_mass_spec(ax, mass_spec, **kwargs):
 	return plot
 
 
-def plot_head2tail(ax, top_mass_spec, bottom_mass_spec, top_spec_kwargs=None, bottom_spec_kwargs=None):
+def plot_head2tail(
+		ax: Axes,
+		top_mass_spec: MassSpectrum,
+		bottom_mass_spec: MassSpectrum,
+		top_spec_kwargs: Optional[Dict] = None,
+		bottom_spec_kwargs: Optional[Dict] = None,
+		) -> Tuple[BarContainer, BarContainer]:
 	"""
 	Plots two Mass Spectra head to tail
 
@@ -429,10 +446,8 @@ def plot_head2tail(ax, top_mass_spec, bottom_mass_spec, top_spec_kwargs=None, bo
 	:type bottom_mass_spec: :class:`pyms.Spectrum.MassSpectrum` or None, optional
 	:param top_spec_kwargs: A dictionary of keyword arguments for the top mass spectrum.
 		Defaults to red with a line width of 0.5
-	:type top_spec_kwargs: dict, optional
 	:param bottom_spec_kwargs: A dictionary of keyword arguments for the bottom mass spectrum.
 	Defaults to blue with a line width of 0.5
-	:type bottom_spec_kwargs: dict, optional
 
 	`top_spec_kwargs` and `bottom_spec_kwargs` are used to specify properties like a line label
 		(for auto legends), linewidth, antialiasing, marker face color.
@@ -458,7 +473,9 @@ def plot_head2tail(ax, top_mass_spec, bottom_mass_spec, top_spec_kwargs=None, bo
 	if bottom_spec_kwargs is None:
 		bottom_spec_kwargs = dict(color="blue", width=0.5)
 	elif not isinstance(bottom_spec_kwargs, dict):
-		raise TypeError("'bottom_spec_kwargs' must be a dictionary of keyword arguments for the bottom mass spectrum.")
+		raise TypeError(
+				"'bottom_spec_kwargs' must be a dictionary of keyword arguments for the bottom mass spectrum."
+				)
 
 	# Plot a line at y=0 with same width and colour as Spines
 	ax.axhline(y=0, color=ax.spines['bottom'].get_edgecolor(), linewidth=ax.spines['bottom'].get_linewidth())
@@ -484,7 +501,7 @@ def plot_head2tail(ax, top_mass_spec, bottom_mass_spec, top_spec_kwargs=None, bo
 	return top_plot, bottom_plot
 
 
-def plot_peaks(ax, peak_list, label="Peaks", style="o"):
+def plot_peaks(ax: Axes, peak_list: List[Peak.Peak], label: str = "Peaks", style: str = "o") -> List[Line2D]:
 	"""
 	Plots the locations of peaks as found by PyMassSpec.
 
@@ -492,10 +509,8 @@ def plot_peaks(ax, peak_list, label="Peaks", style="o"):
 	:type ax: matplotlib.axes.Axes
 	:param peak_list: List of peaks to plot
 	:type peak_list: :class:`list` of :class:`pyms.Peak.Class.Peak` objects
-	:param label: label for plot legend. Default ``Peaks``
-	:type label: str, optional
+	:param label: label for plot legend.
 	:param style: The marker style. See `https://matplotlib.org/3.1.1/api/markers_api.html` for a complete list
-	:type style: str
 
 	:return: A list of Line2D objects representing the plotted data.
 	:rtype: list of :class:`matplotlib.lines.Line2D`
@@ -517,12 +532,13 @@ def plot_peaks(ax, peak_list, label="Peaks", style="o"):
 	else:
 		for peak in peak_list:
 			time_list.append(peak.rt)
-			height_list.append(sum(peak.get_mass_spectrum().intensity_list))
+			height_list.append(sum(peak.mass_spectrum.intensity_list))
 			# height_list.append(peak.height)
-			# print(peak.height - sum(peak.get_mass_spectrum().intensity_list))
+			# print(peak.height - sum(peak.mass_spectrum.intensity_list))
 			# print(sum(peak.mass_spectrum.intensity_list))
 
 		return ax.plot(time_list, height_list, style, label=label)
+
 
 # TODO: Change order of arguments and use plt.gca() a la pyplot
 
@@ -571,8 +587,8 @@ class ClickEventHandler:
 		for peak in self.peak_list:
 			# if event.xdata > 0.9999*peak.rt and event.xdata < 1.0001*peak.rt:
 			if self._min * peak.rt < event.xdata < self._max * peak.rt:
-				intensity_list = peak.get_mass_spectrum().mass_spec
-				mass_list = peak.get_mass_spectrum().mass_list
+				intensity_list = peak.mass_spectrum.mass_spec
+				mass_list = peak.mass_spectrum.mass_list
 
 				largest = self.get_n_largest(intensity_list)
 
@@ -589,10 +605,10 @@ class ClickEventHandler:
 					if self.ms_fig is None:
 						self.ms_fig, self.ms_ax = plt.subplots(1, 1)
 					else:
-						self.ms_ax.clear()
+						self.ms_ax.clear()  # type: ignore
 
-					plot_mass_spec(self.ms_ax, peak.get_mass_spectrum())
-					self.ms_ax.set_title(f"Mass Spectrum at RT {peak.rt}")
+					plot_mass_spec(self.ms_ax, peak.mass_spectrum)
+					self.ms_ax.set_title(f"Mass Spectrum at RT {peak.rt}")  # type: ignore
 					self.ms_fig.show()
 				# TODO: Add multiple MS to same plot window and add option to close one of them
 				# TODO: Allow more interaction with MS, e.g. adjusting mass range?
@@ -601,7 +617,7 @@ class ClickEventHandler:
 		# if the selected point is not close enough to peak
 		print("No Peak at this point")
 
-	def get_n_largest(self, intensity_list):
+	def get_n_largest(self, intensity_list: List) -> List:
 		"""
 		Computes the indices of the largest n ion intensities for writing to console
 
@@ -629,7 +645,7 @@ class ClickEventHandler:
 		return largest
 
 
-def invert_mass_spec(mass_spec, inplace=False):
+def invert_mass_spec(mass_spec: MassSpectrum, inplace: bool = False) -> MassSpectrum:
 	"""
 	Invert the mass spectrum for display in a head2tail plot.
 
@@ -637,7 +653,6 @@ def invert_mass_spec(mass_spec, inplace=False):
 	:type mass_spec: :class:`pyms.Spectrum.MassSpectrum`
 	:param inplace: Whether the inversion should be applied to the
 		:class:`~pyms.Spectrum.MassSpectrum` object given, or to a copy (default behaviour).
-	:type inplace: bool, optional.
 
 	:return: The normalized mass spectrum
 	:rtype: :class:`pyms.Spectrum.MassSpectrum`

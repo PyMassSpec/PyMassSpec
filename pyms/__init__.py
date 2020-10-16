@@ -23,7 +23,6 @@ The root of the package pyms
 #                                                                              #
 ################################################################################
 
-
 # from pyms import Baseline, Deconvolution, Display, Experiment, Gapfill, GCMS, Noise, Peak, Simulator, Utils
 
 name = "PyMassSpec"

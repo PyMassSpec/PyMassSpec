@@ -26,29 +26,30 @@ Provides conversion and information functions for GC-MS data objects
 # stdlib
 import math
 import sys
+from typing import Union
 
 # this package
+from pyms import IonChromatogram
+from pyms.GCMS.Class import GCMS_data
 from pyms.Utils.Math import rmsd
 from pyms.Utils.Time import time_str_secs
 
+__all__ = ["diff", "ic_window_points"]
 
-def diff(data1, data2):
+
+def diff(data1: GCMS_data, data2: GCMS_data):
 	"""
 	Compares two GCMS_data objects
 
 	:param data1: GCMS data set 1
-	:type data1: pyms.GCMS.Class.GCMS_data
 	:param data2: GCMS data set 2
-	:type data2: pyms.GCMS.Class.GCMS_data
 
-	:author: Qiao Wang
-	:author: Andrew Isaac
-	:author: Vladimir Likic
+	:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 	"""
 
 	# get time attributes
-	time_list1 = data1.get_time_list()
-	time_list2 = data2.get_time_list()
+	time_list1 = data1.time_list
+	time_list2 = data2.time_list
 
 	# First, check if two data sets have the same number of retention times.
 	if len(time_list1) != len(time_list2):
@@ -66,8 +67,8 @@ def diff(data1, data2):
 	print(" Checking for consistency in scan lengths ...", end='')
 	sys.stdout.flush()
 
-	scan_list1 = data1.get_scan_list()
-	scan_list2 = data2.get_scan_list()
+	scan_list1 = data1.scan_list
+	scan_list2 = data2.scan_list
 
 	if not len(scan_list1) == len(scan_list2):
 		# since the number of rention times are the same, this indicated
@@ -77,8 +78,8 @@ def diff(data1, data2):
 	for ii in range(len(scan_list1)):
 		scan1 = scan_list1[ii]
 		scan2 = scan_list2[ii]
-		mass_list1 = scan1.get_mass_list()
-		mass_list2 = scan2.get_mass_list()
+		mass_list1 = scan1.mass_list
+		mass_list2 = scan2.mass_list
 		if len(mass_list1) != len(mass_list2):
 			print(f"\n Different number of points detected in scan no. {ii:d}")
 			print(" Data sets are different.")
@@ -96,10 +97,10 @@ def diff(data1, data2):
 	for ii in range(len(scan_list1)):
 		scan1 = scan_list1[ii]
 		scan2 = scan_list2[ii]
-		mass_list1 = scan1.get_mass_list()
-		mass_list2 = scan2.get_mass_list()
-		intensity_list1 = scan1.get_intensity_list()
-		intensity_list2 = scan2.get_intensity_list()
+		mass_list1 = scan1.mass_list
+		mass_list2 = scan2.mass_list
+		intensity_list1 = scan1.intensity_list
+		intensity_list2 = scan2.intensity_list
 		mass_rmsd = rmsd(mass_list1, mass_list2)
 		if mass_rmsd > max_mass_rmsd:
 			max_mass_rmsd = mass_rmsd
@@ -111,20 +112,21 @@ def diff(data1, data2):
 	print(f"   Max intensity RMSD: {max_intensity_rmsd:.2e}")
 
 
-def ic_window_points(ic, window_sele, half_window=False):
+def ic_window_points(
+		ic: IonChromatogram.IonChromatogram,
+		window_sele: Union[int, str],
+		half_window: bool = False,
+		):
 	"""
 	Converts the window selection parameter into points based on the
 	time step in an ion chromatogram.
 
 	:param ic: ion chromatogram object relevant for the conversion
-	:type ic: pyms.IO.Class.IonChromatogram
 	:param window_sele: The window selection parameter. This can be an
-		integer or time string. If integer, taken as the number of points.
-		If a string, must of the form "<NUMBER>s" or "<NUMBER>m",
+		integer or time string. If an integer, taken as the number of points.
+		If a string, must of the form ``'<NUMBER>s'`` or ``'<NUMBER>m'``,
 		specifying a time in seconds or minutes, respectively
-	:type window_sele: int or str
 	:param half_window: Specifies whether to return half-window
-	:type half_window: bool, optional
 
 	:author: Vladimir Likic
 	"""

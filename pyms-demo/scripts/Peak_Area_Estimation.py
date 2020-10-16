@@ -2,25 +2,25 @@
 # coding: utf-8
 
 # # Peak Area Estimation
-# 
+#
 # The |Peak| object does not contain any information about the width or area of
-# the peak when it is first created. This information can be added after the 
-# instantiation of a Peak object. The area of the peak can be set with the 
-# attribute |pyms.Peak.Class.Peak.area|, or with the method |set_ion_areas()|.
-# 
+# the peak when it is first created. This information can be added after the
+# instantiation of a Peak object. The area of the peak can be set with the
+# attribute |pyms.Peak.Class.Peak.area|.
+#
 # The total peak area can by obtained by the |peak_sum_area()| function in
 # |pyms.Peak.Function|. The function determines the total area as the sum of the
 # ion intensities for all masses that apex at the given peak. To calculate the
 # peak area of a single mass, the intensities are added from the apex of the
 # mass peak outwards.
-# 
+#
 # Edge values are added until the following conditions are met:
 # * the added intensity adds less than 0.5\% to the accumulated area; or
 # * the added intensity starts increasing (i.e. when the ion is common to
 #   co-eluting compounds).
-# 
+#
 # To avoid noise effects, the edge value is taken at the midpoint of three consecutive edge values.
-# 
+#
 # First, build the Peak list as before
 
 # In[ ]:

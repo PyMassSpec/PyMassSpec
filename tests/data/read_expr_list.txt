@@ -1,5 +1,0 @@
-tests/output/ELEY_1_SUBTRACT.expr
-tests/output/ELEY_1_SUBTRACT.expr
-tests/output/ELEY_1_SUBTRACT.expr
-tests/output/ELEY_1_SUBTRACT.expr
-tests/output/ELEY_1_SUBTRACT.expr

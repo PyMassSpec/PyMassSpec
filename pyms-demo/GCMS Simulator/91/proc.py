@@ -32,8 +32,8 @@ for ii in range(n_mz):
     ic_smooth = savitzky_golay(ic)
     ic_bc = tophat(ic_smooth, struct="1.5m")
     real_im.set_ic_at_index(ii, ic_bc)
-    
-    
+
+
 # Detect Peaks
 peak_list = BillerBiemann(real_im, points=3, scans=2)
 
@@ -72,14 +72,14 @@ for peak in real_peak_list:
 ################## Run Simulator ######################
 # Simulator takes a peak list, time_list and mass_list
 # and returns an IntensityMatrix object.
-# The mass_list and time_list are the same for the real 
+# The mass_list and time_list are the same for the real
 # data and the simulated data.
 
-time_list = real_im.get_time_list()
-mass_list = real_im.get_mass_list()
+time_list = real_im.time_list
+mass_list = real_im.mass_list
 
 sim_im = gcms_sim(time_list, mass_list, real_peak_list)
-# sim_im is an IntensityMatrix object 
+# sim_im is an IntensityMatrix object
 
 # select one ic to add noise to from this simulated intensity matrix
 

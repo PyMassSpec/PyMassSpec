@@ -22,4 +22,3 @@ several ICs, and peaks detected by PyMassSpec
 .. literalinclude:: ../../pyms-demo/71/proc_save_peaks.py
     :language: python
     :linenos:
-

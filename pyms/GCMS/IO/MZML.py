@@ -25,33 +25,34 @@ Functions for reading mzML format data files
 
 # stdlib
 import pathlib
+from typing import Union
 
 # 3rd party
-import pymzml
+import pymzml  # type: ignore
 
 try:
-	from mpi4py import MPI
+	# 3rd party
+	from mpi4py import MPI  # type: ignore
 except ModuleNotFoundError:
 	pass
 
 # this package
+from pyms.Base import is_path
 from pyms.GCMS.Class import GCMS_data
 from pyms.Spectrum import Scan
-from pyms.Base import is_path
+
+__all__ = ["mzML_reader"]
 
 
-def mzML_reader(file_name):
+def mzML_reader(file_name: Union[str, pathlib.Path]) -> GCMS_data:
 	"""
 	A reader for mzML files
 
 	:param file_name: The name of the mzML file
-	:type file_name: str or os.PathLike
 
 	:return: GC-MS data object
-	:rtype: :class:`pyms.GCMS.Class.GCMS_data`
 
-	:author: Sean O'Callaghan
-	:author: Dominic Davis-Foster (pathlib support)
+	:authors: Sean O'Callaghan, Dominic Davis-Foster (pathlib support)
 	"""
 
 	if not is_path(file_name):

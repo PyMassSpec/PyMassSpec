@@ -2,7 +2,13 @@
 PyMassSpec
 ************
 
-.. start shields 
+.. start short_desc
+
+**Python Toolkit for Mass Spectrometry**
+
+.. end short_desc
+
+.. start shields
 
 .. list-table::
 	:stub-columns: 1
@@ -19,12 +25,12 @@ PyMassSpec
 	* - Activity
 	  - |commits-latest| |commits-since| |maintained|
 	* - Other
-	  - |license| |language| |requires|
+	  - |license| |language| |requires| |pre_commit|
 
 .. |docs| image:: https://img.shields.io/readthedocs/pymassspec/latest?logo=read-the-docs
 	:target: https://pymassspec.readthedocs.io/en/latest/?badge=latest
-	:alt: Documentation Status
-	
+	:alt: Documentation Build Status
+
 .. |docs_check| image:: https://github.com/domdfcoding/PyMassSpec/workflows/Docs%20Check/badge.svg
 	:target: https://github.com/domdfcoding/PyMassSpec/actions?query=workflow%3A%22Docs+Check%22
 	:alt: Docs Check Status
@@ -57,7 +63,7 @@ PyMassSpec
 	:target: https://pypi.org/project/PyMassSpec/
 	:alt: PyPI - Package Version
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/PyMassSpec
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/PyMassSpec?logo=python&logoColor=white
 	:target: https://pypi.org/project/PyMassSpec/
 	:alt: PyPI - Supported Python Versions
 
@@ -70,16 +76,16 @@ PyMassSpec
 	:alt: PyPI - Wheel
 
 .. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/PyMassSpec?logo=anaconda
-	:alt: Conda - Package Version
 	:target: https://anaconda.org/domdfcoding/PyMassSpec
+	:alt: Conda - Package Version
 
 .. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/PyMassSpec?label=conda%7Cplatform
-	:alt: Conda - Platform
 	:target: https://anaconda.org/domdfcoding/PyMassSpec
+	:alt: Conda - Platform
 
 .. |license| image:: https://img.shields.io/github/license/domdfcoding/PyMassSpec
-	:alt: License
 	:target: https://github.com/domdfcoding/PyMassSpec/blob/master/LICENSE
+	:alt: License
 
 .. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/PyMassSpec
 	:alt: GitHub top language
@@ -95,9 +101,11 @@ PyMassSpec
 .. |maintained| image:: https://img.shields.io/maintenance/yes/2020
 	:alt: Maintenance
 
-.. end shields
+.. |pre_commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
+	:target: https://github.com/pre-commit/pre-commit
+	:alt: pre-commit
 
-A Python toolkit for processing of chromatography--mass spectrometry data
+.. end shields
 
 PyMassSpec is a Python_ package for processing gas chromatography-mass spectrometry data.
 PyMassSpec provides a framework and a set of components for rapid development and testing of methods for processing of chromatography--mass spectrometry data.
@@ -133,7 +141,7 @@ The directory structure of PyMassSpec is as follows:
     │
     ├── tests: pytest tests
     │
-    └── UserGuide: Sphinx source for documentation
+    └── doc-source: Sphinx source for documentation
 
 Features
 =========
@@ -170,16 +178,16 @@ Usage
 A tutorial illustrating various PyMassSpec features in detail is provided
 in subsequent chapters of this User Guide. The commands executed
 interactively are grouped together by example, and can be found
-:ref:`here <pyms-demo>`.
+`here <https://pymassspec.readthedocs.io/en/master/pyms-demo/introduction.html#pyms-demo>`__.
 
 .. If you are viewing this source, the examples can be found in the pyms-demo directory, and the data files in pyms-data
 
 The data used in the PyMassSpec documentation and examples is available
-:ref:`here <pyms-demo/data-files>`.
+`here <https://pymassspec.readthedocs.io/en/master/pyms-demo/data-files.html>`__.
 
-In the ":ref:`Demos and Examples <pyms-demo>`" section there
+In the "`Demos and Examples`_" section there
 is a page corresponding to each example, coded with the chapter number
-(ie. ":ref:`pyms-demo/20a/`" corresponds to the Example 20a, from Chapter 2).
+(ie. "``pyms-demo/20a/``" corresponds to the Example 20a, from Chapter 2).
 
 Each example has a script named 'proc.py' which contains the commands given in the example.
 These scripts can be run with the following command:
@@ -231,8 +239,8 @@ Further examples can be found in the `documentation`_
 Contributing
 ==============
 
-Contributions are very welcome. Tests can be run with `pytest`_. Please
-ensure the coverage is at least .. image:: https://coveralls.io/repos/github/domdfcoding/pymassspec/badge.svg?branch=master
+Contributions are very welcome. Tests can be run with `pytest`_.
+Please ensure the coverage is at least |coveralls|
 before you submit a pull request.
 
 For further information see the section `Contributing to PyMassSpec`_
@@ -255,3 +263,4 @@ detailed description.
 .. _`file an issue`: https://github.com/domdfcoding/pymassspec/issues
 .. _Python: https://www.python.org/
 .. _GPL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
+.. _Demos and Examples: https://pymassspec.readthedocs.io/en/master/pyms-demo/introduction.html#pyms-demo

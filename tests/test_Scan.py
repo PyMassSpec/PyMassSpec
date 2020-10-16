@@ -19,13 +19,13 @@
 #############################################################################
 
 # 3rd party
-import numpy
+import numpy  # type: ignore
 import pytest
 
-# pyms
+# this package
 from pyms.Spectrum import Scan
 
-# tests
+# this package
 from .constants import *
 
 
@@ -35,13 +35,16 @@ def test_scan(scan):
 	assert isinstance(scan.intensity_list, list)
 
 
-@pytest.mark.parametrize("obj, expects", [
-		(test_list_ints, ValueError),
-		(test_string, ValueError),
-		(test_list_strs, ValueError),
-		(test_int, TypeError),
-		(test_dict, TypeError),
-		])
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				(test_list_ints, ValueError),
+				(test_string, ValueError),
+				(test_list_strs, ValueError),
+				(test_int, TypeError),
+				(test_dict, TypeError),
+				]
+		)
 def test_errors(scan, obj, expects):
 	with pytest.raises(expects):
 		Scan(obj, scan.intensity_list)
@@ -59,21 +62,20 @@ def test_equality(im, scan):
 	assert scan != im.get_scan_at_index(1234)
 
 
-@pytest.mark.parametrize(
-		"val",
-		[test_list_ints, test_list_strs, test_tuple, test_string, test_int, test_float])
+@pytest.mark.parametrize("val", [test_list_ints, test_list_strs, test_tuple, test_string, test_int, test_float])
 def test_inequality(scan, val):
 	assert scan != val
 
 
 @pytest.mark.parametrize(
-		"index, mass, intensity",
-		[(5, 60.9465, 1381.0), (50, 138.8299, 673.0), (100, 477.6667, 1728.0)])
+		"index, mass, intensity", [(5, 60.9465, 1381.0), (50, 138.8299, 673.0), (100, 477.6667, 1728.0)]
+		)
 def test_scan_values(scan, index, mass, intensity):
 	assert scan.mass_list[index] == mass
 	assert scan.intensity_list[index] == intensity
 
 
-def test_zero_length():
-	# TODO: finish
-	scan = Scan([], [])
+#
+# def test_zero_length():
+# 	# TODO: finish
+# 	scan = Scan([], [])

@@ -2,14 +2,14 @@
 # coding: utf-8
 
 # # Example: Comparing two GC-MS data sets
-# 
+#
 # Occasionally it is useful to compare two data sets. For example,
 # one may want to check the consistency between the data set
 # exported in netCDF format from the manufacturer's software, and
 # the JCAMP format exported from a third party software.
-# 
-# 
-# 
+#
+#
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader and AMDI_reader.
 
 # In[10]:

@@ -26,103 +26,88 @@ Class to model GC-MS data
 # stdlib
 import copy
 import pathlib
-from numbers import Number
 from statistics import mean, median, stdev
+from typing import List, Optional, Sequence, TypeVar, Union, cast
 
 # 3rd party
-import deprecation
-import numpy
+import numpy  # type: ignore
+from domdf_python_tools.doctools import prettify_docstrings
 
 # this package
-from pyms import __version__
 from pyms.Base import pymsBaseClass
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Mixins import GetIndexTimeMixin, MaxMinMassMixin, TimeListMixin
 from pyms.Spectrum import MassSpectrum, Scan
 from pyms.Utils.IO import prepare_filepath
 from pyms.Utils.Time import time_str_secs
-from pyms.Utils.Utils import is_path, is_sequence_of
+from pyms.Utils.Utils import _number_types, is_path, is_sequence_of, signedinteger
 
-MassSpectrum = MassSpectrum  # For legacy imports. Stops PyCharm complaining TODO: Remove eventually
+__all__ = ["GCMS_data", "IntStr"]
+
+MassSpectrum = MassSpectrum  # For legacy imports. Stops PyCharm complaining TODO: Remove eventually.
+
+IntStr = TypeVar("IntStr", int, str)
 
 
+@prettify_docstrings
 class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin):
 	"""
-	Generic object for GC-MS data. Contains raw data
-		as a list of scans and times
+	Generic object for GC-MS data.
 
-	:param time_list: List of scan retention times
-	:type time_list: list
-	:param scan_list: List of Scan objects
-	:type scan_list: list
+	Contains the raw data as a list of scans and a list of times.
 
-	:author: Qiao Wang
-	:author: Andrew Isaac
-	:author: Vladimir Likic
-	:author: Dominic Davis-Foster (type assertions and properties)
+	:param time_list: Scan retention times.
+	:param scan_list:
+
+	:authors: Qiao Wang, Andrew Isaac, Vladimir Likic,
+		Dominic Davis-Foster (type assertions and properties)
 	"""
 
-	def __init__(self, time_list, scan_list):
-		"""
-		Initialize the GC-MS data
-		"""
-
-		if not is_sequence_of(time_list, Number):
+	def __init__(self, time_list: Sequence[float], scan_list: Sequence[Scan]):
+		if not is_sequence_of(time_list, _number_types):
 			raise TypeError("'time_list' must be a Sequence of numbers")
 
 		if not is_sequence_of(scan_list, Scan):
 			raise TypeError("'scan_list' must be a Sequence of Scan objects")
 
-		self._time_list = time_list
-		self._scan_list = scan_list
+		self._time_list = list(time_list)
+		self._scan_list = list(scan_list)
 		self.__set_time()
 		self.__set_min_max_mass()
 		self.__calc_tic()
 
-	def __eq__(self, other):
+	def __eq__(self, other) -> bool:
 		"""
-		Return whether this GCMS_data object is equal to another object
+		Return whether this GCMS_data object is equal to another object.
 
-		:param other: The other object to test equality with
-		:type other: object
-
-		:rtype: bool
+		:param other: The other object to test equality with.
 		"""
 
 		if isinstance(other, self.__class__):
-			return self.scan_list == other.scan_list \
-					and self.time_list == other.time_list
+			return self.scan_list == other.scan_list and self.time_list == other.time_list
 
 		return NotImplemented
 
-	def __len__(self):
+	def __len__(self) -> int:
 		"""
-		Returns the length of the data object, defined as the number of scans
-
-		:return: Number of scans
-		:rtype: int
+		Returns the length of the data object, defined as the number of scans.
 
 		:author: Vladimir Likic
 		"""
 
 		return len(self._scan_list)
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return f"GCMS_data(rt range {self.min_rt} - {self.max_rt}, time_step {self.time_step}, length {len(self)})"
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self.__repr__()
 
-	def __calc_tic(self):
+	def __calc_tic(self) -> None:
 		"""
-		Calculate the total ion chromatogram
+		Calculate the total ion chromatogram.
 
-		:return: Total ion chromatogram
-		:rtype: pyms.IonChromatogram.IonChromatogram
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
+		:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 		"""
 
 		intensities = []
@@ -134,9 +119,9 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 
 		self._tic = tic
 
-	def __set_time(self):
+	def __set_time(self) -> None:
 		"""
-		Sets time-related properties of the data
+		Sets time-related properties of the data.
 
 		:author: Vladimir Likic
 		"""
@@ -162,13 +147,11 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		self._min_rt = min(self._time_list)
 		self._max_rt = max(self._time_list)
 
-	def __set_min_max_mass(self):
+	def __set_min_max_mass(self) -> None:
 		"""
-		Sets the min and max mass value
+		Sets the min and max mass value.
 
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
+		:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 		"""
 
 		mini = self._scan_list[0].min_mass
@@ -176,54 +159,23 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		for scan in self._scan_list:
 
 			tmp_mini = scan.min_mass
-			if tmp_mini is not None:
+			if tmp_mini is not None and mini is not None:
 				if tmp_mini < mini:
 					mini = tmp_mini
 
 			tmp_maxi = scan.max_mass
-			if tmp_maxi is not None:
+			if tmp_maxi is not None and maxi is not None:
 				if tmp_maxi > maxi:
 					maxi = tmp_maxi
 
 		self._min_mass = mini
 		self._max_mass = maxi
 
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use :attr:`pyms.GCMS.Class.scan_list` instead")
-	def get_scan_list(self):
+	def info(self, print_scan_n: bool = False) -> None:
 		"""
-		Return a list of the scan objects
+		Prints some information about the data.
 
-		:rtype: :class:`list` of :class:`pyms.Spectrum.Scan` objects
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
-		"""
-
-		return self.scan_list
-
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use :attr:`pyms.GCMS.Class.tic` instead")
-	def get_tic(self):
-		"""
-		Returns the total ion chromatogram
-
-		:rtype: pyms.IonChromatogram.IonChromatogram
-
-		:author: Andrew Isaac
-		"""
-
-		return self.tic
-
-	def info(self, print_scan_n=False):
-		"""
-		Prints some information about the data
-
-		:param print_scan_n: If set to True will print the number of m/z values in each scan
-		:type print_scan_n: bool, optional
+		:param print_scan_n: If set to :py:obj:`True` will print the number of *m/z* values in each scan.
 
 		:author: Vladimir Likic
 		"""
@@ -249,35 +201,27 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		print(f" Median number of m/z values per scan: {mz_median:.0f}")
 
 	@property
-	def scan_list(self):
+	def scan_list(self) -> List[Scan]:
 		"""
 		Return a list of the scan objects
 
-		:rtype: :class:`list` of :class:`pyms.Spectrum.Scan` objects
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
+		:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 		"""
 
 		return copy.deepcopy(self._scan_list)
 
 	@property
-	def time_list(self):
+	def time_list(self) -> List[float]:
 		"""
-		Return a copy of the time list
-
-		:rtype: list of float
+		Return a copy of the time list.
 		"""
 
 		return self._time_list[:]
 
 	@property
-	def tic(self):
+	def tic(self) -> IonChromatogram:
 		"""
-		Returns the total ion chromatogram
-
-		:rtype: pyms.IonChromatogram.IonChromatogram
+		Returns the total ion chromatogram.
 
 		:author: Andrew Isaac
 		"""
@@ -285,48 +229,44 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		return self._tic
 
 	@property
-	def min_rt(self):
+	def min_rt(self) -> float:
 		"""
-		Returns the minimum retention time for the data in seconds
-
-		:rtype: float
+		Returns the minimum retention time for the data in seconds.
 		"""
 
 		return self._min_rt
 
 	@property
-	def max_rt(self):
+	def max_rt(self) -> float:
 		"""
-		Returns the maximum retention time for the data in seconds
-
-		:rtype: float
+		Returns the maximum retention time for the data in seconds.
 		"""
 
 		return self._max_rt
 
 	@property
-	def time_step(self):
+	def time_step(self) -> float:
 		"""
-		Returns the time step of the data
-
-		:rtype: float
+		Returns the time step of the data.
 		"""
 
 		return self._time_step
 
 	@property
-	def time_step_std(self):
+	def time_step_std(self) -> float:
 		"""
-		Returns the standard deviation of the time step of the data
-
-		:rtype: float
+		Returns the standard deviation of the time step of the data.
 		"""
 
 		return self._time_step_std
 
-	def trim(self, begin=None, end=None):
+	def trim(
+			self,
+			begin: Optional[IntStr] = None,
+			end: Optional[IntStr] = None,
+			):
 		"""
-		trims data in the time domain
+		Trims data in the time domain.
 
 		The arguments ``begin`` and ``end`` can be either integers (in which case
 		they are taken as the first/last scan number for trimming) or strings
@@ -336,12 +276,10 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		At present both ``begin`` and ``end`` must be of the same type, either both
 		scan numbers or time strings.
 
-		At least one of ``begin`` and ``end`` is required
+		At least one of ``begin`` and ``end`` is required.
 
-		:param begin: begin parameter designating start time or scan number
-		:type begin: int or str, optional
-		:param end: end parameter designating start time or scan number
-		:type end: int or str, optional
+		:param begin: The start time or scan number
+		:param end: The end time or scan number
 
 		:author: Vladimir Likic
 		"""
@@ -355,21 +293,27 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		# process 'begin' and 'end'
 		if begin is None:
 			first_scan = 0
-		elif isinstance(begin, (int, float)):
-			first_scan = begin - 1
+		elif isinstance(begin, (int, signedinteger)):
+			first_scan = cast(int, begin) - 1
 		elif isinstance(begin, str):
 			time = time_str_secs(begin)
-			first_scan = self.get_index_at_time(time) + 1
+			scan_ = self.get_index_at_time(time)
+			if scan_ is None:
+				raise TypeError("invalid 'begin' argument")
+			first_scan = scan_ + 1
 		else:
 			raise TypeError("invalid 'begin' argument")
 
 		if end is None:
 			last_scan = N - 1
-		elif isinstance(end, (int, float)):
-			last_scan = end
+		elif isinstance(end, (int, signedinteger)):
+			last_scan = cast(int, end)
 		elif isinstance(end, str):
 			time = time_str_secs(end)
-			last_scan = self.get_index_at_time(time) + 1
+			scan_ = self.get_index_at_time(time)
+			if scan_ is None:
+				raise TypeError("invalid 'end' argument")
+			last_scan = scan_ + 1
 		else:
 			raise TypeError("invalid 'end' argument")
 
@@ -399,21 +343,19 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		self.__set_min_max_mass()
 		self.__calc_tic()
 
-	def write(self, file_root):
+	def write(self, file_root: Union[str, pathlib.Path]):
 		"""
 		Writes the entire raw data to two CSV files:
 
-		- 'file_root'.I.csv, containing the intensities; and
-		- 'file_root'.mz.csv, containing the corresponding m/z values.
+		- :file:`{<file_root>}.I.csv`, containing the intensities; and
+		- :file:`{<file_root>}.mz.csv`, containing the corresponding *m/z* values.
 
 		In general these are not two-dimensional matrices, because different
-		scans may have different numbers of m/z values recorded.
+		scans may have different numbers of *m/z* values recorded.
 
 		:param file_root: The root for the output file names
-		:type file_root: str or pathlib.Path
 
-		:author: Vladimir Likic
-		:author: Dominic Davis-Foster (pathlib support)
+		:authors: Vladimir Likic, Dominic Davis-Foster (pathlib support)
 		"""
 
 		if not isinstance(file_root, (str, pathlib.Path)):
@@ -449,17 +391,15 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		fp1.close()
 		fp2.close()
 
-	def write_intensities_stream(self, file_name):
+	def write_intensities_stream(self, file_name: Union[str, pathlib.Path]):
 		"""
 		Loop over all scans and, for each scan, write the intensities to the
 		given file, one intensity per line. Intensities from different scans
 		are joined without any delimiters.
 
 		:param file_name: Output file name
-		:type file_name: str or os.PathLike
 
-		:author: Vladimir Likic
-		:author: Dominic Davis-Foster (pathlib support)
+		:authors: Vladimir Likic, Dominic Davis-Foster (pathlib support)
 		"""
 
 		if not is_path(file_name):

@@ -30,7 +30,7 @@ Chapter 2 -- GC-MS data file reading and operations
 Chapter 3 -- GC-MS data structure
 ---------
 
-30a/ -- Demonstrates building of the intensity matrix from the raw 
+30a/ -- Demonstrates building of the intensity matrix from the raw
     GC-MS data, and some basic methods of the IntensityMatrix
 
 30b/ -- Exploration of build intensity matrix parameters.
@@ -97,7 +97,7 @@ Chapter 7 -- Plotting.
 70a/ -- A simple plot of TIC
 
 70b/ -- A simple overlay plot of multiple ICs
- 
+
 71/ -- A plot with Display() object. Example shows an overlay plot of TIC,
     several ICs, and peaks detected by PyMassSpec
 
@@ -109,4 +109,3 @@ x10/ -- An example of parallel processing of data. Shows how to loop
    over all ICs in an intensity matrix, and perform noise smoothing
    on each IC (in parallel). Please see User Guide for instructions
    how to run this example on multiple CPUs
-

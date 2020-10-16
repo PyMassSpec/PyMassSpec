@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # # Example: IonChromatogram Objects
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader and build_intensity_matrix.
 
 # In[1]:
@@ -33,7 +33,7 @@ im = build_intensity_matrix(data)
 # retention time. This can can be either |m/z| channel intensities
 # (for example, the ion chromatogram at 73 |m/z|), or cumulative
 # intensities over all measured |m/z| (TIC).
-# 
+#
 # An |IonChromatogram| object for the
 # TIC can be obtained as follows:
 

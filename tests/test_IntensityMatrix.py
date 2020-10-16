@@ -20,38 +20,42 @@
 
 # stdlib
 import copy
+import pathlib
 import pickle
 import types
 
 # 3rd party
-import numpy
+import deprecation  # type: ignore
+import numpy  # type: ignore
 import pytest
-import deprecation
+from pytest_regressions.file_regression import FileRegressionFixture
 
-# pyms
+# this package
 from pyms.IntensityMatrix import (
-	ASCII_CSV, build_intensity_matrix, build_intensity_matrix_i, import_leco_csv,
-	IntensityMatrix,
-	)
+		ASCII_CSV,
+		IntensityMatrix,
+		build_intensity_matrix,
+		build_intensity_matrix_i,
+		import_leco_csv
+		)
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Spectrum import MassSpectrum
-
-# tests
-from .constants import *
+from tests.constants import *
 
 
 @pytest.fixture(scope="module")
-def im_leco_filename(im, outputdir):
+def im_leco_filename(im, tmpdir_factory):
 	"""
 	Create the im_leco.csv file ahead of time and return the path to it
 	"""
 
-	filename = outputdir / "im_leco.csv"
+	filename = pathlib.Path(tmpdir_factory.mktemp('im_leco')) / 'im_leco.csv'
 	im.export_leco_csv(filename)
-	return filename
+	yield filename
 
 
 class TestIntensityMatrix:
+
 	def test_creation(self, im):
 		assert isinstance(im, IntensityMatrix)
 
@@ -64,10 +68,7 @@ class TestIntensityMatrix:
 			(test_dict, TypeError),
 			]
 
-	@pytest.mark.parametrize("obj, expects", [
-			(test_list_strs, TypeError),
-			*args
-			])
+	@pytest.mark.parametrize("obj, expects", [(test_list_strs, TypeError), *args])
 	def test_time_list_errors(self, obj, im, expects):
 		with pytest.raises(expects):
 			IntensityMatrix(obj, im.mass_list, im.intensity_array)
@@ -90,8 +91,8 @@ class TestIntensityMatrix:
 
 	# Inherited Methods from pymsBaseClass
 
-	def test_dump(self, im_i, outputdir):
-		im_i.dump(outputdir / "im_i_dump.dat")
+	def test_dump(self, im_i, tmp_pathplus):
+		im_i.dump(tmp_pathplus / "im_i_dump.dat")
 
 		# Errors
 		for obj in [test_list_strs, test_dict, test_list_ints, test_tuple, *test_numbers]:
@@ -99,8 +100,8 @@ class TestIntensityMatrix:
 				im_i.dump(obj)
 
 		# Read and check values
-		assert (outputdir / "im_i_dump.dat").exists()
-		loaded_im_i = pickle.load((outputdir / "im_i_dump.dat").open("rb"))
+		assert (tmp_pathplus / "im_i_dump.dat").exists()
+		loaded_im_i = pickle.load((tmp_pathplus / "im_i_dump.dat").open("rb"))
 		assert loaded_im_i == im_i
 		assert len(loaded_im_i) == len(im_i)
 
@@ -115,17 +116,7 @@ class TestIntensityMatrix:
 		assert isinstance(time[0], float)
 		assert time[0] == 1.05200003833
 
-	@deprecation.fail_if_not_removed
-	def test_get_time_list(self, im):
-		with pytest.warns(DeprecationWarning):
-			im.get_time_list()
-
 	# Inherited Methods from MassListMixin
-
-	@deprecation.fail_if_not_removed
-	def test_get_mass_list(self, im):
-		with pytest.warns(DeprecationWarning):
-			im.get_mass_list()
 
 	def test_mass_list(self, im):
 		# get the list of masses (bin centers), and print the first ten
@@ -135,20 +126,10 @@ class TestIntensityMatrix:
 
 	# Inherited Methods from MaxMinMassMixin
 
-	@deprecation.fail_if_not_removed
-	def test_get_min_mass(self, im):
-		with pytest.warns(DeprecationWarning):
-			im.get_min_mass()
-
 	def test_min_mass(self, im):
 		# start mass
 		assert isinstance(im.min_mass, float)
 		assert im.min_mass == 50.2516
-
-	@deprecation.fail_if_not_removed
-	def test_get_max_mass(self, im):
-		with pytest.warns(DeprecationWarning):
-			im.get_max_mass()
 
 	def test_max_mass(self, im):
 		# end mass
@@ -174,11 +155,6 @@ class TestIntensityMatrix:
 		assert im.intensity_matrix[0][0] == im.intensity_array[0][0]
 		assert numpy.equal(im.intensity_matrix.all(), im.intensity_array.all())
 
-	@deprecation.fail_if_not_removed
-	def test_get_intensity_array(self, im):
-		with pytest.warns(DeprecationWarning):
-			im.get_intensity_array()
-
 	def test_intensity_array_list(self, im):
 		assert isinstance(im.intensity_array_list, list)
 		assert all(isinstance(x, list) for x in im.intensity_array_list)
@@ -187,11 +163,6 @@ class TestIntensityMatrix:
 		assert im.intensity_array_list[2][3] == 1216.0
 		assert im.intensity_array[0][0] == im.intensity_array_list[0][0]
 		assert im.intensity_array_list == im.intensity_array.tolist()
-
-	@deprecation.fail_if_not_removed
-	def test_get_matrix_list(self, im):
-		with pytest.warns(DeprecationWarning):
-			im.get_matrix_list()
 
 	def test_matrix_list(self, im):
 		assert isinstance(im.matrix_list, numpy.ndarray)
@@ -202,14 +173,17 @@ class TestIntensityMatrix:
 		assert im.get_index_at_time(test_int) == 1168
 		assert im.get_index_at_time(test_float) == 11
 
-	@pytest.mark.parametrize("obj, expects", [
-			(test_string, TypeError),
-			(test_dict, TypeError),
-			(test_list_ints, TypeError),
-			(test_list_strs, TypeError),
-			(-1, IndexError),
-			(1000000, IndexError),
-			])
+	@pytest.mark.parametrize(
+			"obj, expects",
+			[
+					(test_string, TypeError),
+					(test_dict, TypeError),
+					(test_list_ints, TypeError),
+					(test_list_strs, TypeError),
+					(-1, IndexError),
+					(1000000, IndexError),
+					]
+			)
 	def test_get_index_at_time_errors(self, im, obj, expects):
 		with pytest.raises(expects):
 			im.get_index_at_time(obj)
@@ -217,15 +191,18 @@ class TestIntensityMatrix:
 	def test_get_time_at_index(self, im):
 		assert im.get_time_at_index(test_int) == 1304.15599823
 
-	@pytest.mark.parametrize("obj, expects", [
-			(test_string, TypeError),
-			(test_dict, TypeError),
-			(test_float, TypeError),
-			(test_list_ints, TypeError),
-			(test_list_strs, TypeError),
-			(-1, IndexError),
-			(1000000, IndexError),
-			])
+	@pytest.mark.parametrize(
+			"obj, expects",
+			[
+					(test_string, TypeError),
+					(test_dict, TypeError),
+					(test_float, TypeError),
+					(test_list_ints, TypeError),
+					(test_list_strs, TypeError),
+					(-1, IndexError),
+					(1000000, IndexError),
+					]
+			)
 	def test_get_time_at_index_errors(self, im, obj, expects):
 		with pytest.raises(expects):
 			im.get_time_at_index(obj)
@@ -433,7 +410,7 @@ class TestIntensityMatrix:
 
 class Test_export_ascii:
 
-	def test_export_ascii(self, im, outputdir):
+	def test_export_ascii(self, im, tmp_pathplus, file_regression: FileRegressionFixture):
 		"""
 		Export the entire IntensityMatrix as CSV. This will create
 		data.im.csv, data.mz.csv, and data.rt.csv where
@@ -441,18 +418,40 @@ class Test_export_ascii:
 		vector, and m/z vector in the CSV format
 		"""
 
-		im.export_ascii(outputdir / "im_ascii")
-		im.export_ascii(outputdir / "im_csv", fmt=ASCII_CSV)
+		im.export_ascii(tmp_pathplus / "im_ascii")
 
-		# TODO check exported files
+		file_regression.check((tmp_pathplus / "im_ascii.im.dat").read_text(),
+								encoding="UTF-8",
+								extension="_im_ascii.im.dat")
+		file_regression.check((tmp_pathplus / "im_ascii.mz.dat").read_text(),
+								encoding="UTF-8",
+								extension="_im_ascii.mz.dat")
+		file_regression.check((tmp_pathplus / "im_ascii.rt.dat").read_text(),
+								encoding="UTF-8",
+								extension="_im_ascii.rt.dat")
+
+		im.export_ascii(tmp_pathplus / "im_csv", fmt=ASCII_CSV)
+		file_regression.check((tmp_pathplus / "im_csv.im.csv").read_text(),
+								encoding="UTF-8",
+								extension="_im_csv.im.csv")
+		file_regression.check((tmp_pathplus / "im_csv.mz.csv").read_text(),
+								encoding="UTF-8",
+								extension="_im_csv.mz.csv")
+		file_regression.check((tmp_pathplus / "im_csv.rt.csv").read_text(),
+								encoding="UTF-8",
+								extension="_im_csv.rt.csv")
 
 	@pytest.mark.parametrize("obj", [test_dict, *test_lists, *test_numbers])
-	def test_errors(self, obj, im):
+	def test_errors(self, obj, im, tmp_pathplus):
 		with pytest.raises(TypeError):
 			im.export_ascii(obj)
 
+		with pytest.raises(ValueError):
+			im.export_ascii(tmp_pathplus / "im_ascii", fmt=3)
+
 
 class Test_leco_csv:
+
 	def test_import_leco_csv(self, im, im_leco_filename):
 		imported_im = import_leco_csv(im_leco_filename)
 		assert isinstance(imported_im, IntensityMatrix)
@@ -524,21 +523,21 @@ def test_build_intensity_matrix(data):
 
 	for obj in [test_dict, *test_lists, test_string, *test_numbers]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix(obj)
+			build_intensity_matrix(obj)  # type: ignore
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix(data, bin_interval=obj)
+			build_intensity_matrix(data, bin_interval=obj)  # type: ignore
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix(data, bin_left=obj)
+			build_intensity_matrix(data, bin_left=obj)  # type: ignore
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix(data, bin_right=obj)
+			build_intensity_matrix(data, bin_right=obj)  # type: ignore
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix(data, min_mass=obj)
+			build_intensity_matrix(data, min_mass=obj)  # type: ignore
 	with pytest.raises(ValueError):
-		build_intensity_matrix(data, bin_interval=0)
+		build_intensity_matrix(data, bin_interval=0)  # type: ignore
 
 
 def test_build_intensity_matrix_i(data, im_i):
@@ -572,17 +571,17 @@ def test_build_intensity_matrix_i(data, im_i):
 
 	for obj in [test_dict, *test_lists, test_string, *test_numbers]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix_i(obj)
+			build_intensity_matrix_i(obj)  # type: ignore
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix_i(data, bin_left=obj)
+			build_intensity_matrix_i(data, bin_left=obj)  # type: ignore
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix_i(data, bin_right=obj)
+			build_intensity_matrix_i(data, bin_right=obj)  # type: ignore
 
 
 # TODO; Saving data
 # # save the intensity matrix values to a file
-# mat = im.get_matrix_list()
+# mat = im.matrix_list
 # print("saving intensity matrix intensity values...")
 # save_data("output/im.dat", mat)

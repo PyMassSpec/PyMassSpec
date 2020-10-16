@@ -28,7 +28,6 @@
 
 # diff
 
-
 # TODO: sum_maxima, get_maxima_indices, get_maxima_list, get_maxima_list_reduced
 # TODO: tophat with struct=None
 

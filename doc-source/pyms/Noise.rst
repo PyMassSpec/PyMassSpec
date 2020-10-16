@@ -35,4 +35,3 @@
 	:members:
 	:inherited-members:
 	:autosummary:
-

@@ -25,9 +25,9 @@ andi_file = "data/a0806_077.cdf"
 # read raw data
 data = ANDI_reader(andi_file)
 
-# estimate noise level from the TIC, used later to 
+# estimate noise level from the TIC, used later to
 # discern true signal peaks
-tic = data.get_tic()
+tic = data.tic
 noise_level = window_analyzer(tic)
 
 print(" Building intensity matrix ...",)

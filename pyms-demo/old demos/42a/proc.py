@@ -11,7 +11,7 @@ andi_file = "data/gc01_0812_066.cdf"
 data = ANDI_reader(andi_file)
 
 # get the TIC
-tic = data.get_tic()
+tic = data.tic
 
 # apply noise smoothing and baseline correction
 tic1 = savitzky_golay(tic)

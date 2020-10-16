@@ -25,4 +25,3 @@ Changes in v2.2.22-beta1
 
     - had the *m/z* data stored from highest *m/z* to lowest; or
     - contained 0-length scans.
-

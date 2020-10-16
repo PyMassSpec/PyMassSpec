@@ -22,4 +22,4 @@ print("Size of the intensity matrix is (n_scans, n_mz):", n_scan, n_mz)
 for ii in im.iter_ic_indices():
     print(ii+1,)
     ic = im.get_ic_at_index(ii)
-    ic_smooth = window_smooth(ic, window=7) 
+    ic_smooth = window_smooth(ic, window=7)

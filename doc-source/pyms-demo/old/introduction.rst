@@ -102,4 +102,3 @@ Chapter 9 -- Parallel processing with PyMassSpec.
 :ref:`95 --  <demo-95>`
 
 :ref:`x10 -- An example of parallel processing of data. Shows how to loop over all ICs in an intensity matrix, and perform noise smoothing on each IC (in parallel). Please see User Guide for instructions how to run this example on multiple CPUs. <demo-x10>
-

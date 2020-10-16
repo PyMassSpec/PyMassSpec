@@ -1,5 +1,5 @@
 """
-Mixins for pyms Classes
+Mixins for PyMassSpec Classes
 """
 
 ################################################################################
@@ -25,59 +25,32 @@ Mixins for pyms Classes
 
 # stdlib
 import math
-from numbers import Number
+from typing import List, Optional
 from warnings import warn
 
 # 3rd party
-import deprecation
-import numpy
+import numpy  # type: ignore
 
 # this package
-from pyms import __version__
+from pyms.Utils.Utils import is_number
+
+__all__ = [
+		"MaxMinMassMixin",
+		"MassListMixin",
+		"TimeListMixin",
+		"IntensityArrayMixin",
+		"GetIndexTimeMixin",
+		]
 
 
 class MaxMinMassMixin:
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use 'max_mass' attribute instead")
-	def get_max_mass(self):
-		"""
-		Get the max mass value
-
-		:return: The maximum mass of all the data
-		:rtype: float
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
-		"""
-
-		return self.max_mass
-
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use 'min_mass' attribute instead")
-	def get_min_mass(self):
-		"""
-		Get the min mass value over all scans
-
-		:return: The minimum mass of all the data
-		:rtype: float
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
-		"""
-
-		return self.min_mass
+	_min_mass: Optional[float]
+	_max_mass: Optional[float]
 
 	@property
-	def min_mass(self):
+	def min_mass(self) -> Optional[float]:
 		"""
-		Returns the minimum m/z value in the spectrum
-
-		:return: Minimum m/z
-		:rtype: float
+		Returns the minimum *m/z* value in the spectrum
 
 		:author: Andrew Isaac
 		"""
@@ -85,12 +58,9 @@ class MaxMinMassMixin:
 		return self._min_mass
 
 	@property
-	def max_mass(self):
+	def max_mass(self) -> Optional[float]:
 		"""
-		Returns the maximum m/z value in the spectrum
-
-		:return: Maximum m/z
-		:rtype: float
+		Returns the maximum *m/z* value in the spectrum
 
 		:author: Andrew Isaac
 		"""
@@ -99,82 +69,44 @@ class MaxMinMassMixin:
 
 
 class MassListMixin(MaxMinMassMixin):
+	_mass_list: List[float]
 
 	@property
-	def mass_list(self):
+	def mass_list(self) -> List[float]:
 		"""
 		Returns a list of the masses
 
-		:return: mass list
-		:rtype: list
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
+		:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 		"""
 
 		return self._mass_list[:]
 
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use 'mass_list' attribute instead")
-	def get_mass_list(self):
-		"""
-		Returns a list of the masses
-
-		:return: mass list
-		:rtype: list
-
-		:author: Qiao Wang
-		:author: Andrew Isaac
-		:author: Vladimir Likic
-		"""
-
-		return self.mass_list
-
 
 class TimeListMixin:
+	_time_list: List[float]
 
 	@property
-	def time_list(self):
+	def time_list(self) -> List[float]:
 		"""
 		Returns a copy of the time list
 
 		:return: List of retention times
-		:rtype: list
 
-		:author: Andrew Isaac
-		:author: Lewis Lee
-		:author: Vladimir Likic
+		:authors: Andrew Isaac, Lewis Lee, Vladimir Likic
 		"""
 
 		return self._time_list[:]
 
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use 'time_list' attribute instead")
-	def get_time_list(self):
-		"""
-		Returns a copy of the time list
-
-		:return: List of retention times
-		:rtype: list
-
-		:author: Andrew Isaac
-		"""
-
-		return self.time_list
-
 
 class IntensityArrayMixin:
+	_intensity_array: numpy.ndarray
 
 	@property
-	def intensity_array(self):
+	def intensity_array(self) -> numpy.ndarray:
 		"""
 		Returns a copy of the intensity array
 
 		:return: Matrix of intensity values
-		:rtype: list
 
 		:author: Andrew Isaac
 		:author: Lewis Lee
@@ -183,12 +115,11 @@ class IntensityArrayMixin:
 		return numpy.copy(self._intensity_array)
 
 	@property
-	def intensity_matrix(self):
+	def intensity_matrix(self) -> numpy.ndarray:
 		"""
 		Returns a copy of the intensity matrix
 
 		:return: Matrix of intensity values
-		:rtype: list
 
 		:author: Andrew Isaac
 		"""
@@ -197,57 +128,24 @@ class IntensityArrayMixin:
 
 		return numpy.copy(self._intensity_array)
 
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details="Use 'intensity_array' attribute instead")
-	def get_intensity_array(self):
-		"""
-		Returns the entire intensity array
-
-		:return: Intensity array
-		:rtype: numpy.ndarray
-
-		:author: Lewis Lee
-		:author: Vladimir Likic
-		"""
-
-		return self.intensity_array
-
 	@property
-	def intensity_array_list(self):
+	def intensity_array_list(self) -> List[List[float]]:
 		"""
 		Returns a copy of the intensity array as a list of lists of floats
 
 		:return: Matrix of intensity values
-		:rtype: list
 
 		:author: Andrew Isaac
 		"""
 
-		return self._intensity_array.tolist()
-
-	@deprecation.deprecated(deprecated_in="2.1.2", removed_in="2.2.0",
-							current_version=__version__,
-							details=f"Use 'matrix_list' attribute instead")
-	def get_matrix_list(self):
-		"""
-		Returns a copy of the intensity matrix as a list of lists of floats
-
-		:return: Matrix of intensity values
-		:rtype: list
-
-		:author: Andrew Isaac
-		"""
-
-		return self.intensity_array
+		return self._intensity_array.tolist()  # type: ignore
 
 	@property
-	def matrix_list(self):
+	def matrix_list(self) -> numpy.ndarray:
 		"""
-		Returns a the intensity matrix as a list of lists of floats
+		Returns the intensity matrix as a list of lists of floats
 
 		:return: Matrix of intensity values
-		:rtype: list
 
 		:author: Andrew Isaac
 		"""
@@ -256,30 +154,36 @@ class IntensityArrayMixin:
 
 
 class GetIndexTimeMixin:
-	def get_index_at_time(self, time):
+	_min_rt: float
+	_max_rt: float
+	_time_list: List[float]
+
+	def get_index_at_time(self, time: float) -> int:
 		"""
 		Returns the nearest index corresponding to the given time
 
 		:param time: Time in seconds
-		:type time: float
 
 		:return: Nearest index corresponding to given time
-		:rtype: int
 
-		:author: Lewis Lee
-		:author: Tim Erwin
-		:author: Vladimir Likic
+		:authors: Lewis Lee, Tim Erwin, Vladimir Likic
+
+		.. versionchanged:: 2.3.0
+
+			Now returns ``-1`` if no index is found.
 		"""
 
-		if not isinstance(time, Number):
+		if not is_number(time):
 			raise TypeError("'time' must be a number")
 
 		if (time < self._min_rt) or (time > self._max_rt):
-			raise IndexError(f"time {time:.2f} is out of bounds (min: {self._min_rt:.2f}, max: {self._max_rt:.2f})")
+			raise IndexError(
+					f"time {time:.2f} is out of bounds (min: {self._min_rt:.2f}, max: {self._max_rt:.2f})"
+					)
 
 		time_list = self._time_list
 		time_diff_min = self._max_rt
-		ix_match = None
+		ix_match = -1
 
 		for ix in range(len(time_list)):
 
@@ -291,18 +195,15 @@ class GetIndexTimeMixin:
 
 		return ix_match
 
-	def get_time_at_index(self, ix):
+	def get_time_at_index(self, ix: int) -> float:
 		"""
 		Returns time at given index
 
 		:param ix: An index
-		:type ix: int
 
 		:return: Time value
-		:rtype: float
 
-		:author: Lewis Lee
-		:author: Vladimir Likic
+		:authors: Lewis Lee, Vladimir Likic
 		"""
 
 		if not isinstance(ix, int):

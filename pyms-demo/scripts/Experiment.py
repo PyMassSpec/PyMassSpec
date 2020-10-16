@@ -2,12 +2,12 @@
 # coding: utf-8
 
 # ## Example: Creating an Experiment
-# 
+#
 # Before aligning peaks from multiple experiments, the peak objects need to be
 # created and encapsulated into |Experiment| objects. During this process it is
 # often useful to pre-process the peaks in some way, for example to null certain
 # m/z channels and/or to select a certain retention time range.
-# 
+#
 # The procedure starts the same as in the previous examples, namely:
 # 1. read a file,
 # 1. bin the data into fixed mass values,
@@ -18,8 +18,8 @@
 # 1. set the mass range,
 # 1. remove uninformative ions, and
 # 1. estimate peak areas.
-# 
-# 
+#
+#
 # First, setup the paths to the datafiles and the output directory, then import ANDI_reader and build_intensity_matrix_i.
 
 # In[22]:
@@ -135,4 +135,4 @@ expr.sele_rt_range(["6.5m", "21m"])
 expr.dump(output_directory / "experiments" / "a0806_077.expr")
 
 
-# 
+#

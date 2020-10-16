@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # # Example: MassSpectrum Objects
-# 
+#
 # First, setup the paths to the datafiles and the output directory, then import JCAMP_reader and build_intensity_matrix.
 
 # In[1]:
@@ -28,12 +28,12 @@ data = JCAMP_reader(jcamp_file)
 im = build_intensity_matrix(data)
 
 
-# A |MassSpectrum| object contains two attributes, |mass_list| and 
-# |intensity_list|, a list of mass values and corresponding intensities, 
+# A |MassSpectrum| object contains two attributes, |mass_list| and
+# |intensity_list|, a list of mass values and corresponding intensities,
 # respectively. A |MassSpectrum| is returned by the |IntensityMatrix| method
 # |get_ms_at_index(index)|.
-# 
-# For example, the properties of the first |MassSpectrum| object can be obtained 
+#
+# For example, the properties of the first |MassSpectrum| object can be obtained
 # as follows:
 
 # In[7]:

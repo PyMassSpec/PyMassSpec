@@ -34,5 +34,5 @@ print("the index of the nearest mass to 73.3m/z is:", index)
 print("the nearest mass to 73.3m/z is:", im.get_mass_at_index(index))
 
 # # get the list of masses (bin centers), and print the first ten
-# masses = im.get_mass_list()
+# masses = im.mass_list
 # print(masses[:10])

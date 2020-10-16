@@ -5,4 +5,3 @@
 .. automodule:: pyms.Display
 	:members:
 	:autosummary:
-

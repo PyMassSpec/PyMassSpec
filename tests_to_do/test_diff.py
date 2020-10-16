@@ -2,9 +2,10 @@
 """proc.py
 """
 
-from pyms.GCMS.IO.JCAMP import JCAMP_reader
-from pyms.GCMS.IO.ANDI import ANDI_reader
+# this package
 from pyms.GCMS.Function import diff
+from pyms.GCMS.IO.ANDI import ANDI_reader
+from pyms.GCMS.IO.JCAMP import JCAMP_reader
 
 # read the raw data
 andi_file = "data/gc01_0812_066.cdf"

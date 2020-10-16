@@ -90,4 +90,3 @@ The |cross| button allows panning across the zoomed plot.
 .. |cross| image:: graphics/chapter08/cross_button.png
 
 .. note:: This example is in `pyms-demo/jupyter/Display_User_Interaction.ipynb` and `pyms-demo/72/proc.py.
-

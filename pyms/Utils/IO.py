@@ -27,23 +27,30 @@ General I/O functions
 import gzip
 import pathlib
 import pickle
-from numbers import Number
+from typing import Any, List, Union, cast
+
+# 3rd party
+from domdf_python_tools.stringlist import StringList
 
 # this package
-from pyms.Utils.Utils import _list_types
+from pyms.Utils.Utils import _list_types, is_number, is_path
+
+__all__ = ["prepare_filepath", "dump_object", "load_object", "file_lines", "save_data"]
 
 
-def prepare_filepath(file_name, mkdirs=True):
+def prepare_filepath(
+		file_name: Union[str, pathlib.Path],
+		mkdirs: bool = True,
+		) -> pathlib.Path:
 	"""
-	Convert string filename into pathlib.Path object and create parent directories if required
+	Convert string filename into pathlib.Path object and
+	create parent directories if required.
 
 	:param file_name: file_name to process
-	:type file_name: str or os.PathLike
-	:param mkdirs: Whether the parent directory of the file should be created if it doesn't exist. Default True.
-	:type mkdirs: bool, optional
+	:param mkdirs: Whether the parent directory of the file should
+		be created if it doesn't exist.
 
 	:return: file_name
-	:rtype: pathlib.Path
 
 	:author: Dominic Davis-Foster
 	"""
@@ -60,19 +67,15 @@ def prepare_filepath(file_name, mkdirs=True):
 	return file_name
 
 
-def dump_object(obj, file_name):
+def dump_object(obj: Any, file_name: Union[str, pathlib.Path]):
 	"""
 	Dumps an object to a file through pickle.dump()
 
 	:param obj: Object to be dumped
-	:type obj: any
 	:param file_name: Name of the file for the object dump
-	:type file_name: str or os.PathLike
 
-	:author: Vladimir Likic
-	:author: Dominic Davis-Foster (pathlib support)
+	:authors: Vladimir Likic, Dominic Davis-Foster (pathlib support)
 	"""
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -83,20 +86,17 @@ def dump_object(obj, file_name):
 		pickle.dump(obj, fp)
 
 
-def load_object(file_name):
+def load_object(file_name: Union[str, pathlib.Path]) -> object:
 	"""
 	Loads an object previously dumped with dump_object()
 
 	:param file_name: Name of the object dump file
-	:type file_name: str or os.PathLike
 
 	:return: Object contained in the file 'file_name'
 	:rtype: An instance of an arbitrary class
 
-	:author: Vladimir Likic
-	:author: Dominic Davis-Foster (pathlib support)
+	:authors: Vladimir Likic, Dominic Davis-Foster (pathlib support)
 	"""
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -107,25 +107,19 @@ def load_object(file_name):
 		return pickle.load(fp)
 
 
-def file_lines(file_name, strip=False):
+def file_lines(file_name: Union[str, pathlib.Path], strip: bool = False) -> List[str]:
 	"""
 	Returns lines from a file, as a list
 
 	:param file_name: Name of a file
-	:type file_name: str or os.PathLike
 	:param strip: If True, lines are pre-processed. Newline characters are
 		removed, leading and trailing whitespaces are removed, and lines
 		starting with '#' are discarded
-	:type strip: bool, optional
 
 	:return: A list of lines
-	:rtype: list
 
-	:author: Vladimir Likic
-	:author: Dominic Davis-Foster (pathlib support)
+	:authors: Vladimir Likic, Dominic Davis-Foster (pathlib support)
 	"""
-
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -155,28 +149,26 @@ def file_lines(file_name, strip=False):
 	return lines
 
 
-def save_data(file_name, data, format_str="%.6f", prepend="", sep=" ", compressed=False):
+def save_data(
+		file_name: Union[str, pathlib.Path],
+		data: Union[List[float], List[List[float]]],
+		format_str: str = "%.6f",
+		prepend: str = "",
+		sep: str = " ",
+		compressed: bool = False,
+		):
 	"""
 	Saves a list of numbers or a list of lists of numbers to a file with specific formatting
 
 	:param file_name: Name of a file
-	:type file_name: str or os.PathLike
 	:param data: A list of numbers, or a list of lists
-	:type data: list
 	:param format_str: A format string for individual entries
-	:type format_str: str
 	:param prepend: A string, printed before each row
-	:type prepend: str
 	:param sep: A string, printed after each number
-	:type sep: str
-	:param compressed: A boolean. If True, the output will be gzipped
-	:type compressed: bool
+	:param compressed: If :py:obj:`True`, the output will be gzipped.
 
-	:author: Vladimir Likic
-	:author: Dominic Davis-Foster (pathlib support)
+	:authors: Vladimir Likic, Dominic Davis-Foster (pathlib support)
 	"""
-
-	from pyms.Utils.Utils import is_path
 
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
@@ -192,38 +184,34 @@ def save_data(file_name, data, format_str="%.6f", prepend="", sep=" ", compresse
 	if not isinstance(sep, str):
 		raise TypeError("'sep' must be a string")
 
-	with file_name.open("w") as fp:
+	buf = StringList()
 
-		# decide whether data is a vector or matrix
-		if isinstance(data[0], Number):
-			for item in data:
-				if not isinstance(item, Number):
-					raise TypeError("not all elements of the list are numbers")
-			data_is_matrix = 0
-		else:
-			for item in data:
-				if not isinstance(item, _list_types):
-					raise TypeError("not all elements of the list are lists")
-			data_is_matrix = 1
+	# decide whether data is a vector or matrix
+	if is_number(data[0]):
+		for item in data:
+			if not is_number(item):
+				raise TypeError("not all elements of the list are numbers")
+		for x_value in data:
+			buf.append(prepend + (format_str % x_value))
 
-		if data_is_matrix:
-			for x_value in data:
-				fp.write(prepend)
-				for jj, y_value in enumerate(x_value):
-					if isinstance(y_value, Number):
-						fp.write(format_str % y_value)
-						if jj < (len(x_value) - 1):
-							fp.write(sep)
-					else:
-						raise TypeError("'datum' must be a number")
-				fp.write("\n")
-		else:
-			for x_value in data:
-				fp.write(prepend)
-				fp.write(format_str % x_value)
-				fp.write("\n")
+	else:
+		for item in data:
+			if not isinstance(item, _list_types):
+				raise TypeError("not all elements of the list are lists")
+
+		for x_value in cast(List[List[float]], data):
+			line = [prepend]
+			for jj, y_value in enumerate(x_value):
+				if is_number(y_value):
+					line.append(format_str % y_value)
+					if jj < (len(x_value) - 1):
+						line.append(sep)
+				else:
+					raise TypeError("'datum' must be a number")
+			buf.append(''.join(line))
 
 	if compressed:
-		with file_name.open() as f_in:
-			with gzip.open(str(file_name) + '.gz', 'wb') as f_out:
-				f_out.writelines(f_in)
+		with gzip.open(file_name, "wt") as fp:
+			fp.write(str(buf))
+	else:
+		file_name.write_text(str(buf))

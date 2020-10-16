@@ -58,5 +58,5 @@ for peak in new_peak_list:
         # print some details
         UID = peak.UID
         # height as sum of the intensities of the apexing ions
-        height = sum(peak.get_mass_spectrum().mass_spec)
+        height = sum(peak.mass_spectrum.mass_spec)
         print(UID + f", {rt / 60.0:.2f}, {height:.2f}, {peak.area:.2f}")
