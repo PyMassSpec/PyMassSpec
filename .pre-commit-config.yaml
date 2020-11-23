@@ -59,13 +59,13 @@ repos:
     - id: forbid-crlf
 
  - repo: https://github.com/domdfcoding/yapf-isort
-   rev: v0.5.2
+   rev: v0.5.4
    hooks:
     - id: yapf-isort
       exclude: ^(pyms-demo/.*/.*|doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
 
  - repo: https://github.com/domdfcoding/dep_checker
-   rev: v0.3.1
+   rev: v0.4.1
    hooks:
     - id: dep_checker
       args:
