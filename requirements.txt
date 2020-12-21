@@ -8,7 +8,7 @@ enum-tools>=0.6.1
 matplotlib>=3.0.2
 netcdf4>=1.5.0
 numpy>=1.19.2; platform_system != "Windows"
-numpy==1.19.3; platform_system == "Windows"
+numpy==1.19.4; platform_system == "Windows"
 openpyxl>=2.6.2
 pandas>=1.0.0
 pymzml>=2.2.1
