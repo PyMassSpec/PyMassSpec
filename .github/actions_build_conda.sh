@@ -16,9 +16,7 @@ conda install anaconda-client
 conda info -a
 
 conda config --add channels bioconda || exit 1
-
 conda config --add channels conda-forge || exit 1
-
 conda config --add channels domdfcoding || exit 1
 
 conda build conda -c bioconda -c conda-forge -c domdfcoding --output-folder conda/dist --skip-existing

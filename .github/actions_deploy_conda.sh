@@ -12,7 +12,7 @@ conda update -q conda
 conda install anaconda-client
 conda info -a
 
-for f in conda/dist/noarch/PyMassSpec-*.tar.bz2; do
+for f in conda/dist/noarch/pymassspec-*.tar.bz2; do
   [ -e "$f" ] || continue
   echo "$f"
   conda install "$f" || exit 1
