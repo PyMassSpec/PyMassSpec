@@ -1,7 +1,7 @@
 coverage>=5.1
 coverage-pyver-pragma>=0.0.6
 coveralls>=2.1.2
-domdf-python-tools[testing]>=1.6.0
+domdf-python-tools[testing]>=2.0.1
 iniconfig!=1.1.0,>=1.0.1
 pytest>=6.0.0
 pytest-cov>=2.8.1
