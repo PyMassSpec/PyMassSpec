@@ -1,3 +1,25 @@
 [build-system]
-requires = ["setuptools>=40.6.0", "wheel>=0.34.2"]
+requires = [ "setuptools>=40.6.0", "wheel>=0.34.2",]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyMassSpec"
+version = "2.3.0"
+description = "Python Toolkit for Mass Spectrometry"
+readme = "README.rst"
+keywords = []
+dynamic = [ "requires-python", "classifiers", "dependencies",]
+
+[[project.authors]]
+email = "dominic@davis-foster.co.uk"
+name = "Dominic Davis-Foster"
+
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/domdfcoding/PyMassSpec"
+"Issue Tracker" = "https://github.com/domdfcoding/PyMassSpec/issues"
+"Source Code" = "https://github.com/domdfcoding/PyMassSpec"
+Documentation = "https://pymassspec.readthedocs.io/en/latest"
