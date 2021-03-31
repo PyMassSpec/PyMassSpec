@@ -4,7 +4,7 @@ deprecation>=2.1.0
 domdf-python-tools>=1.7.0
 enum-tools>=0.6.1
 matplotlib==3.2.2; platform_machine == "aarch64" and python_version == "3.6"
-matplotlib>=3.0.2,<3.5.0; platform_machine != "aarch64" or python_version > "3.6"
+matplotlib<3.5.0,>=3.0.2; platform_machine != "aarch64" or python_version > "3.6"
 netcdf4>=1.5.0
 numpy>=1.19.2; platform_system != "Windows"
 numpy!=1.19.4,>=1.19.3; platform_system == "Windows"
