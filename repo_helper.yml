@@ -14,14 +14,15 @@ license: 'GPLv2'
 short_desc: 'Python Toolkit for Mass Spectrometry'
 conda_description: 'Python Toolkit for Mass Spectrometry'
 
-#enable_conda: False
+python_deploy_version: 3.6
+mypy_version: "0.812"
+min_coverage: 70
+enable_devmode: false
 
 conda_channels:
  - bioconda
  - conda-forge
  - domdfcoding
-
-python_deploy_version: 3.6
 
 # Versions to run tests for
 python_versions:
@@ -30,8 +31,6 @@ python_versions:
  - 3.8
  - 3.9
  - 3.10-dev
-
-# travis secure password for PyPI
 
 classifiers:
  - "Development Status :: 5 - Production/Stable"
@@ -79,8 +78,6 @@ sphinx_conf_preamble:
 exclude_files:
  - contributing
  - actions
-
-enable_devmode: false
 
 travis_extra_install_post:
  - sudo add-apt-repository universe

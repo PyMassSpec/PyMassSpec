@@ -77,8 +77,8 @@ def test_sele_rt_range(expr, filtered_peak_list):
 		with pytest.raises(TypeError):
 			expr.sele_rt_range(obj)
 
-	for obj in [*test_lists]:
-		with pytest.raises(ValueError):
+	for obj in test_lists:
+		with pytest.raises(ValueError, match="'rt_range' must have exactly two elements"):
 			expr.sele_rt_range(obj)
 
 
@@ -86,7 +86,7 @@ def test_sele_rt_range(expr, filtered_peak_list):
 def expr_filename(expr, tmp_pathplus):
 	filename = tmp_pathplus / "ELEY_1_SUBTRACT.expr"
 	expr.dump(filename)
-	yield filename
+	return filename
 
 
 def test_dump_errors(expr):
@@ -113,9 +113,9 @@ def test_load_expr(filtered_peak_list, pyms_datadir, expr_filename):
 		with pytest.raises(TypeError):
 			load_expr(obj)  # type: ignore
 
-	with pytest.raises(IOError):
+	with pytest.raises(FileNotFoundError, match="No such file or directory: .*non-existent.expr.*"):
 		load_expr(pyms_datadir / "non-existent.expr")
-	with pytest.raises(IOError):
+	with pytest.raises(TypeError, match="The loaded file is not an experiment file"):
 		load_expr(pyms_datadir / "not-an-experiment.expr")
 
 
@@ -140,9 +140,9 @@ def test_read_expr_list(filtered_peak_list, pyms_datadir, expr_filename, tmp_pat
 		with pytest.raises(TypeError):
 			read_expr_list(obj)  # type: ignore
 
-	with pytest.raises(IOError):
+	with pytest.raises(FileNotFoundError, match="No such file or directory: .*non-existent.expr.*"):
 		read_expr_list("non-existent.expr")
-	with pytest.raises((IOError, UnicodeDecodeError)):  # type: ignore
+	with pytest.raises(FileNotFoundError, match="No such file or directory: 'not-an-experiment.expr'"):
 		read_expr_list("not-an-experiment.expr")
-	with pytest.raises(IOError):
+	with pytest.raises(FileNotFoundError, match="No such file or directory: .*__init__.py.*"):
 		read_expr_list("__init__.py")

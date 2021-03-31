@@ -10,13 +10,13 @@ Further examples can be found at https://github.com/domdfcoding/PyMassSpec/tree/
 
 
 Chapter 1 -- GC-MS Raw Data Model
------------------------------------------------------
+-----------------------------------
 
 :ref:`20e -- Reading of GC-MS raw data in the mzML format, and some properties of raw data object. There isn't yet an example mzML file so this demo doesn't yet do anything. <demo-20e>`
 
 
 Chapter 2 -- GC-MS data derived objects
-----------------------------------
+-----------------------------------------
 
 :ref:`32 -- Saving IonChromatogram and IntensityMatrix information.  <demo-32>`
 

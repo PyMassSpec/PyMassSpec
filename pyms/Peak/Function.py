@@ -58,8 +58,7 @@ def peak_sum_area(
 		peak: Peak,
 		single_ion: Literal[True],
 		max_bound: int = ...,
-		) -> Tuple[float, Dict[float, float]]:
-	...  # pragma: no cover
+		) -> Tuple[float, Dict[float, float]]: ...
 
 
 @overload
@@ -68,8 +67,7 @@ def peak_sum_area(
 		peak: Peak,
 		single_ion: Literal[False] = ...,
 		max_bound: int = ...,
-		) -> float:
-	...  # pragma: no cover
+		) -> float: ...
 
 
 def peak_sum_area(

@@ -24,13 +24,14 @@ from copy import deepcopy
 
 # 3rd party
 import pytest
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture
 
 # this package
 from pyms.GCMS.Class import GCMS_data
 from pyms.GCMS.IO.JCAMP import JCAMP_reader
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Spectrum import Scan
+from pyms.Utils.Utils import _pickle_load_path
 
 # this package
 from .constants import *
@@ -199,7 +200,7 @@ def test_trim(data):
 		"jcamp_gcms_data.I.csv",
 		"jcamp_gcms_data.mz.csv",
 		])
-def test_write(data, tmp_pathplus, file_regression: FileRegressionFixture, filename):
+def test_write(data, tmp_pathplus, advanced_file_regression: AdvancedFileRegressionFixture, filename):
 	data.write(tmp_pathplus / "jcamp_gcms_data")
 
 	# Errors
@@ -209,10 +210,10 @@ def test_write(data, tmp_pathplus, file_regression: FileRegressionFixture, filen
 
 	# Read file and check values
 	assert (tmp_pathplus / filename).exists()
-	file_regression.check((tmp_pathplus / filename).read_text(), encoding="UTF-8", extension=".csv")
+	advanced_file_regression.check_file(tmp_pathplus / filename)
 
 
-def test_write_intensities_stream(data, tmp_pathplus, file_regression: FileRegressionFixture):
+def test_write_intensities_stream(data, tmp_pathplus, advanced_file_regression: AdvancedFileRegressionFixture):
 	filename = "jcamp_intensity_stream.csv"
 	data.write_intensities_stream(tmp_pathplus / "jcamp_intensity_stream.csv")
 
@@ -223,7 +224,7 @@ def test_write_intensities_stream(data, tmp_pathplus, file_regression: FileRegre
 
 	# Read file and check values
 	assert (tmp_pathplus / filename).exists()
-	file_regression.check((tmp_pathplus / filename).read_text(), encoding="UTF-8", extension=".csv")
+	advanced_file_regression.check_file(tmp_pathplus / filename)
 
 
 # Inherited Methods from pymsBaseClass
@@ -239,7 +240,7 @@ def test_dump(data, tmp_pathplus):
 
 	# Read and check values
 	assert (tmp_pathplus / "JCAMP_dump.dat").exists()
-	loaded_data = pickle.load((tmp_pathplus / "JCAMP_dump.dat").open("rb"))
+	loaded_data = _pickle_load_path(tmp_pathplus / "JCAMP_dump.dat")
 	assert loaded_data == data
 	assert len(loaded_data) == len(data)
 

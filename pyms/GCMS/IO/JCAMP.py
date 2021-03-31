@@ -60,7 +60,7 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 	file_name = prepare_filepath(file_name, mkdirs=False)
 
 	print(f" -> Reading JCAMP file '{file_name}'")
-	lines_list = file_name.open('r')
+	lines_list = file_name.open('r', encoding="UTF-8")
 	data: List[float] = []
 	page_idx = 0
 	xydata_idx = 0

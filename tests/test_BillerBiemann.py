@@ -104,7 +104,7 @@ class Test_rel_threshold:
 		assert len(pl) <= len(peak_list)
 
 		# Errors
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="percent' must be a number > 0"):
 			rel_threshold(peak_list, percent=0)
 
 	@pytest.mark.parametrize("obj", [test_string, *test_sequences, test_dict, test_int])

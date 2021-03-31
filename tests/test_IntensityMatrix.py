@@ -27,7 +27,7 @@ import types
 # 3rd party
 import numpy  # type: ignore
 import pytest
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture
 
 # this package
 from pyms.IntensityMatrix import (
@@ -39,6 +39,7 @@ from pyms.IntensityMatrix import (
 		)
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Spectrum import MassSpectrum
+from pyms.Utils.Utils import _pickle_load_path
 from tests.constants import *
 
 
@@ -50,7 +51,7 @@ def im_leco_filename(im, tmpdir_factory):
 
 	filename = pathlib.Path(tmpdir_factory.mktemp("im_leco")) / "im_leco.csv"
 	im.export_leco_csv(filename)
-	yield filename
+	return filename
 
 
 class TestIntensityMatrix:
@@ -100,7 +101,7 @@ class TestIntensityMatrix:
 
 		# Read and check values
 		assert (tmp_pathplus / "im_i_dump.dat").exists()
-		loaded_im_i = pickle.load((tmp_pathplus / "im_i_dump.dat").open("rb"))
+		loaded_im_i = _pickle_load_path(tmp_pathplus / "im_i_dump.dat")
 		assert loaded_im_i == im_i
 		assert len(loaded_im_i) == len(im_i)
 
@@ -359,14 +360,14 @@ class TestIntensityMatrix:
 			with pytest.raises(TypeError):
 				im.crop_mass(100, obj)
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="'mass_min' must be less than 'mass_max'"):
 			im.crop_mass(200, 100)
 
 		im.crop_mass(100, 200)
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="'mass_min' is less than the smallest mass: 100.252"):
 			im.crop_mass(50, 200)
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="'mass_max' is greater than the largest mass: 199.252"):
 			im.crop_mass(150, 500)
 
 		im.crop_mass(101.5, 149.5)
@@ -399,7 +400,7 @@ class TestIntensityMatrix:
 
 class Test_export_ascii:
 
-	def test_export_ascii(self, im, tmp_pathplus, file_regression: FileRegressionFixture):
+	def test_export_ascii(self, im, tmp_pathplus, advanced_file_regression: AdvancedFileRegressionFixture):
 		"""
 		Export the entire IntensityMatrix as CSV. This will create
 		data.im.csv, data.mz.csv, and data.rt.csv where
@@ -408,34 +409,21 @@ class Test_export_ascii:
 		"""
 
 		im.export_ascii(tmp_pathplus / "im_ascii")
-
-		file_regression.check((tmp_pathplus / "im_ascii.im.dat").read_text(),
-								encoding="UTF-8",
-								extension="_im_ascii.im.dat")
-		file_regression.check((tmp_pathplus / "im_ascii.mz.dat").read_text(),
-								encoding="UTF-8",
-								extension="_im_ascii.mz.dat")
-		file_regression.check((tmp_pathplus / "im_ascii.rt.dat").read_text(),
-								encoding="UTF-8",
-								extension="_im_ascii.rt.dat")
+		advanced_file_regression.check_file(tmp_pathplus / "im_ascii.im.dat", extension="_im_ascii.im.dat")
+		advanced_file_regression.check_file(tmp_pathplus / "im_ascii.mz.dat", extension="_im_ascii.mz.dat")
+		advanced_file_regression.check_file(tmp_pathplus / "im_ascii.rt.dat", extension="_im_ascii.rt.dat")
 
 		im.export_ascii(tmp_pathplus / "im_csv", fmt=ASCII_CSV)
-		file_regression.check((tmp_pathplus / "im_csv.im.csv").read_text(),
-								encoding="UTF-8",
-								extension="_im_csv.im.csv")
-		file_regression.check((tmp_pathplus / "im_csv.mz.csv").read_text(),
-								encoding="UTF-8",
-								extension="_im_csv.mz.csv")
-		file_regression.check((tmp_pathplus / "im_csv.rt.csv").read_text(),
-								encoding="UTF-8",
-								extension="_im_csv.rt.csv")
+		advanced_file_regression.check_file(tmp_pathplus / "im_csv.im.csv", extension="_im_csv.im.csv")
+		advanced_file_regression.check_file(tmp_pathplus / "im_csv.mz.csv", extension="_im_csv.mz.csv")
+		advanced_file_regression.check_file(tmp_pathplus / "im_csv.rt.csv", extension="_im_csv.rt.csv")
 
 	@pytest.mark.parametrize("obj", [test_dict, *test_lists, *test_numbers])
 	def test_errors(self, obj, im, tmp_pathplus):
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match="'root_name' must be a string or a pathlib.Path object"):
 			im.export_ascii(obj)
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="3 is not a valid AsciiFiletypes"):
 			im.export_ascii(tmp_pathplus / "im_ascii", fmt=3)
 
 
@@ -507,25 +495,27 @@ def test_IntensityMatrix_custom(data):
 	assert masses[0] == 50.2516
 
 
-def test_build_intensity_matrix(data):
-	# todo
+@pytest.mark.parametrize("obj", [test_dict, *test_lists, test_string, *test_numbers])
+def test_build_intensity_matrix_errors_data(obj):
+	with pytest.raises(TypeError, match="'data' must be a GCMS_data object"):
+		build_intensity_matrix(obj)
 
-	for obj in [test_dict, *test_lists, test_string, *test_numbers]:
-		with pytest.raises(TypeError):
-			build_intensity_matrix(obj)  # type: ignore
-	for obj in [test_dict, *test_lists, test_string]:
-		with pytest.raises(TypeError):
-			build_intensity_matrix(data, bin_interval=obj)  # type: ignore
-	for obj in [test_dict, *test_lists, test_string]:
-		with pytest.raises(TypeError):
-			build_intensity_matrix(data, bin_left=obj)  # type: ignore
-	for obj in [test_dict, *test_lists, test_string]:
-		with pytest.raises(TypeError):
-			build_intensity_matrix(data, bin_right=obj)  # type: ignore
-	for obj in [test_dict, *test_lists, test_string]:
-		with pytest.raises(TypeError):
-			build_intensity_matrix(data, min_mass=obj)  # type: ignore
-	with pytest.raises(ValueError):
+
+@pytest.mark.parametrize("obj", [test_dict, *test_lists, test_string])
+def test_build_intensity_matrix_errors(data, obj):
+	with pytest.raises(TypeError, match="'<=' not supported between instances of '.*' and 'int'"):
+		build_intensity_matrix(data, bin_interval=obj)
+
+	with pytest.raises(TypeError, match="'bin_left' must be a number."):
+		build_intensity_matrix(data, bin_left=obj)
+
+	with pytest.raises(TypeError, match="'bin_right' must be a number."):
+		build_intensity_matrix(data, bin_right=obj)
+
+	with pytest.raises(TypeError, match="'min_mass' must be a number."):
+		build_intensity_matrix(data, min_mass=obj)
+
+	with pytest.raises(ValueError, match="The bin interval must be larger than zero."):
 		build_intensity_matrix(data, bin_interval=0)
 
 

@@ -28,7 +28,7 @@ import tempfile
 # 3rd party
 import numpy  # type: ignore
 import pytest
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture
 
 # this package
 from pyms.BillerBiemann import BillerBiemann, num_ions_threshold, rel_threshold
@@ -327,7 +327,7 @@ def test_write_ion_areas_csv(A1, tmp_pathplus):
 		assert seconds_ion_csv[peak_idx + 1][1] == f"{float(compo_peak.rt):.3f}"
 
 
-def test_write_common_ion_csv(A1, tmp_pathplus, file_regression: FileRegressionFixture):
+def test_write_common_ion_csv(A1, tmp_pathplus, advanced_file_regression: AdvancedFileRegressionFixture):
 	common_ion = A1.common_ion()
 	assert isinstance(common_ion, list)
 	assert is_number(common_ion[0])
@@ -335,16 +335,14 @@ def test_write_common_ion_csv(A1, tmp_pathplus, file_regression: FileRegressionF
 
 	# read the csv and check values
 	A1.write_common_ion_csv(tmp_pathplus / "alignment_common_ion.csv", A1.common_ion())
-	file_regression.check(
-			(tmp_pathplus / "alignment_common_ion.csv").read_text(),
-			encoding="UTF-8",
+	advanced_file_regression.check_file(
+			tmp_pathplus / "alignment_common_ion.csv",
 			extension="_alignment_common_ion.csv",
 			)
 
 	A1.write_common_ion_csv(tmp_pathplus / "alignment_common_ion_seconds.csv", A1.common_ion(), minutes=False)
-	file_regression.check(
-			(tmp_pathplus / "alignment_common_ion_seconds.csv").read_text(),
-			encoding="UTF-8",
+	advanced_file_regression.check_file(
+			tmp_pathplus / "alignment_common_ion_seconds.csv",
 			extension="_alignment_common_ion_seconds.csv",
 			)
 

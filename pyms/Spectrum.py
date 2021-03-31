@@ -60,7 +60,7 @@ def array_as_numeric(array: Union[Sequence, numpy.ndarray]) -> numpy.ndarray:
 
 	If the data in the array is already in a numeric data type no changes will be made.
 
-	If ``array`` is a python :class:`~python:collections.abc.Sequence` then it will first be
+	If ``array`` is a python :class:`~collections.abc.Sequence` then it will first be
 	converted to a numpy array.
 
 	:param array:
@@ -205,6 +205,14 @@ Please report this at https://github.com/domdfcoding/pymassspec/issues and uploa
 
 	@classmethod
 	def from_dict(cls: Type[_S], dictionary: Mapping) -> _S:
+		"""
+		Create a :class:`~.Scan` from a dictionary.
+
+		The dictionary's keys must match the arguments taken bt the class's constructor.
+
+		:param dictionary:
+		"""
+
 		return cls(**dictionary)
 
 
@@ -401,7 +409,7 @@ class MassSpectrum(Scan):
 		file_name = prepare_filepath(file_name, mkdirs=False)
 
 		print(f" -> Reading JCAMP file '{file_name}'")
-		lines_list = file_name.open('r')
+		lines_list = file_name.open('r', encoding="UTF-8")
 		xydata = []
 		last_tag = None
 
@@ -449,7 +457,7 @@ class MassSpectrum(Scan):
 		:param mz_int_pairs:
 		"""
 
-		err_msg = "`mz_int_pairs` must be a list of (m/z, intensity) tuples."
+		err_msg = "'mz_int_pairs' must be a list of (m/z, intensity) tuples."
 
 		if (
 				not is_sequence(mz_int_pairs) or not is_sequence(mz_int_pairs[0])
@@ -492,7 +500,7 @@ class CompositeMassSpectrum(MassSpectrum):
 		"""
 		Construct a :class:`~.CompositeMassSpectrum` from multiple :class:`~.MassSpectrum` objects.
 
-		If no :class:`~.MassSpectrum` objects are given an empty :class:`~.CompositeSpectrum` is returned.
+		If no :class:`~.MassSpectrum` objects are given an empty :class:`~.CompositeMassSpectrum` is returned.
 
 		:param spectra:
 		"""

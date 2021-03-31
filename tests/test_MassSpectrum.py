@@ -255,6 +255,9 @@ def test_from_mz_int_pairs():
 		with pytest.raises(TypeError):
 			MassSpectrum.from_mz_int_pairs(obj)  # type: ignore
 
-	for obj in [[(1, 2, 3)], ([1, 2, 3], ), [(1, )], ([1], ), [("abc", "123")]]:
-		with pytest.raises(ValueError):
+	for obj in [[(1, 2, 3)], ([1, 2, 3], ), [(1, )], ([1], )]:
+		with pytest.raises(ValueError, match=r"'mz_int_pairs' must be a list of \(m/z, intensity\) tuples."):
 			MassSpectrum.from_mz_int_pairs(obj)  # type: ignore
+
+	with pytest.raises(ValueError, match="could not convert string to float: 'abc'"):
+		MassSpectrum.from_mz_int_pairs([("abc", "123")])  # type: ignore

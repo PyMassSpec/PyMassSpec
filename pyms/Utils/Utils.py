@@ -26,6 +26,7 @@ General utility functions.
 # stdlib
 import os
 import pathlib
+import pickle
 from typing import TYPE_CHECKING, Any, Sequence
 
 # 3rd party
@@ -87,3 +88,13 @@ def is_number(obj: Any) -> bool:
 	"""
 
 	return isinstance(obj, _number_types)
+
+
+def _pickle_load_path(filename: pathlib.Path, *args, **kwargs):
+	with filename.open("rb") as fp:
+		return pickle.load(fp, *args, **kwargs)
+
+
+def _pickle_dump_path(filename: pathlib.Path, data: Any, *args, **kwargs):
+	with filename.open("wb") as fp:
+		return pickle.dump(data, fp, *args, **kwargs)

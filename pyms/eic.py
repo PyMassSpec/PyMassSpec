@@ -132,9 +132,7 @@ def build_extracted_intensity_matrix(
 	:param masses:
 	:param left_bound:
 	:param right_bound:
-
-	:return:
-	"""
+	"""  # noqa: D400
 
 	flat_target_masses: List[float] = []
 

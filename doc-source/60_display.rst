@@ -20,7 +20,7 @@ When not running in Jupyter Notebook, the plot may appear in a separate window l
 
 	Graphics window displayed by the script 70a/proc.py
 
-.. note:: This example is in :file:`pyms-demo/jupyter/Displaying_TIC.ipynb` and `pyms-demo/70a/proc.py.
+.. note:: This example is in :file:`pyms-demo/jupyter/Displaying_TIC.ipynb` and :file:`pyms-demo/70a/proc.py`.
 
 
 .. include:: demo_rst/Displaying_Multiple_IC.rst
@@ -33,7 +33,7 @@ When not running in Jupyter Notebook, the plot may appear in a separate window l
 
 	Graphics window displayed by the script 70b/proc.py
 
-.. note:: This example is in :file:`pyms-demo/jupyter/Displaying_Multiple_IC.ipynb` and `pyms-demo/70b/proc.py.
+.. note:: This example is in :file:`pyms-demo/jupyter/Displaying_Multiple_IC.ipynb` and :file:`pyms-demo/70b/proc.py`.
 
 .. include:: demo_rst/Displaying_Mass_Spec.rst
 

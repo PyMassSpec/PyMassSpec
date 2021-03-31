@@ -30,7 +30,7 @@ from pyms.Peak import Peak
 from pyms.Peak.Class import ICPeak
 from pyms.Peak.Function import peak_sum_area, top_ions_v1, top_ions_v2
 from pyms.Spectrum import MassSpectrum
-from pyms.Utils.Utils import is_number
+from pyms.Utils.Utils import _pickle_load_path, is_number
 from tests.constants import *
 
 
@@ -91,7 +91,7 @@ def test_area(im_i, peak):
 	for obj in [test_string, test_dict, test_list_strs, test_list_ints]:
 		with pytest.raises(TypeError):
 			Peak(test_float, ms).area = obj  # type: ignore
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="'Peak.area' must be a positive number"):
 		Peak(test_float, ms).area = -1
 
 
@@ -106,7 +106,7 @@ def test_bounds(peak):
 			peak.bounds = obj
 
 	for obj in [*test_lists, (1, 2), [1, 2, 3, 4]]:
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="'Peak.bounds' must have exactly 3 elements"):
 			peak.bounds = obj
 
 	# Getter
@@ -124,8 +124,9 @@ def test_bounds(peak):
 	assert isinstance(peak3.bounds, tuple)
 
 	for obj in [*test_sequences, test_string, test_dict, test_float]:
+		print(obj)
+
 		with pytest.raises(TypeError):
-			print(obj)
 			peak3.set_bounds(obj, 12, 13)  # type: ignore
 		with pytest.raises(TypeError):
 			peak3.set_bounds(11, obj, 13)  # type: ignore
@@ -146,16 +147,16 @@ def test_crop_mass(peak):
 
 	# Errors
 	for obj in [test_string, *test_lists, test_dict]:
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match="'mass_min' and 'mass_max' must be numbers"):
 			peak2.crop_mass(obj, 450)
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match="'mass_min' and 'mass_max' must be numbers"):
 			peak2.crop_mass(450, obj)
 
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="'mass_min' must be less than 'mass_max'"):
 		peak2.crop_mass(100, 0)
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="'mass_min' is less than the smallest mass: 50"):
 		peak2.crop_mass(10, 450)
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="'mass_max' is greater than the largest mass: 499"):
 		peak2.crop_mass(60, 500)
 	with pytest.warns(Warning):
 		peak2.crop_mass(60, 65)
@@ -196,7 +197,7 @@ def test_ion_area(peak):
 def test_ion_areas(peak):
 	peak = copy.deepcopy(peak)
 
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="no ion areas set"):
 		peak.ion_areas
 
 	peak.ion_areas = {1: 1234, 2: 1234, 3: 1234}
@@ -329,14 +330,12 @@ def test_top_ions(peak):
 		assert top_ions_v1(peak, 10)[0] == 55
 
 	for obj in [test_string, *test_numbers, test_dict, *test_lists]:
-		with pytest.raises(TypeError):
-			with pytest.warns(DeprecationWarning):
-				top_ions_v1(obj)
+		with pytest.raises(TypeError), pytest.warns(DeprecationWarning):
+			top_ions_v1(obj)
 
 	for obj in [test_string, test_float, test_dict, *test_lists]:
-		with pytest.raises(TypeError):
-			with pytest.warns(DeprecationWarning):
-				top_ions_v1(peak, obj)
+		with pytest.raises(TypeError), pytest.warns(DeprecationWarning):
+			top_ions_v1(peak, obj)
 
 	with pytest.warns(DeprecationWarning):
 		assert isinstance(top_ions_v2(peak, 10), list)
@@ -348,14 +347,12 @@ def test_top_ions(peak):
 		assert top_ions_v2(peak, 10)[0] == 55
 
 	for obj in [test_string, *test_numbers, test_dict, *test_lists]:
-		with pytest.raises(TypeError):
-			with pytest.warns(DeprecationWarning):
-				top_ions_v2(obj)
+		with pytest.raises(TypeError), pytest.warns(DeprecationWarning):
+			top_ions_v2(obj)
 
 	for obj in [test_string, test_float, test_dict, *test_lists]:
-		with pytest.raises(TypeError):
-			with pytest.warns(DeprecationWarning):
-				top_ions_v2(peak, obj)
+		with pytest.raises(TypeError), pytest.warns(DeprecationWarning):
+			top_ions_v2(peak, obj)
 
 	assert isinstance(peak.top_ions(10), list)
 	assert len(peak.top_ions(10)) == 10
@@ -380,5 +377,5 @@ def test_dump(peak, tmp_pathplus):
 
 	# Read and check values
 	assert (tmp_pathplus / "Peak_dump.dat").exists()
-	loaded_peak = pickle.load((tmp_pathplus / "Peak_dump.dat").open("rb"))
+	loaded_peak = _pickle_load_path(tmp_pathplus / "Peak_dump.dat")
 	assert loaded_peak == peak

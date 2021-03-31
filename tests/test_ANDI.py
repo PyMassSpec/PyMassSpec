@@ -24,13 +24,16 @@ from copy import deepcopy
 
 # 3rd party
 import pytest
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture
+
+pytest.importorskip("pyms.GCMS.IO.ANDI")
 
 # this package
 from pyms.GCMS.Class import GCMS_data
 from pyms.GCMS.IO.ANDI import ANDI_reader
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Spectrum import Scan
+from pyms.Utils.Utils import _pickle_load_path
 from tests.constants import *
 
 
@@ -58,7 +61,7 @@ def andi(pyms_datadir):
 # 	return build_intensity_matrix_i(data)
 #
 #
-# @pytest.fixture(scope="function")
+# @pytest.fixture()
 # def peak_list(im_i):
 # 	im_i = deepcopy(im_i)
 #
@@ -79,7 +82,7 @@ def andi(pyms_datadir):
 # 	return peak_list
 #
 #
-# @pytest.fixture(scope="function")
+# @pytest.fixture()
 # def filtered_peak_list(im_i, peak_list):
 # 	# peak_list = deepcopy(peak_list)
 # 	# do peak detection on pre-trimmed data
@@ -122,7 +125,7 @@ def andi(pyms_datadir):
 # 	return deepcopy(data.scan_list[0])
 #
 #
-# @pytest.fixture(scope="function")
+# @pytest.fixture()
 # def expr(filtered_peak_list):
 # 	# create an experiment
 # 	return Experiment("ELEY_1_SUBTRACT", filtered_peak_list)
@@ -292,7 +295,7 @@ def test_trim(andi):
 		"andi_gcms_data.I.csv",
 		"andi_gcms_data.mz.csv",
 		])
-def test_write(andi, tmp_pathplus, file_regression: FileRegressionFixture, filename):
+def test_write(andi, tmp_pathplus, advanced_file_regression: AdvancedFileRegressionFixture, filename):
 	andi.write(tmp_pathplus / "andi_gcms_data")
 
 	# Errors
@@ -302,10 +305,10 @@ def test_write(andi, tmp_pathplus, file_regression: FileRegressionFixture, filen
 
 	# Read file and check values
 	assert (tmp_pathplus / filename).exists()
-	file_regression.check((tmp_pathplus / filename).read_text(), encoding="UTF-8", extension=".csv")
+	advanced_file_regression.check_file(tmp_pathplus / filename)
 
 
-def test_write_intensities_stream(andi, tmp_pathplus, file_regression: FileRegressionFixture):
+def test_write_intensities_stream(andi, tmp_pathplus, advanced_file_regression: AdvancedFileRegressionFixture):
 	filename = "andi_intensity_stream.csv"
 	andi.write_intensities_stream(tmp_pathplus / filename)
 
@@ -316,7 +319,7 @@ def test_write_intensities_stream(andi, tmp_pathplus, file_regression: FileRegre
 
 	# Read file and check values
 	assert (tmp_pathplus / filename).exists()
-	file_regression.check((tmp_pathplus / filename).read_text(), encoding="UTF-8", extension=".csv")
+	advanced_file_regression.check_file(tmp_pathplus / filename)
 
 
 # Inherited Methods from pymsBaseClass
@@ -332,7 +335,7 @@ def test_dump(andi, tmp_pathplus):
 
 	# Read and check values
 	assert (tmp_pathplus / "ANDI_dump.dat").exists()
-	loaded_data = pickle.load((tmp_pathplus / "ANDI_dump.dat").open("rb"))
+	loaded_data = _pickle_load_path(tmp_pathplus / "ANDI_dump.dat")
 	assert loaded_data == andi
 	assert len(loaded_data) == len(andi)
 

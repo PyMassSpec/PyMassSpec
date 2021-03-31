@@ -36,7 +36,7 @@ from pyms.Base import pymsBaseClass
 from pyms.Peak.Class import Peak
 from pyms.Peak.List.Function import is_peak_list, sele_peaks_by_rt
 from pyms.Utils.IO import prepare_filepath
-from pyms.Utils.Utils import is_path, is_sequence
+from pyms.Utils.Utils import _pickle_load_path, is_path, is_sequence
 
 __all__ = ["Experiment", "read_expr_list", "load_expr"]
 
@@ -140,7 +140,7 @@ def read_expr_list(file_name: PathLike) -> List[Experiment]:
 
 	file_name = prepare_filepath(file_name, mkdirs=False)
 
-	fp = file_name.open()
+	fp = file_name.open(encoding="UTF-8")
 
 	exprfiles = fp.readlines()
 	fp.close()
@@ -172,12 +172,9 @@ def load_expr(file_name: PathLike) -> Experiment:
 		raise TypeError("'file_name' must be a string or a PathLike object")
 
 	file_name = prepare_filepath(file_name, mkdirs=False)
-
-	fp = file_name.open("rb")
-	expr = pickle.load(fp)
-	fp.close()
+	expr = _pickle_load_path(file_name)
 
 	if not isinstance(expr, Experiment):
-		raise OSError("The loaded file is not an experiment file")
+		raise TypeError("The loaded file is not an experiment file")
 
 	return expr

@@ -31,12 +31,12 @@ Internally, PyMassSpec stores the raw data from ANDI files or JCAMP files as a
 
 
 .. The file ``gc01_0812_066.jdx`` (located in "data") is a GC-MS experiment
-converted from Agilent ChemStation format to JCAMP format using File
-Translator Pro by ChemSW, Inc.
+.. converted from Agilent ChemStation format to JCAMP format using File
+.. Translator Pro by ChemSW, Inc.
 
 
 .. The file ``gc01_0812_066.cdf`` is a GC-MS experiment converted to ANDI-MS
-format from Agilent ChemStation (the same data as in the example 20a above).
+.. format from Agilent ChemStation (the same data as in the example 20a above).
 
 .. rubric:: Footnotes
 

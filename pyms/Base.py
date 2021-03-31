@@ -31,7 +31,7 @@ from domdf_python_tools.typing import PathLike
 
 # this package
 from pyms.Utils.IO import prepare_filepath
-from pyms.Utils.Utils import is_path
+from pyms.Utils.Utils import _pickle_dump_path, is_path
 
 __all__ = ["pymsBaseClass"]
 
@@ -55,7 +55,4 @@ class pymsBaseClass:
 			raise TypeError("'file_name' must be a string or a PathLike object")
 
 		file_name = prepare_filepath(file_name)
-
-		fp = file_name.open("wb")
-		pickle.dump(self, fp, protocol=protocol)
-		fp.close()
+		_pickle_dump_path(file_name, self, protocol)

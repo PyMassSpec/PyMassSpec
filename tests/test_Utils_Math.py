@@ -119,10 +119,12 @@ class TestMean:
 		# Regression test for issue 25177.
 		# Ensure very big and very small floats don't overflow.
 		# See http://bugs.python.org/issue25177.
-		assert statistics.mean([8.988465674311579e307, 8.98846567431158e307]) == 8.98846567431158e307
-		assert Math.mean([8.988465674311579e307, 8.98846567431158e307]) == 8.98846567431158e307
-		assert statistics.mean([8.988465674311579e307,
-								8.98846567431158e307]) == Math.mean([8.988465674311579e307, 8.98846567431158e307])
+
+		data = [8.988465674311579e307, 8.98846567431158e307]
+		assert statistics.mean(data) == 8.98846567431158e307
+		assert Math.mean(data) == 8.98846567431158e307
+		assert statistics.mean(data) == Math.mean([8.988465674311579e307, 8.98846567431158e307])
+
 		big = 8.98846567431158e307
 		tiny = 5e-324
 		for n in (2, 3, 5, 200):

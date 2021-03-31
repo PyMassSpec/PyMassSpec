@@ -40,6 +40,11 @@ repos:
     - id: ensure-dunder-all
       files: ^pyms/.*\.py$
 
+ - repo: https://github.com/domdfcoding/flake2lint
+   rev: v0.4.0
+   hooks:
+    - id: flake2lint
+
  - repo: https://github.com/pre-commit/pygrep-hooks
    rev: v1.8.0
    hooks:
@@ -54,6 +59,7 @@ repos:
     - id: pyupgrade
       args:
        - --py36-plus
+       - --keep-runtime-typing
 
  - repo: https://github.com/Lucas-C/pre-commit-hooks
    rev: v1.1.9
@@ -61,11 +67,11 @@ repos:
     - id: remove-crlf
     - id: forbid-crlf
 
- - repo: https://github.com/domdfcoding/yapf-isort
-   rev: v0.5.5
+ - repo: https://github.com/repo-helper/formate
+   rev: v0.4.3
    hooks:
-    - id: yapf-isort
-      exclude: ^(pyms-demo/.*/.*|doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
+    - id: formate
+      exclude: ^(pyms-demo/.*/.*|doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.(_)?py$
 
  - repo: https://github.com/domdfcoding/dep_checker
    rev: v0.6.0

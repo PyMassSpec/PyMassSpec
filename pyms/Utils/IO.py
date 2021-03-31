@@ -34,7 +34,7 @@ from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.typing import PathLike
 
 # this package
-from pyms.Utils.Utils import _list_types, is_number, is_path
+from pyms.Utils.Utils import _list_types, _pickle_dump_path, is_number, is_path
 
 __all__ = ["prepare_filepath", "dump_object", "load_object", "file_lines", "save_data"]
 
@@ -81,10 +81,7 @@ def dump_object(obj: Any, file_name: PathLike):
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
 
-	file_name = prepare_filepath(file_name)
-
-	with file_name.open("wb") as fp:
-		pickle.dump(obj, fp)
+	_pickle_dump_path(prepare_filepath(file_name), obj)
 
 
 def load_object(file_name: PathLike) -> object:
@@ -126,7 +123,7 @@ def file_lines(file_name: PathLike, strip: bool = False) -> List[str]:
 
 	file_name = prepare_filepath(file_name, mkdirs=False)
 
-	with file_name.open() as fp:
+	with file_name.open(encoding="UTF-8") as fp:
 		lines = fp.readlines()
 
 	if strip:
@@ -214,4 +211,4 @@ def save_data(
 		with gzip.open(file_name, "wt") as fp:
 			fp.write(str(buf))
 	else:
-		file_name.write_text(str(buf))
+		file_name.write_text(str(buf), encoding="UTF-8")

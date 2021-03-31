@@ -271,7 +271,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 
 		file_name = prepare_filepath(file_name)
 
-		with file_name.open('w') as fp:
+		with file_name.open('w', encoding="UTF-8") as fp:
 
 			time_list = copy.deepcopy(self._time_list)
 
@@ -328,7 +328,7 @@ class ExtractedIonChromatogram(IonChromatogram):
 	@property
 	def masses(self) -> Tuple[float, ...]:
 		"""
-		List of extracted masses in the EIC
+		List of extracted masses in the EIC.
 		"""
 
 		return self._masses

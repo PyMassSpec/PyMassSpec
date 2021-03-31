@@ -294,8 +294,8 @@ class Alignment:
 		rt_file_name = prepare_filepath(rt_file_name)
 		area_file_name = prepare_filepath(area_file_name)
 
-		fp1 = rt_file_name.open('w')
-		fp2 = area_file_name.open('w')
+		fp1 = rt_file_name.open('w', encoding="UTF-8")
+		fp2 = area_file_name.open('w', encoding="UTF-8")
 
 		# create header
 		header = ["UID", "RTavg"]

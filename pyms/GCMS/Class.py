@@ -370,8 +370,8 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		print(f" -> Writing intensities to '{file_name1}'")
 		print(f" -> Writing m/z values to '{file_name2}'")
 
-		fp1 = open(file_name1, 'w')
-		fp2 = open(file_name2, 'w')
+		fp1 = open(file_name1, 'w', encoding="UTF-8")
+		fp2 = open(file_name2, 'w', encoding="UTF-8")
 
 		for scan in self._scan_list:
 
@@ -413,7 +413,7 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 
 		print(" -> Writing scans to a file")
 
-		fp = file_name.open('w')
+		fp = file_name.open('w', encoding="UTF-8")
 
 		for scan in self._scan_list:
 			intensities = scan.intensity_list

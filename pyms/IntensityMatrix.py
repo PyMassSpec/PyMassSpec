@@ -601,7 +601,7 @@ class IntensityMatrix(BaseIntensityMatrix):
 		time_list = self._time_list
 		vals = self._intensity_array
 
-		fp = file_name.open('w')
+		fp = file_name.open('w', encoding="UTF-8")
 
 		# Format is text header with:
 		# "Scan","Time",...
@@ -782,8 +782,11 @@ def build_intensity_matrix(
 	if not is_number(bin_right):
 		raise TypeError("'bin_right' must be a number.")
 
-	if not min_mass:
+	if min_mass is None:
 		min_mass = data.min_mass
+	elif not is_number(min_mass):
+		raise TypeError("'min_mass' must be a number.")
+
 	max_mass = data.max_mass
 
 	if max_mass is None:

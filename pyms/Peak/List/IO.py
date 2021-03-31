@@ -34,7 +34,7 @@ from domdf_python_tools.typing import PathLike
 from pyms.Peak.Class import Peak
 from pyms.Peak.List.Function import is_peak_list
 from pyms.Utils.IO import prepare_filepath
-from pyms.Utils.Utils import is_path, is_sequence
+from pyms.Utils.Utils import _pickle_dump_path, _pickle_load_path, is_path, is_sequence
 
 __all__ = ["store_peaks", "load_peaks"]
 
@@ -60,10 +60,7 @@ def store_peaks(
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
 
-	file_name = prepare_filepath(file_name)
-
-	with file_name.open("wb") as fp:
-		pickle.dump(peak_list, fp, protocol)
+	_pickle_dump_path(prepare_filepath(file_name), peak_list, protocol)
 
 
 def load_peaks(file_name: PathLike) -> List[Peak]:
@@ -81,10 +78,7 @@ def load_peaks(file_name: PathLike) -> List[Peak]:
 		raise TypeError("'file_name' must be a string or a PathLike object")
 
 	file_name = prepare_filepath(file_name, mkdirs=False)
-
-	fp = file_name.open("rb")
-	peak_list = pickle.load(fp)
-	fp.close()
+	peak_list = _pickle_load_path(file_name)
 
 	if not is_sequence(peak_list):
 		raise OSError("The selected file is not a List")

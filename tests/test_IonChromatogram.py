@@ -28,7 +28,7 @@ import pytest
 
 # this package
 from pyms.IonChromatogram import IonChromatogram
-from pyms.Utils.Utils import is_number
+from pyms.Utils.Utils import _pickle_load_path, is_number
 
 # this package
 from .constants import *
@@ -50,7 +50,7 @@ class TestIonChromatogram:
 		assert isinstance(tic, IonChromatogram)
 		assert tic.is_tic()
 
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="'intensity_list' and 'time_list' differ in length"):
 			IonChromatogram(tic.intensity_array, test_list_ints)
 
 	@pytest.mark.parametrize("value", [test_string, *test_numbers, test_list_strs, test_tuple, test_dict])
@@ -191,7 +191,7 @@ def test_dump(im_i, tmp_pathplus):
 
 	# Read and check values
 	assert (tmp_pathplus / "im_i_dump.dat").exists()
-	loaded_im_i = pickle.load((tmp_pathplus / "im_i_dump.dat").open("rb"))
+	loaded_im_i = _pickle_load_path(tmp_pathplus / "im_i_dump.dat")
 	assert loaded_im_i == im_i
 	assert len(loaded_im_i) == len(im_i)
 

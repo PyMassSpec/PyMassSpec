@@ -356,8 +356,7 @@ class Peak(AbstractPeak):
 			ms: Optional[MassSpectrum],
 			minutes: bool = ...,
 			outlier: bool = ...,
-			) -> "Peak":
-		...  # pragma: no cover
+			) -> "Peak": ...
 
 	@overload
 	def __new__(  # type: ignore
@@ -366,16 +365,15 @@ class Peak(AbstractPeak):
 		ms: float,
 		minutes: bool = ...,
 		outlier: bool = ...,
-		) -> "ICPeak":
-		...  # pragma: no cover
+		) -> "ICPeak": ...
 
-	def __new__(
-			cls,
-			rt: float = 0.0,
-			ms: Union[float, MassSpectrum, None] = None,
-			minutes: bool = False,
-			outlier: bool = False,
-			):
+	def __new__(  # noqa: D102
+		cls,
+		rt: float = 0.0,
+		ms: Union[float, MassSpectrum, None] = None,
+		minutes: bool = False,
+		outlier: bool = False,
+		):
 
 		if is_number(ms):
 			warnings.warn(

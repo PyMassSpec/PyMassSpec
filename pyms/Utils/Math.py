@@ -190,13 +190,11 @@ def median_outliers(data, m: float = 2.5):
 
 
 @overload
-def is_float(s: str) -> bool:
-	...
+def is_float(s: str) -> bool: ...
 
 
 @overload
-def is_float(s: List[str]) -> List[bool]:
-	...
+def is_float(s: List[str]) -> List[bool]: ...
 
 
 def is_float(s: Union[str, List[str]]) -> Union[bool, List[bool]]:

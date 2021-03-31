@@ -65,7 +65,7 @@ def write_mass_hunter_csv(
 
 	file_name = prepare_filepath(file_name)
 
-	fp = file_name.open('w')
+	fp = file_name.open('w', encoding="UTF-8")
 
 	if top_ion_list is None:
 		raise ValueError("List of common ions must be supplied")

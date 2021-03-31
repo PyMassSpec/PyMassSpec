@@ -141,20 +141,20 @@ def test_sele_peaks_by_rt(filtered_peak_list):
 	peak.crop_mass(100, 200)
 	assert peak.UID != uid
 
-	with pytest.raises(TypeError):
+	with pytest.raises(TypeError, match="lower/upper retention time limits must be strings"):
 		sele_peaks_by_rt(filtered_peak_list, [1.2, 3.4])  # type: ignore
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="lower retention time limit must be less than upper"):
 		sele_peaks_by_rt(filtered_peak_list, ["50s", "10s"])
 
 	# Errors
 	for obj in [test_dict, *test_sequences, *test_numbers, test_string]:
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match="'peaks' must be a Sequence of Peak objects"):
 			sele_peaks_by_rt(obj, ("12m", "13m"))
 	for obj in [test_dict, *test_numbers, test_string]:
-		with pytest.raises(TypeError):
+		with pytest.raises(TypeError, match="'rt_range' must be a Sequence"):
 			sele_peaks_by_rt(filtered_peak_list, obj)  # type: ignore
 	for obj in [*test_sequences]:
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="'rt_range' must have exactly two elements"):
 			sele_peaks_by_rt(filtered_peak_list, obj)  # type: ignore
 
 

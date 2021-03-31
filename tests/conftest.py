@@ -37,7 +37,7 @@ from pyms.Peak.Class import Peak
 from pyms.Peak.Function import peak_sum_area, peak_top_ion_areas
 from pyms.TopHat import tophat
 
-pytest_plugins = ("domdf_python_tools.testing", )
+pytest_plugins = ("coincidence", )
 
 
 @pytest.fixture(scope="session")
@@ -69,7 +69,7 @@ def im_i(data):
 	return build_intensity_matrix_i(data)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session")  # noqa: PT005
 def _peak_list(im_i):
 	im_i = deepcopy(im_i)
 
@@ -95,7 +95,7 @@ def peak_list(_peak_list):
 	return copy.deepcopy(_peak_list)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session")  # noqa: PT005
 def _filtered_peak_list(im_i, _peak_list):
 	peak_list = copy.deepcopy(_peak_list)
 	# do peak detection on pre-trimmed data
