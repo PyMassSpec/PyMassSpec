@@ -70,6 +70,8 @@ html_theme_options:
 
 sphinx_conf_preamble:
  # Built rst from jupyter notebooks
+ - import sys
+ - sys.path.extend((os.path.abspath('.'), os.path.abspath("..")))
  - import ipynb2rst
  - nitpicky = True
  - "exclude_patterns = ['../pyms-demo/old/', 'demo_rst/*.rst', 'todo/', 'chapter09.rst', 'chapter10.rst']"
@@ -98,3 +100,8 @@ tox_unmanaged:
 
 sphinx_conf_epilogue:
  - html_logo = "../logo/PyMassSpec_262.png"
+
+keywords:
+ - chemistry
+ - mass-spectrometry
+ - chromatography

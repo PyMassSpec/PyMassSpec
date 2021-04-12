@@ -4,16 +4,14 @@ name: Linux
 
 on:
   push:
-  pull_request:
-    branches: ["master"]
 
 jobs:
   tests:
-    name: "Python ${{ matrix.config.python-version }}"
+    name: "ubuntu-20.04 / Python ${{ matrix.config.python-version }}"
     runs-on: "ubuntu-20.04"
     continue-on-error: ${{ matrix.config.experimental }}
     env:
-      USING_COVERAGE: '3.6,3.7,3.8,3.9,3.10.0-alpha.3'
+      USING_COVERAGE: '3.6,3.7,3.8,3.9,3.10.0-alpha.7'
 
     strategy:
       fail-fast: False
@@ -23,7 +21,7 @@ jobs:
           - {python-version: "3.7", testenvs: "py37,build", experimental: False}
           - {python-version: "3.8", testenvs: "py38,build", experimental: False}
           - {python-version: "3.9", testenvs: "py39,build", experimental: False}
-          - {python-version: "3.10.0-alpha.3", testenvs: "py310-dev,build", experimental: True}
+          - {python-version: "3.10.0-alpha.7", testenvs: "py310-dev,build", experimental: True}
 
     steps:
       - name: Checkout 🛎️
@@ -46,11 +44,11 @@ jobs:
           sudo apt install libhdf5-dev netcdf-bin libnetcdf-dev
 
       - name: "Run Tests for Python ${{ matrix.config.python-version }}"
-        run: "python -m tox -e ${{ matrix.config.testenvs }}"
+        run: python -m tox -e "${{ matrix.config.testenvs }}"
 
-
-      - name: "Upload Coverage"
+      - name: "Upload Coverage 🚀"
         uses: actions/upload-artifact@v2
+        if: ${{ always() }}
         with:
           name: "coverage-${{ matrix.config.python-version }}"
           path: .coverage
@@ -71,9 +69,9 @@ jobs:
       - name: Install dependencies 🔧
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade coveralls coverage_pyver_pragma
+          python -m pip install --upgrade "coveralls>=3.0.0" coverage_pyver_pragma
 
-      - name: "Download Coverage"
+      - name: "Download Coverage 🪂"
         uses: actions/download-artifact@v2
         with:
           path: coverage
@@ -82,12 +80,12 @@ jobs:
         run: ls -R
         working-directory: coverage
 
-      - name: Combine Coverage
+      - name: Combine Coverage 👷
         run: |
           shopt -s globstar
           python -m coverage combine coverage/**/.coverage
 
-      - name: "Upload Combined Coverage Artefact"
+      - name: "Upload Combined Coverage Artefact 🚀"
         uses: actions/upload-artifact@v2
         with:
           name: "combined-coverage"
@@ -97,7 +95,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          coveralls
+          coveralls --service=github
 
   Deploy:
     needs: tests
@@ -106,25 +104,29 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: "actions/checkout@v2"
+        if: startsWith(github.ref, 'refs/tags/')
 
       - name: Setup Python 🐍
         uses: "actions/setup-python@v2"
         with:
           python-version: 3.8
+        if: startsWith(github.ref, 'refs/tags/')
 
       - name: Install dependencies 🔧
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade tox
+        if: startsWith(github.ref, 'refs/tags/')
 
       - name: Build distributions 📦
         run: |
           tox -e build
 
-
-      - name: Upload distribution 📦 to PyPI
         if: startsWith(github.ref, 'refs/tags/')
-        uses: pypa/gh-action-pypi-publish@master
+
+      - name: Upload distribution to PyPI 🚀
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: pypa/gh-action-pypi-publish@v1.4.2
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
@@ -135,6 +137,7 @@ jobs:
   Conda:
     needs: deploy
     runs-on: "ubuntu-20.04"
+    if: startsWith(github.ref, 'refs/tags/') || (startsWith(github.event.head_commit.message, 'Bump version') != true)
     steps:
       - name: Checkout 🛎️
         uses: "actions/checkout@v2"
@@ -147,7 +150,7 @@ jobs:
       - name: Install dependencies 🔧
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade repo_helper
+          python -m pip install --upgrade mkrecipe
 
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
           bash miniconda.sh -b -p $HOME/miniconda
@@ -158,7 +161,6 @@ jobs:
           bash .github/actions_build_conda.sh
 
       - name: Deploy Conda 🚀
-        if: startsWith(github.ref, 'refs/tags/')
         run: |
           chmod +x .github/actions_deploy_conda.sh
           bash .github/actions_deploy_conda.sh

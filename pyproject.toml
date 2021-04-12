@@ -7,7 +7,7 @@ name = "PyMassSpec"
 version = "2.3.0"
 description = "Python Toolkit for Mass Spectrometry"
 readme = "README.rst"
-keywords = []
+keywords = [ "chemistry", "mass-spectrometry", "chromatography",]
 dynamic = [ "requires-python", "classifiers", "dependencies",]
 
 [[project.authors]]
@@ -23,3 +23,9 @@ Homepage = "https://github.com/PyMassSpec/PyMassSpec"
 "Issue Tracker" = "https://github.com/PyMassSpec/PyMassSpec/issues"
 "Source Code" = "https://github.com/PyMassSpec/PyMassSpec"
 Documentation = "https://pymassspec.readthedocs.io/en/latest"
+
+[tool.mkrecipe]
+conda-channels = [ "bioconda", "conda-forge", "domdfcoding",]
+extras = "all"
+license-key = "GPL-2.0-only"
+package = "pyms"
