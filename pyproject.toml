@@ -7,12 +7,12 @@ name = "PyMassSpec"
 version = "2.3.0"
 description = "Python Toolkit for Mass Spectrometry"
 readme = "README.rst"
-keywords = [ "chemistry", "mass-spectrometry", "chromatography",]
+keywords = [ "chemistry", "chromatography", "mass-spectrometry",]
 dynamic = [ "requires-python", "classifiers", "dependencies",]
 
 [[project.authors]]
-email = "dominic@davis-foster.co.uk"
 name = "Dominic Davis-Foster"
+email = "dominic@davis-foster.co.uk"
 
 
 [project.license]
