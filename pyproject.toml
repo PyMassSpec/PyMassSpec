@@ -83,7 +83,6 @@ toctree_plus_types = [
     "exception",
     "flag",
     "function",
-    "method",
     "namedtuple",
     "protocol",
     "role",

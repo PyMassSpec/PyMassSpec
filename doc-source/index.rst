@@ -5,6 +5,7 @@ PyMassSpec
 .. start short_desc
 
 .. documentation-summary::
+	:meta:
 
 .. end short_desc
 
@@ -352,6 +353,12 @@ Installation
 	contributing
 	Source
 	StyleGuide
+
+
+.. sidebar-links::
+	:caption: Links
+	:github:
+	:pypi: PyMassSpec
 
 
 .. start links
