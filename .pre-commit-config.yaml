@@ -46,7 +46,7 @@ repos:
       files: ^pyms/.*\.py$
 
  - repo: https://github.com/domdfcoding/flake2lint
-   rev: v0.4.0
+   rev: v0.4.1
    hooks:
     - id: flake2lint
 
@@ -73,7 +73,7 @@ repos:
     - id: forbid-crlf
 
  - repo: https://github.com/repo-helper/formate
-   rev: v0.4.6
+   rev: v0.4.7
    hooks:
     - id: formate
       exclude: ^(pyms-demo/.*/.*|doc-source/conf|__pkginfo__|setup)\.(_)?py$
