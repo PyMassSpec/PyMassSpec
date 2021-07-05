@@ -21,6 +21,7 @@ setup(
 		description="Python Toolkit for Mass Spectrometry",
 		extras_require=extras_require,
 		install_requires=install_requires,
+		name="PyMassSpec",
 		py_modules=[],
 		version=__version__,
 		)
