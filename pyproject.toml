@@ -109,3 +109,22 @@ autodoc_exclude_members = [
     "__abstractmethods__",
     "__hash__",
 ]
+
+[tool.whey]
+base-classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+python-versions = [ "3.6", "3.7", "3.8", "3.9",]
+python-implementations = [ "CPython",]
+platforms = [ "Windows", "macOS", "Linux",]
+license-key = "GPL-2.0-only"
+package = "pyms"

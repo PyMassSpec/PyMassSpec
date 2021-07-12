@@ -11,10 +11,6 @@
 # This script based on https://github.com/rocky/python-uncompyle6/blob/master/__pkginfo__.py
 #
 
-__all__ = [
-		"__version__",
-		"extras_require",
-		]
+__all__ = ["extras_require"]
 
-__version__ = "2.3.0"
 extras_require = {}
