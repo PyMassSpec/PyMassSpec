@@ -160,13 +160,17 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		for scan in self._scan_list:
 
 			tmp_mini = scan.min_mass
-			if tmp_mini is not None and mini is not None:
-				if tmp_mini < mini:
+			if tmp_mini is not None:
+				if mini is None:
+					mini = tmp_mini
+				elif tmp_mini < mini:
 					mini = tmp_mini
 
 			tmp_maxi = scan.max_mass
-			if tmp_maxi is not None and maxi is not None:
-				if tmp_maxi > maxi:
+			if tmp_maxi is not None:
+				if maxi is None:
+					maxi = tmp_maxi
+				elif tmp_maxi > maxi:
 					maxi = tmp_maxi
 
 		self._min_mass = mini
