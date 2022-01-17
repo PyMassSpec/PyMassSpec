@@ -58,6 +58,7 @@ extensions = [
     "sphinx_debuginfo",
     "sphinx_licenseinfo",
     "seed_intersphinx_mapping",
+    "html_section",
     "autodocsumm",
     "nbsphinx",
     "enum_tools.autoenum",

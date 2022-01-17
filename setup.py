@@ -11,8 +11,7 @@ from setuptools import setup
 
 sys.path.append('.')
 
-# this package
-from __pkginfo__ import *  # pylint: disable=wildcard-import
+extras_require = {}
 
 repo_root = pathlib.Path(__file__).parent
 install_requires = (repo_root / "requirements.txt").read_text(encoding="UTF-8").split('\n')

@@ -1,4 +1,3 @@
-include __pkginfo__.py
 include LICENSE
 include requirements.txt
 prune **/__pycache__
