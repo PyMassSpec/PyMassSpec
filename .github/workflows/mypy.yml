@@ -4,6 +4,14 @@ name: mypy
 
 on:
   push:
+    branches-ignore:
+      - 'repo-helper-update'
+      - 'pre-commit-ci-update-config'
+      - 'imgbot'
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   Run:
@@ -19,13 +27,23 @@ jobs:
       - name: Checkout 🛎️
         uses: "actions/checkout@v2"
 
+      - name: Check for changed files
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          list-files: "json"
+          filters: |
+            code:
+              - '!(doc-source/**|CONTRIBUTING.rst|.imgbotconfig|.pre-commit-config.yaml|.pylintrc|.readthedocs.yml)'
+
       - name: Setup Python 🐍
+        if: steps.changes.outputs.code == 'true'
         uses: "actions/setup-python@v2"
         with:
           python-version: "3.6"
 
       - name: Install dependencies (Linux) 🔧
-        if: ${{ matrix.os == 'ubuntu-20.04' }}
+        if: ${{ matrix.os == 'ubuntu-20.04' && steps.changes.outputs.code == 'true' }}
         run: |
           python -VV
           python -m site
@@ -36,7 +54,7 @@ jobs:
           sudo apt install libhdf5-dev netcdf-bin libnetcdf-dev
 
       - name: Install dependencies (Win/mac) 🔧
-        if: ${{ matrix.os != 'ubuntu-20.04' }}
+        if: ${{ matrix.os != 'ubuntu-20.04' && steps.changes.outputs.code == 'true' }}
         run: |
           python -VV
           python -m site
@@ -44,4 +62,5 @@ jobs:
           python -m pip install --upgrade tox virtualenv
 
       - name: "Run mypy"
-        run: "python -m tox -e mypy"
+        if: steps.changes.outputs.code == 'true'
+        run: "python -m tox -e mypy -s false"

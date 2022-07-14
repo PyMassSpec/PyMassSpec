@@ -5,6 +5,7 @@ PyMassSpec
 .. start short_desc
 
 .. documentation-summary::
+	:meta:
 
 .. end short_desc
 
@@ -59,7 +60,8 @@ PyMassSpec
 		:workflow: mypy
 		:alt: mypy status
 
-	.. |requires| requires-io-shield::
+	.. |requires| image:: https://dependency-dash.herokuapp.com/github/PyMassSpec/PyMassSpec/badge.svg
+		:target: https://dependency-dash.herokuapp.com/github/PyMassSpec/PyMassSpec/
 		:alt: Requirements Status
 
 	.. |coveralls| coveralls-shield::
@@ -112,7 +114,7 @@ PyMassSpec
 		:last-commit:
 		:alt: GitHub last commit
 
-	.. |maintained| maintained-shield:: 2021
+	.. |maintained| maintained-shield:: 2022
 		:alt: Maintenance
 
 	.. |pypi-downloads| pypi-shield::
@@ -354,12 +356,18 @@ Installation
 	StyleGuide
 
 
+.. sidebar-links::
+	:caption: Links
+	:github:
+	:pypi: PyMassSpec
+
+
 .. start links
 
 .. only:: html
 
 	View the :ref:`Function Index <genindex>` or browse the `Source Code <_modules/index.html>`__.
 
-	`Browse the GitHub Repository <https://github.com/PyMassSpec/PyMassSpec>`__
+	:github:repo:`Browse the GitHub Repository <PyMassSpec/PyMassSpec>`
 
 .. end links

@@ -46,6 +46,7 @@ known_third_party = [
     "enum_tools",
     "extras_require",
     "github",
+    "importlib_metadata",
     "jupyter",
     "matplotlib",
     "nbconvert",

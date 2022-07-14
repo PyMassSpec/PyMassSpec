@@ -6,10 +6,16 @@ on:
   push:
     branches: ["master"]
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     name: "Conda"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        shell: bash -l {0}
 
     steps:
       - name: Checkout 🛎️
@@ -20,25 +26,41 @@ jobs:
         with:
           python-version: "3.8"
 
+      - name: Setup Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: env
+          conda-build-version: 3.21.0
+
       - name: Install dependencies 🔧
         run: |
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade repo_helper
+          python -m pip install --upgrade "whey-conda" "setuptools!=61.*,>=40.6.0" "wheel>=0.34.2"
           # $CONDA is an environment variable pointing to the root of the miniconda directory
-          $CONDA/bin/conda update -q conda
-          $CONDA/bin/conda install conda-build=3.21.0
-
+          $CONDA/bin/conda update -n base conda
           $CONDA/bin/conda config --add channels bioconda
           $CONDA/bin/conda config --add channels conda-forge
           $CONDA/bin/conda config --add channels domdfcoding
 
-      - name: "Build and install package"
+      - name: "Build and index channel"
         run: |
-          # This mess is only necessary because conda won't fix it themselves
-          # https://github.com/conda/conda/issues/1884
-
-          python -m repo_helper build --conda --out-dir conda-bld/noarch
+          python -m whey --builder whey_conda --out-dir conda-bld/noarch
           $CONDA/bin/conda index ./conda-bld || exit 1
-          $CONDA/bin/conda install -c file://$(pwd)/conda-bld pymassspec -y || exit 1
+
+      - name: "Search for package"
+        run: |
+          $CONDA/bin/conda search -c file://$(pwd)/conda-bld pymassspec
+          $CONDA/bin/conda search -c file://$(pwd)/conda-bld --override-channels pymassspec
+
+      - name: "Install package"
+        run: |
+          $CONDA/bin/conda install -c file://$(pwd)/conda-bld pymassspec=2.3.0=py_1 -y || exit 1
+
+      - name: "Run Tests"
+        run: |
+          rm -rf pyms
+          $CONDA/bin/conda install pytest coincidence || exit 1
+          pip install -r tests/requirements.txt
+          pytest tests/

@@ -5,11 +5,17 @@
 # stdlib
 import os
 import re
+import sys
 
 # 3rd party
 from sphinx_pyproject import SphinxConfig
 
-config = SphinxConfig()
+sys.path.append('.')
+
+config = SphinxConfig(globalns=globals())
+project = config["project"]
+author = config["author"]
+documentation_summary = config.description
 
 # stdlib
 import sys
@@ -22,88 +28,7 @@ nitpicky = True
 exclude_patterns = ["../pyms-demo/old/", "demo_rst/*.rst", "todo/", "chapter09.rst", "chapter10.rst"]
 nbsphinx_input_prompt = "In [%s]:"
 
-github_username = "PyMassSpec"
-github_repository = "PyMassSpec"
-author = "PyMassSpec Authors"
-project = "PyMassSpec"
-copyright = "2019-2021 Dominic Davis-Foster"
-language = "en"
-package_root = "pyms"
-extensions = [
-		"sphinx_toolbox",
-		"sphinx_toolbox.more_autodoc",
-		"sphinx_toolbox.more_autosummary",
-		"sphinx_toolbox.documentation_summary",
-		"sphinx_toolbox.tweaks.param_dash",
-		"sphinx_toolbox.tweaks.latex_toc",
-		"sphinx.ext.intersphinx",
-		"sphinx.ext.mathjax",
-		"sphinxcontrib.httpdomain",
-		"sphinxcontrib.extras_require",
-		"sphinx.ext.todo",
-		"sphinxemoji.sphinxemoji",
-		"notfound.extension",
-		"sphinx_copybutton",
-		"sphinxcontrib.default_values",
-		"sphinxcontrib.toctree_plus",
-		"sphinx_debuginfo",
-		"seed_intersphinx_mapping",
-		"autodocsumm",
-		"nbsphinx",
-		"enum_tools.autoenum",
-		"sphinx.ext.autosectionlabel",
-		]
-sphinxemoji_style = "twemoji"
-gitstamp_fmt = "%d %b %Y"
-templates_path = ["_templates"]
-html_static_path = ["_static"]
-source_suffix = ".rst"
-master_doc = "index"
-suppress_warnings = ["image.nonlocal_uri"]
-pygments_style = "default"
-html_theme = "domdf_sphinx_theme"
-html_theme_path = ["../.."]
-html_show_sourcelink = True
-toctree_plus_types = [
-		"class",
-		"confval",
-		"data",
-		"directive",
-		"enum",
-		"exception",
-		"flag",
-		"function",
-		"method",
-		"namedtuple",
-		"protocol",
-		"role",
-		"typeddict",
-		]
-add_module_names = False
-hide_none_rtype = True
-all_typevars = True
-overloads_location = "bottom"
-documentation_summary = "Python Toolkit for Mass Spectrometry"
-autodoc_exclude_members = [
-		"__dict__",
-		"__class__",
-		"__dir__",
-		"__weakref__",
-		"__module__",
-		"__annotations__",
-		"__orig_bases__",
-		"__parameters__",
-		"__subclasshook__",
-		"__init_subclass__",
-		"__attrs_attrs__",
-		"__init__",
-		"__new__",
-		"__getnewargs__",
-		"__abstractmethods__",
-		"__hash__",
-		]
-
-github_url = f"https://github.com/{github_username}/{github_repository}"
+github_url = "https://github.com/{github_username}/{github_repository}".format_map(config)
 
 rst_prolog = f""".. |pkgname| replace:: PyMassSpec
 .. |pkgname2| replace:: ``PyMassSpec``
@@ -113,7 +38,8 @@ rst_prolog = f""".. |pkgname| replace:: PyMassSpec
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = config.version
 
-todo_include_todos = bool(os.environ.get("SHOW_TODOS", 0))
+sphinx_builder = os.environ.get("SPHINX_BUILDER", "html").lower()
+todo_include_todos = int(os.environ.get("SHOW_TODOS", 0)) and sphinx_builder != "latex"
 
 intersphinx_mapping = {
 		"python": ("https://docs.python.org/3/", None),
@@ -135,14 +61,27 @@ latex_documents = [("index", f'{slug}.tex', project, author, "manual")]
 man_pages = [("index", slug, project, [author], 1)]
 texinfo_documents = [("index", slug, project, author, slug, project, "Miscellaneous")]
 
-toctree_plus_types = set(toctree_plus_types)
+toctree_plus_types = set(config["toctree_plus_types"])
 
 autodoc_default_options = {
 		"members": None,  # Include all members (methods).
 		"special-members": None,
 		"autosummary": None,
 		"show-inheritance": None,
-		"exclude-members": ','.join(autodoc_exclude_members),
+		"exclude-members": ','.join(config["autodoc_exclude_members"]),
 		}
+
+latex_elements = {
+		"printindex": "\\begin{flushleft}\n\\printindex\n\\end{flushleft}",
+		"tableofcontents": "\\pdfbookmark[0]{\\contentsname}{toc}\\sphinxtableofcontents",
+		}
+
+
+def setup(app):
+	# 3rd party
+	from sphinx_toolbox.latex import better_header_layout
+
+	app.connect("config-inited", lambda app, config: better_header_layout(config))
+
 
 html_logo = "../logo/PyMassSpec_262.png"
