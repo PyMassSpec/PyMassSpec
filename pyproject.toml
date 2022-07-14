@@ -7,9 +7,8 @@ name = "PyMassSpec"
 version = "2.3.0"
 description = "Python Toolkit for Mass Spectrometry"
 readme = "README.rst"
-keywords = [ "chemistry", "chromatography", "mass-spectrometry",]
-dynamic = [ "dependencies",]
 requires-python = ">=3.6.1"
+keywords = [ "chemistry", "chromatography", "mass-spectrometry",]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -30,6 +29,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Chemistry",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dynamic = [ "dependencies",]
 
 [[project.authors]]
 name = "Dominic Davis-Foster"

@@ -32,14 +32,14 @@ Example:
 
     # -- snip --
     if not isinstance(file_name, str):
-        raise TypeError("'file_name' must be a string")
+    	raise TypeError("'file_name' must be a string")
 
     try:
-        file = CDF(file_name)
-        self.__file_name = file_name
-        self.__file_handle = file
+    	file = CDF(file_name)
+    	self.__file_name = file_name
+    	self.__file_handle = file
     except CDFError:
-        error("Cannot open file '%s'" % file_name)
+    	error("Cannot open file '%s'" % file_name)
 
     print(" -> Processing netCDF file '%s'" % (self.__file_name))
 
@@ -57,9 +57,9 @@ Examples:
 
     # -- snip --
     td_list = []
-    for ii in range(len(time_list)-1):
-        td = time_list[ii+1]-time_list[ii]
-        td_list.append(td)
+    for ii in range(len(time_list) - 1):
+    	td = time_list[ii + 1] - time_list[ii]
+    	td_list.append(td)
     # -- snip --
 
 .. code-block:: python
@@ -67,14 +67,14 @@ Examples:
     # -- snip ---
     if len(time_list) > len(intensity_matrix):
 
-        self.set_scan_index()
-        scan_index_list = self.__scan_index_list
+    	self.set_scan_index()
+    	scan_index_list = self.__scan_index_list
 
-        count = 0
-        while len(intensity_matrix) < len(time_list):
-            count = count + 1
-            scan = numpy.repeat([0], max_mass - min_mass + 1)
-            intensity_matrix.insert(0,scan)
+    	count = 0
+    	while len(intensity_matrix) < len(time_list):
+    		count = count + 1
+    		scan = numpy.repeat([0], max_mass - min_mass + 1)
+    		intensity_matrix.insert(0, scan)
     # -- snip ---
 
 File pointers
@@ -86,8 +86,8 @@ Example:
 
 .. code-block:: python
 
-    fp1 = open('some_file.txt','w')
-    fp2 = open('another.txt','w')
+    fp1 = open("some_file.txt", 'w')
+    fp2 = open("another.txt", 'w')
 
 
 Short Comments
@@ -119,7 +119,9 @@ For standard library modules, always import the entire module name space. i.e.
 
 .. code-block:: python
 
+      # stdlib
       import os
+
       ...
       os.path()
 
@@ -255,8 +257,7 @@ Example:
 .. code-block:: python
 
       def open_for_reading(file_name):
-
-          """
+      	"""
           Opens file for reading, returns file pointer
 
           :param file_name: Name of the file to be opened for reading
@@ -283,15 +284,14 @@ Classes
     .. code-block:: python
 
         class ChemStation:
-
-            """
+        	"""
             ANDI-MS reader for Agilent ChemStation NetCDF files
 
             :author: Jake Blues
             """
 
-            def __init__(self, file_name):
-                """
+        	def __init__(self, file_name):
+        		"""
                 :param file_name: The name of the ANDI-MS file
                 :type file_name: StringType
                 """
