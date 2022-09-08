@@ -60,8 +60,8 @@ PyMassSpec
 		:workflow: mypy
 		:alt: mypy status
 
-	.. |requires| image:: https://dependency-dash.herokuapp.com/github/PyMassSpec/PyMassSpec/badge.svg
-		:target: https://dependency-dash.herokuapp.com/github/PyMassSpec/PyMassSpec/
+	.. |requires| image:: https://dependency-dash.repo-helper.uk/github/PyMassSpec/PyMassSpec/badge.svg
+		:target: https://dependency-dash.repo-helper.uk/github/PyMassSpec/PyMassSpec/
 		:alt: Requirements Status
 
 	.. |coveralls| coveralls-shield::

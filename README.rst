@@ -57,8 +57,8 @@ PyMassSpec
 	:target: https://github.com/PyMassSpec/PyMassSpec/actions?query=workflow%3A%22mypy%22
 	:alt: mypy status
 
-.. |requires| image:: https://dependency-dash.herokuapp.com/github/PyMassSpec/PyMassSpec/badge.svg
-	:target: https://dependency-dash.herokuapp.com/github/PyMassSpec/PyMassSpec/
+.. |requires| image:: https://dependency-dash.repo-helper.uk/github/PyMassSpec/PyMassSpec/badge.svg
+	:target: https://dependency-dash.repo-helper.uk/github/PyMassSpec/PyMassSpec/
 	:alt: Requirements Status
 
 .. |coveralls| image:: https://img.shields.io/coveralls/github/PyMassSpec/PyMassSpec/master?logo=coveralls
