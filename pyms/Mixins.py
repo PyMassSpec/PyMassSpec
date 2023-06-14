@@ -29,7 +29,7 @@ from typing import List, Optional
 from warnings import warn
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 
 # this package
 from pyms.Utils.Utils import is_number

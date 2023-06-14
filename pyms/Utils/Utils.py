@@ -30,7 +30,7 @@ import pickle
 from typing import TYPE_CHECKING, Any, Sequence
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 
 __all__ = ["is_path", "is_sequence", "is_sequence_of", "_number_types", "signedinteger", "is_number"]
 
@@ -39,7 +39,7 @@ if TYPE_CHECKING:
 else:
 	signedinteger = numpy.signedinteger
 
-_list_types = (Sequence, numpy.core.ndarray)
+_list_types = (Sequence, numpy.ndarray)
 _path_types = (str, os.PathLike, pathlib.Path)
 _number_types = (int, float, signedinteger)
 

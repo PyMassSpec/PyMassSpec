@@ -30,7 +30,7 @@ from statistics import mean, median, stdev
 from typing import List, Optional, Sequence, TypeVar, cast
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import PathLike
 

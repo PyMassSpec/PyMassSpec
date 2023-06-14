@@ -28,7 +28,7 @@ import copy
 from typing import Optional, Union
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 from scipy import ndimage  # type: ignore[import]
 
 # this package

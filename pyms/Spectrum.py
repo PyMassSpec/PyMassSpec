@@ -30,7 +30,7 @@ from collections import defaultdict
 from typing import Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, TypeVar, Union
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import PathLike
 
@@ -245,7 +245,7 @@ class MassSpectrum(Scan):
 		:param value: list of intensity value for each mass in ``mass_list``.
 		"""
 
-		value = array_as_numeric(value)
+		value = array_as_numeric(value)  # type: ignore[assignment]  # reuse of variable for new type
 
 		# if not isinstance(value, _list_types) or not isinstance(value[0], Number):
 		# 	raise TypeError("'intensity_list' must be a list of numbers")
@@ -263,7 +263,7 @@ class MassSpectrum(Scan):
 		:param value: list of intensity value for each mass in `mass_list`.
 		"""
 
-		value = array_as_numeric(value)
+		value = array_as_numeric(value)  # type: ignore[assignment]  # reuse of variable for new type
 
 		# if not isinstance(value, _list_types) or not isinstance(value[0], Number):
 		# 	raise TypeError("'intensity_list' must be a list of numbers")
@@ -281,7 +281,7 @@ class MassSpectrum(Scan):
 		:param value: list of mass values for the spectrum
 		"""
 
-		value = array_as_numeric(value)
+		value = array_as_numeric(value)  # type: ignore[assignment]  # reuse of variable for new type
 
 		# if not isinstance(value, _list_types) or not isinstance(value[0], Number):
 		# 	raise TypeError("'mass_list' must be a list of numbers")

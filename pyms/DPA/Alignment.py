@@ -31,7 +31,7 @@ import pathlib
 from typing import Dict, List, Optional, Sequence
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 import pandas  # type: ignore[import]
 from domdf_python_tools.typing import PathLike
 from pandas import DataFrame
@@ -84,7 +84,7 @@ class Alignment:
 			#    if peak.area() == None or peak.area() <= 0:
 			#        error("All peaks must have an area for alignment")
 			self.peakpos = [copy.deepcopy(expr.peak_list)]
-			self.peakalgt = numpy.transpose(self.peakpos).tolist()
+			self.peakalgt = numpy.transpose(self.peakpos).tolist()  # type: ignore[arg-type]
 			self.expr_code = [expr.expr_code]
 			self.similarity = None
 
@@ -240,7 +240,7 @@ class Alignment:
 				filtered_list.append(self.peakalgt[pos])
 
 		self.peakalgt = filtered_list
-		self.peakpos = numpy.transpose(self.peakalgt).tolist()
+		self.peakpos = numpy.transpose(self.peakalgt).tolist()  # type: ignore[arg-type]
 
 	@staticmethod
 	def get_highest_mz_ion(ion_dict: Dict[float, int]) -> float:

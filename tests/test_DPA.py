@@ -27,7 +27,7 @@ import tempfile
 from typing import Any, Iterator, List
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 import pytest
 from coincidence.regressions import AdvancedFileRegressionFixture
 from domdf_python_tools.paths import PathPlus

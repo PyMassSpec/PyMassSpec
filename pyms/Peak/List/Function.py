@@ -28,7 +28,7 @@ import math
 from typing import Any, List, Optional, Sequence, Union
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 
 # this package
 from pyms.IntensityMatrix import BaseIntensityMatrix
@@ -188,10 +188,8 @@ def fill_peaks(
 		upii = data.get_index_at_time(rtup)
 
 		# Get sub matrix of scans in bounds
-		submat = datamat[lowii:upii + 1]
-		submat = numpy.array(submat, dtype='d')
-		subrts = datatimes[lowii:upii + 1]
-		subrts = numpy.array(subrts, dtype='d')
+		submat = numpy.array(datamat[lowii:upii + 1], dtype='d')
+		subrts = numpy.array(datatimes[lowii:upii + 1], dtype='d')
 
 		sum_summat_squared = numpy.sum(submat**2, axis=1)
 
@@ -209,7 +207,7 @@ def fill_peaks(
 		cosarr = toparr / botarr
 
 		# RT weight of each scan
-		rtimearr = numpy.exp(-((subrts - rt) / float(Dclose))**2 / 2.0)  # type: ignore[operator]
+		rtimearr = numpy.exp(-((subrts - rt) / float(Dclose))**2 / 2.0)
 
 		# weighted scores
 		scorearr = cosarr * rtimearr

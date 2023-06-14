@@ -28,7 +28,7 @@ from typing import Iterator, List, Optional, Sequence, Tuple, Union
 from warnings import warn
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 from domdf_python_tools.typing import PathLike
 from enum_tools import IntEnum, document_enum
 
@@ -568,7 +568,13 @@ class IntensityMatrix(BaseIntensityMatrix):
 
 		# export 2D matrix of intensities
 		vals = self._intensity_array
-		save_data(f"{root_name}.im.{extension}", vals, sep=separator)
+
+		# save_data is annotated as taking only lists but list-like (i.e. numpy array) is ok
+		save_data(
+			f"{root_name}.im.{extension}", 
+			vals,  # type: ignore[arg-type] 
+			sep=separator,
+			)  
 
 		# export 1D vector of m/z's, corresponding to rows of
 		# the intensity matrix

@@ -29,7 +29,7 @@ import warnings
 from typing import Any, Optional, Sequence, Tuple, Union
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy
 from domdf_python_tools.typing import PathLike
 
 # this package

@@ -30,7 +30,7 @@ import math
 from typing import Dict, List
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 
 # this package
 from pyms.Peak import Peak
@@ -417,11 +417,11 @@ def merge_alignments(A1: Alignment, A2: Alignment, traces) -> Alignment:
 			for j, _ in enumerate(A2.peakpos):
 				merged[1 + i + j].append(None)  # type: ignore[arg-type]
 
-	ma.peakalgt = numpy.transpose(merged)
+	ma.peakalgt = numpy.transpose(merged)  # type: ignore[assignment, arg-type]
 	# sort according to average peak
 	ma.peakalgt = list(ma.peakalgt)
 	ma.peakalgt.sort(key=functools.cmp_to_key(alignment_compare))
-	ma.peakpos = numpy.transpose(ma.peakalgt)
+	ma.peakpos = numpy.transpose(ma.peakalgt)  # type: ignore[arg-type, assignment]
 
 	return ma
 
@@ -484,7 +484,7 @@ def alignment_compare(x, y) -> int:
 		return 1
 
 
-def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float) -> Alignment:
+def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float):  # TODO: return type
 	"""
 	Calculates the score matrix between two alignments.
 

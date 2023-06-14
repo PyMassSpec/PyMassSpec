@@ -28,7 +28,7 @@ import math
 from typing import List
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 
 # this package
 from pyms import Peak

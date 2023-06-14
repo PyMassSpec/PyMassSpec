@@ -155,7 +155,7 @@ def test_sele_peaks_by_rt(filtered_peak_list: List[Peak]):
 	# Errors
 	for obj in [test_dict, *test_sequences, *test_numbers, test_string]:
 		with pytest.raises(TypeError, match="'peaks' must be a Sequence of Peak objects"):
-			sele_peaks_by_rt(obj, ("12m", "13m"))
+			sele_peaks_by_rt(obj, ("12m", "13m"))  # type: ignore[arg-type]
 	for obj in [test_dict, *test_numbers, test_string]:
 		with pytest.raises(TypeError, match="'rt_range' must be a Sequence"):
 			sele_peaks_by_rt(filtered_peak_list, obj)  # type: ignore[arg-type]

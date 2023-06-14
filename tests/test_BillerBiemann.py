@@ -23,7 +23,7 @@ import copy
 from typing import Any, List
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 import pytest
 
 # this package

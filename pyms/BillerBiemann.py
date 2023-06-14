@@ -28,7 +28,7 @@ import copy
 from typing import List, Sequence, Tuple, Union
 
 # 3rd party
-import numpy  # type: ignore[import]
+import numpy 
 
 # this package
 from pyms.IntensityMatrix import BaseIntensityMatrix
