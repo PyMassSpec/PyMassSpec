@@ -30,7 +30,7 @@ import math
 from typing import Dict, List
 
 # 3rd party
-import numpy 
+import numpy
 
 # this package
 from pyms.Peak import Peak

@@ -25,7 +25,7 @@ import types
 from typing import Any, Type, cast
 
 # 3rd party
-import numpy 
+import numpy
 import pytest
 from coincidence.regressions import AdvancedFileRegressionFixture
 from domdf_python_tools.paths import PathPlus

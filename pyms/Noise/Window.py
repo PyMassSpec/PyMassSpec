@@ -29,7 +29,7 @@ from statistics import median
 from typing import Union
 
 # 3rd party
-import numpy 
+import numpy
 
 # this package
 from pyms.GCMS.Function import ic_window_points

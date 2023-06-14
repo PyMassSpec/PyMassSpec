@@ -23,7 +23,7 @@ import copy
 from typing import Any, cast
 
 # 3rd party
-import numpy 
+import numpy
 import pytest
 from domdf_python_tools.paths import PathPlus
 

@@ -26,7 +26,7 @@ Class to model a subset of data from an Intensity Matrix.
 from typing import Iterable, List, Optional, Sequence, Union, cast
 
 # 3rd party
-import numpy 
+import numpy
 
 # this package
 from pyms.IntensityMatrix import BaseIntensityMatrix, IntensityMatrix

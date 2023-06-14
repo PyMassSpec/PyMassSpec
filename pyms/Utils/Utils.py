@@ -30,7 +30,7 @@ import pickle
 from typing import TYPE_CHECKING, Any, Sequence
 
 # 3rd party
-import numpy 
+import numpy
 
 __all__ = ["is_path", "is_sequence", "is_sequence_of", "_number_types", "signedinteger", "is_number"]
 
