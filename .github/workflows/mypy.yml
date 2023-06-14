@@ -40,7 +40,7 @@ jobs:
         if: steps.changes.outputs.code == 'true'
         uses: "actions/setup-python@v2"
         with:
-          python-version: "3.6"
+          python-version: "3.8"
 
       - name: Install dependencies (Linux) 🔧
         if: ${{ matrix.os == 'ubuntu-20.04' && steps.changes.outputs.code == 'true' }}
