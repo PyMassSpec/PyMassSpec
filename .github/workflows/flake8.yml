@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: Check for changed files
         uses: dorny/paths-filter@v2
@@ -33,7 +33,7 @@ jobs:
 
       - name: Setup Python 🐍
         if: steps.changes.outputs.code == 'true'
-        uses: "actions/setup-python@v2"
+        uses: "actions/setup-python@v4"
         with:
           python-version: "3.8"
 
@@ -43,7 +43,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install tox
+          python -m pip install tox~=3.0
 
       - name: "Run Flake8"
         if: steps.changes.outputs.code == 'true'
