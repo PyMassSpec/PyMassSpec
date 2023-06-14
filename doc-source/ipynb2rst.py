@@ -140,7 +140,7 @@ def download_pandoc(url: Optional[str] = None, targetfolder: str = "~/bin", vers
 		shutil.rmtree(tempfolder)
 
 
-download_pandoc()
+# download_pandoc()
 
 # Import the RST exporter and instantiate it
 
@@ -247,13 +247,13 @@ replacements = {
 		"Alignment":
 				":class:`~pyms.DPA.Alignment.Alignment` ",
 		"exprl2alignment()":
-				":meth:`exprl2alignment() <pyms.DPA.Function.exprl2alignment>`.",
+				":meth:`exprl2alignment() <pyms.DPA.Alignent.exprl2alignment>`.",
 		"pyms.DPA.PairwiseAlignment.PairwiseAlignment":
 				":class:`pyms.DPA.PairwiseAlignment.PairwiseAlignment`",
 		"PairwiseAlignment":
 				":class:`~pyms.DPA.PairwiseAlignment.PairwiseAlignment`",
 		"align_with_tree()":
-				":meth:`align_with_tree() <pyms.DPA.Alignment.align_with_tree>`",
+				":meth:`align_with_tree() <pyms.DPA.PairwiseAlignment.align_with_tree>`",
 		"Display":
 				":class:`pyms.Display.Display`",
 		"plot_ic()":
