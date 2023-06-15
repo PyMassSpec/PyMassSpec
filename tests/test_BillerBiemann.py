@@ -23,7 +23,7 @@ import copy
 from typing import Any, List
 
 # 3rd party
-import numpy 
+import numpy
 import pytest
 
 # this package

@@ -28,7 +28,7 @@ import copy
 from typing import TypeVar, Union
 
 # 3rd party
-import numpy 
+import numpy
 
 # this package
 from pyms.GCMS.Function import ic_window_points

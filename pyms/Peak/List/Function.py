@@ -28,7 +28,7 @@ import math
 from typing import Any, List, Optional, Sequence, Union
 
 # 3rd party
-import numpy 
+import numpy
 
 # this package
 from pyms.IntensityMatrix import BaseIntensityMatrix

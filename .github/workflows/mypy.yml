@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: Check for changed files
         uses: dorny/paths-filter@v2
@@ -38,7 +38,7 @@ jobs:
 
       - name: Setup Python 🐍
         if: steps.changes.outputs.code == 'true'
-        uses: "actions/setup-python@v2"
+        uses: "actions/setup-python@v4"
         with:
           python-version: "3.8"
 
@@ -48,7 +48,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade tox virtualenv!=20.16.0
+          python -m pip install --upgrade tox~=3.0 virtualenv!=20.16.0
           sudo add-apt-repository universe
           sudo apt update
           sudo apt install libhdf5-dev netcdf-bin libnetcdf-dev
@@ -59,7 +59,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade tox virtualenv!=20.16.0
+          python -m pip install --upgrade tox~=3.0 virtualenv!=20.16.0
           pip config set global.prefer-binary true
 
       - name: "Run mypy"

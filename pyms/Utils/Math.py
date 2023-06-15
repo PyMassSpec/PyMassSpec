@@ -34,7 +34,7 @@ from statistics import stdev as std
 from typing import List, Sequence, Union, overload
 
 # 3rd party
-import numpy 
+import numpy
 
 # this package
 from pyms.Utils.Utils import is_number, is_sequence

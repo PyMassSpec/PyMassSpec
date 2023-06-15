@@ -30,7 +30,7 @@ from collections import defaultdict
 from typing import Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, TypeVar, Union
 
 # 3rd party
-import numpy 
+import numpy
 from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import PathLike
 

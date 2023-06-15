@@ -31,7 +31,7 @@ import pathlib
 from typing import Dict, List, Optional, Sequence
 
 # 3rd party
-import numpy 
+import numpy
 import pandas  # type: ignore[import]
 from domdf_python_tools.typing import PathLike
 from pandas import DataFrame
