@@ -14,7 +14,6 @@ short_desc: 'Python Toolkit for Mass Spectrometry'
 conda_description: 'Python Toolkit for Mass Spectrometry'
 primary_conda_channel: "domdfcoding"
 
-mypy_version: "0.812"
 min_coverage: 70
 enable_devmode: false
 

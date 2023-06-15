@@ -383,7 +383,7 @@ class Peak(AbstractPeak):
 			return ICPeak(rt, cast(float, ms), minutes, outlier)
 		else:
 			obj = super().__new__(cls)
-			obj.__init__(rt, ms, minutes, outlier)
+			obj.__init__(rt, ms, minutes, outlier)  # type: ignore[misc]  # unhappy about calling __init__
 			return obj
 
 	def __eq__(self, other) -> bool:  # noqa: MAN001

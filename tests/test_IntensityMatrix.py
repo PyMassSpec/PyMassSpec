@@ -340,6 +340,8 @@ class TestIntensityMatrix:
 		assert isinstance(im.get_mass_at_index(index), float)
 		assert im.get_mass_at_index(index) == 73.2516
 
+		obj: object
+
 		for obj in [test_string, test_list_strs, test_list_ints, test_dict]:
 			with pytest.raises(TypeError):
 				im.get_index_of_mass(obj)  # type: ignore[arg-type]

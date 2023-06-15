@@ -225,7 +225,7 @@ def gcms_sim(
 
 		height = sum(peak.mass_spectrum.mass_spec)
 		# standard deviation = area/(height * sqrt(2/pi))
-		sigma: float = peak.area / (height * (math.sqrt(2 * math.pi)))  # type: ignore[operator]
+		sigma: float = peak.area / (height * (math.sqrt(2 * math.pi)))
 		print("width", sigma)
 
 		for i in range(len(peak.mass_spectrum.mass_list)):
