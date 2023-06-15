@@ -301,6 +301,7 @@ Installation
 	pyms/BillerBiemann
 	pyms/Display
 	pyms/DPA
+	pyms/eic
 	pyms/Experiment
 	pyms/Gapfill
 	pyms/GCMS
@@ -332,19 +333,20 @@ Installation
 	pyms-demo/55
 	pyms-demo/56
 	pyms-demo/64
-	pyms-demo/70a
-	pyms-demo/70b
-	pyms-demo/70c
-	pyms-demo/71
-	pyms-demo/90
-	pyms-demo/91
-	pyms-demo/92
-	pyms-demo/93
-	pyms-demo/94
-	pyms-demo/95
 	pyms-demo/A1
 	pyms-demo/A2
 	pyms-demo/x10
+
+.. pyms-demo/70a
+.. pyms-demo/70b
+.. pyms-demo/70c
+.. pyms-demo/71
+.. pyms-demo/90
+.. pyms-demo/91
+.. pyms-demo/92
+.. pyms-demo/93
+.. pyms-demo/94
+.. pyms-demo/95
 
 
 .. toctree::
@@ -360,6 +362,8 @@ Installation
 	:caption: Links
 	:github:
 	:pypi: PyMassSpec
+
+	license
 
 
 .. start links

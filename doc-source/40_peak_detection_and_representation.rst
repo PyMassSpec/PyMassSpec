@@ -45,7 +45,7 @@ Individual Ion Areas
 While the previous approach uses the sum of all areas in the peak to estimate the peak area, the user may also choose to record the area of each individual ion in each peak.
 
 This can be useful when the intention is to later perform quantitation based on the area of a single characteristic ion for a particular compound.
-It is also essential if using the Common Ion Algorithm for quantitation, outlined in the section :ref:`common-ion`.
+It is also essential if using the Common Ion Algorithm for quantitation, outlined in the section :ref:`Common Ion Area Quantitation`.
 
 To set the area of each ion for each peak, the following code is used:
 

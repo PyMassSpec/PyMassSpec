@@ -43,7 +43,7 @@ Using the method :meth:`common_ion() <pyms.DPA.Alignment.Alignment.common_ion>` 
 We call this the 'Common Ion Algorithm' (CIA).
 
 To use this method it is essential that the individual ion
-areas have been set (see section :ref:`individual_ion_areas`).
+areas have been set (see section :ref:`Individual Ion Areas`).
 
 
 Using the Common Ion Algorithm

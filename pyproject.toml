@@ -107,6 +107,7 @@ extensions = [
     "nbsphinx",
     "enum_tools.autoenum",
     "sphinx.ext.autosectionlabel",
+    "ignore_missing_xref",
 ]
 sphinxemoji_style = "twemoji"
 gitstamp_fmt = "%d %b %Y"

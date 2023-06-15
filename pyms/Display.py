@@ -116,7 +116,7 @@ class Display:
 		"""
 		Plots TIC and IC(s) if they have been created by
 		:meth:`~pyms.Display.Display.plot_tic` or
-		:meth:`~pyms.Display.Display.plot_ics`.
+		:meth:`~pyms.Display.Display.plot_ic`.
 
 		Also adds detected peaks if they have been added by
 		:meth:`~pyms.Display.Display.plot_peaks`

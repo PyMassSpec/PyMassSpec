@@ -247,7 +247,7 @@ replacements = {
 		"Alignment":
 				":class:`~pyms.DPA.Alignment.Alignment` ",
 		"exprl2alignment()":
-				":meth:`exprl2alignment() <pyms.DPA.Alignent.exprl2alignment>`.",
+				":meth:`exprl2alignment() <pyms.DPA.Alignment.exprl2alignment>`.",
 		"pyms.DPA.PairwiseAlignment.PairwiseAlignment":
 				":class:`pyms.DPA.PairwiseAlignment.PairwiseAlignment`",
 		"PairwiseAlignment":

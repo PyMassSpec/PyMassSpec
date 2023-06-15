@@ -50,7 +50,7 @@ Define the within-state alignment parameters.
     Gw = 0.30 # gap penalty
 
 Convert each :class:`~pyms.Experiment.Experiment` object is converted into an :class:`~pyms.DPA.Alignment.Alignment`
-object with the function :meth:`exprl2alignment() <pyms.DPA.Function.exprl2alignment>`..
+object with the function :meth:`exprl2alignment() <pyms.DPA.Alignment.exprl2alignment>`.
 
 .. nbinput:: ipython3
     :execution-count: 5
@@ -90,7 +90,7 @@ The output of :class:`~pyms.DPA.PairwiseAlignment.PairwiseAlignment` (``T1``) is
 the dendrogram tree that maps the similarity relationship between the
 input 1-alignments, and also 1-alignments themselves.
 
-The function :meth:`align_with_tree() <pyms.DPA.Alignment.align_with_tree>` then takes the object ``T1`` and
+The function :meth:`align_with_tree() <pyms.DPA.PairwiseAlignment.align_with_tree>` then takes the object ``T1`` and
 aligns the individual alignment objects according to the guide tree.
 
 .. nbinput:: ipython3
@@ -107,7 +107,7 @@ aligns the individual alignment objects according to the guide tree.
 
 
 In this example, the individual alignments are three 1-alignments, and
-the function :meth:`align_with_tree() <pyms.DPA.Alignment.align_with_tree>` first creates a 2-alignment from the
+the function :meth:`align_with_tree() <pyms.DPA.PairwiseAlignment.align_with_tree>` first creates a 2-alignment from the
 two most similar 1-alignments and then adds the third 1-alignment to
 this to create a 3-alignment.
 

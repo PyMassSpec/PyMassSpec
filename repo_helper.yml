@@ -62,6 +62,7 @@ extra_sphinx_extensions:
  - 'nbsphinx'
  - 'enum_tools.autoenum'
  - sphinx.ext.autosectionlabel
+ - ignore_missing_xref
 
 html_theme_options:
  includehidden: False
