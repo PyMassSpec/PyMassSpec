@@ -22,7 +22,7 @@ jobs:
     runs-on: "windows-2019"
     continue-on-error: ${{ matrix.config.experimental }}
     env:
-      USING_COVERAGE: '3.6,3.7,3.8,3.9,3.10,3.11.0-beta.3'
+      USING_COVERAGE: '3.6,3.7,3.8,3.9,3.10,3.11'
 
     strategy:
       fail-fast: False
@@ -33,14 +33,14 @@ jobs:
           - {python-version: "3.8", testenvs: "py38,build", experimental: False}
           - {python-version: "3.9", testenvs: "py39,build", experimental: False}
           - {python-version: "3.10", testenvs: "py310,build", experimental: False}
-          - {python-version: "3.11.0-beta.3", testenvs: "py311-dev,build", experimental: True}
+          - {python-version: "3.11", testenvs: "py311,build", experimental: False}
         arch:
           - x64
           - x86
 
     steps:
       - name: Checkout 🛎️
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: Check for changed files
         if: startsWith(github.ref, 'refs/tags/') != true
@@ -55,7 +55,7 @@ jobs:
       - name: Setup Python 🐍
         id: setup-python
         if: ${{ steps.changes.outputs.code == 'true' || steps.changes.outcome == 'skipped' }}
-        uses: "actions/setup-python@v2"
+        uses: "actions/setup-python@v4"
         with:
           python-version: "${{ matrix.config.python-version }}"
 
@@ -65,7 +65,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade tox virtualenv
+          python -m pip install --upgrade tox~=3.0 virtualenv!=20.16.0
           pip config set global.prefer-binary true
 
       - name: "Run Tests for Python ${{ matrix.config.python-version }}"
@@ -73,7 +73,7 @@ jobs:
         run: python -m tox -e "${{ matrix.config.testenvs }}" -s false
 
       - name: "Upload Coverage 🚀"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ always() && steps.setup-python.outcome == 'success' }}
         with:
           name: "coverage-${{ matrix.config.python-version }}"
