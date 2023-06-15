@@ -59,7 +59,7 @@ def test_Display():
 	assert isinstance(fig_arg.fig, figure.Figure)
 	assert isinstance(fig_arg.ax, axes.Axes)
 	assert fig_arg.fig is fig
-	fig.close()
+	plt.close()
 
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
@@ -68,7 +68,7 @@ def test_Display():
 	assert isinstance(both_args.ax, axes.Axes)
 	assert both_args.fig is fig
 	assert both_args.ax is ax
-	fig.close()
+	plt.close()
 
 	for obj in [test_tuple, test_list_strs, test_list_ints, test_string, *test_numbers, test_dict]:
 		with pytest.raises(TypeError):
@@ -80,7 +80,7 @@ def test_Display():
 	ax = fig.add_subplot(111)
 	with pytest.raises(TypeError):
 		Display(ax, fig)
-	fig.close()
+	plt.close()
 
 
 @pytest.fixture()
