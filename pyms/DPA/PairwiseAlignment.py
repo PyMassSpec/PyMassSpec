@@ -294,7 +294,7 @@ def dp(S, gap_penalty: float) -> Dict:
 	return {'p': p, 'q': q, "trace": trace, "matches": matches, 'D': D, "phi": trace_matrix}
 
 
-def position_similarity(pos1, pos2, D: float) -> float:
+def position_similarity(pos1: List[Peak], pos2: List[Peak], D: float) -> float:
 	"""
 	Calculates the similarity between the two alignment positions.
 
