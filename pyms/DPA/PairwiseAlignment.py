@@ -65,7 +65,7 @@ class PairwiseAlignment:
 	Models pairwise alignment of alignments.
 
 	:param alignments: A list of alignments.
-	:param D: Retention time tolerance parameter for pairwise alignments.
+	:param D: Retention time tolerance parameter (in seconds) for pairwise alignments.
 	:param gap: Gap parameter for pairwise alignments.
 
 	:authors: Woon Wai Keen, Vladimir Likic
@@ -147,7 +147,7 @@ def align(a1: Alignment, a2: Alignment, D: float, gap: float) -> Alignment:
 
 	:param a1: The first alignment
 	:param a2: The second alignment
-	:param D: Retention time tolerance
+	:param D: Retention time tolerance in seconds.
 	:param gap: Gap penalty
 
 	:return: Aligned alignments
@@ -180,7 +180,7 @@ def score_matrix(a1: Alignment, a2: Alignment, D: float) -> numpy.ndarray:
 
 	:param a1: The first alignment.
 	:param a2: The second alignment.
-	:param D: Retention time tolerance.
+	:param D: Retention time tolerance in seconds.
 
 	:return: Aligned alignments.
 
@@ -302,7 +302,7 @@ def position_similarity(pos1, pos2, D: float) -> float:
 
 	:param pos1: The position of the first alignment.
 	:param pos2: The position of the second alignment.
-	:param D: Retention time tolerance.
+	:param D: Retention time tolerance in seconds.
 
 	:return: The similarity value for the current position.
 
@@ -490,7 +490,7 @@ def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float):  # TODO: return ty
 
 	:param a1: The first alignment.
 	:param a2: The second alignment.
-	:param D: Retention time tolerance.
+	:param D: Retention time tolerance in seconds.
 
 	:return: Aligned alignments
 
