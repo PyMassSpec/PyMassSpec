@@ -20,6 +20,7 @@
 
 # stdlib
 import os
+from typing import Iterator
 
 # 3rd party
 import pytest
@@ -84,11 +85,12 @@ def test_Display():
 
 
 @pytest.fixture()
-def test_plot() -> Display:
+def test_plot() -> Iterator[Display]:
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	test_plot = Display(fig, ax)
-	return test_plot
+	yield test_plot
+	plt.close(fig)
 
 
 @check_images
