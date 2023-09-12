@@ -86,14 +86,13 @@ ipython_config.py
 Pipfile.lock
 .pyre/
 Scribble
+misc
 **/output
 **/nist_jdx_files
 .vagrant
 Vagrantfile
 **pandoc*.deb
 **/UserGuide.pdf
-eic_demo*.py
-bb.py
 pyms/colby_deconvolution.py
 doc-source/graphics/old/*
 doc-source/todo/*
