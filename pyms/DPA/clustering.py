@@ -29,7 +29,7 @@ try:
 except ModuleNotFoundError:
 	try:
 		# 3rd party
-		from Bio.Cluster import treecluster  # type: ignore[import]
+		from Bio.Cluster import treecluster
 	except ModuleNotFoundError:
 		raise ModuleNotFoundError(
 				"""Neither PyCluster or BioPython is installed.
