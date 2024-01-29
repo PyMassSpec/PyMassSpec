@@ -9,7 +9,7 @@ netcdf4>=1.5.0
 numpy>=1.19.2; platform_system != "Windows"
 numpy!=1.19.4,>=1.19.3; platform_system == "Windows"
 openpyxl>=2.6.2
-pandas>=1.0.0,<2.3.0
+pandas<2.3.0,>=1.0.0
 pymzml>=2.2.1
 scipy>=1.2.1
 sdjson>=0.3.0
