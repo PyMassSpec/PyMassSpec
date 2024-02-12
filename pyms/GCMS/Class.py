@@ -155,22 +155,23 @@ class GCMS_data(pymsBaseClass, TimeListMixin, MaxMinMassMixin, GetIndexTimeMixin
 		:authors: Qiao Wang, Andrew Isaac, Vladimir Likic
 		"""
 
-		mini = self._scan_list[0].min_mass
-		maxi = self._scan_list[0].max_mass
+		min_mass = None
+		max_mass = None
+
 		for scan in self._scan_list:
 
-			tmp_mini = scan.min_mass
-			if tmp_mini is not None and mini is not None:
-				if tmp_mini < mini:
-					mini = tmp_mini
+			if min_mass is None:
+				min_mass = scan.min_mass
+			elif scan.min_mass is not None:
+				min_mass = min(scan.min_mass, min_mass)
 
-			tmp_maxi = scan.max_mass
-			if tmp_maxi is not None and maxi is not None:
-				if tmp_maxi > maxi:
-					maxi = tmp_maxi
+			if max_mass is None:
+				max_mass = scan.max_mass
+			elif scan.max_mass is not None:
+				max_mass = max(scan.max_mass, max_mass)
 
-		self._min_mass = mini
-		self._max_mass = maxi
+		self._min_mass = min_mass
+		self._max_mass = max_mass
 
 	def info(self, print_scan_n: bool = False) -> None:
 		"""

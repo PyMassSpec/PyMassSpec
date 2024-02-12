@@ -19,13 +19,16 @@
 #############################################################################
 
 # stdlib
+import os
 from copy import deepcopy
 from typing import cast
 
 # 3rd party
+import numpy
 import pytest
-from coincidence.regressions import AdvancedFileRegressionFixture
+from coincidence.regressions import AdvancedDataRegressionFixture, AdvancedFileRegressionFixture, _representer_for
 from domdf_python_tools.paths import PathPlus
+from pytest_regressions.data_regression import RegressionYamlDumper
 
 # this package
 from pyms.GCMS.Class import GCMS_data
@@ -38,7 +41,7 @@ from pyms.Utils.Utils import _pickle_load_path
 from .constants import *
 
 
-def test_JCAMP_reader():
+def test_JCAMP_reader_errors():
 	# Errors
 	for obj in [*test_numbers, *test_sequences, test_dict]:
 		with pytest.raises(TypeError):
@@ -322,3 +325,27 @@ def test_get_time_at_index(data: GCMS_data):
 
 # def test_ic_window_points(data):
 # todo
+
+
+@_representer_for(Scan)
+def _represent_mappings(dumper: RegressionYamlDumper, scan: Scan):  # noqa: MAN002
+	return dumper.represent_data({
+			"mass_list": scan.mass_list,
+			"intensity_list": scan.intensity_list,
+			})
+
+
+@_representer_for(
+		numpy.int64,
+		numpy.int32,
+		numpy.float64,
+		)
+def _represent_mappings(dumper: RegressionYamlDumper, data: int):  # noqa: MAN002
+	return dumper.represent_data(int(data))
+
+
+def test_jcamp_reader_empty_scan(advanced_data_regression: AdvancedDataRegressionFixture):
+	data: GCMS_data = JCAMP_reader(os.path.join("tests", "data", "aa_4_aq_110124_056.func_0.JDX"))
+	assert data.min_mass is not None
+	assert data.max_mass is not None
+	advanced_data_regression.check({"time_list": data.time_list, "scan_list": data.scan_list})

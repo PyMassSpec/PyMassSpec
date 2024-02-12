@@ -29,7 +29,7 @@ Functions for I/O of data in JCAMP-DX format.
 
 # stdlib
 from pathlib import Path
-from typing import Any, List, MutableMapping, Union
+from typing import Any, List, MutableMapping, Tuple, Union
 
 # 3rd party
 from domdf_python_tools.paths import PathPlus
@@ -64,22 +64,19 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 
 	print(f" -> Reading JCAMP file {file_name.as_posix()!r}")
 	lines_list = file_name.read_lines()
-	data: List[float] = []
-	page_idx = 0
-	xydata_idx = 0
-	time_list = []
-	scan_list = []
+	time_list: List[float] = []
+	scan_list: List[Scan] = []
 
 	header_info: MutableMapping[Any, Any] = {}  # Dictionary containing header information
 
-	for line in lines_list:
+	line_idx = 0
+	while line_idx < len(lines_list):
+		line = lines_list[line_idx]
 
-		if len(line.strip()) != 0:
-			# prefix = line.find('#')
-			# if prefix == 0:
+		if line.strip():
 			if line.startswith("##"):
-				# key word or information
-				fields = line.split('=', 1)
+				# Label
+				fields: Tuple[str, str] = line.split('=', 1)
 				fields[0] = fields[0].lstrip("##").upper()
 				fields[1] = fields[1].strip()
 
@@ -89,7 +86,7 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 						# FileConverter Pro style
 						time = float(fields[1].lstrip("T="))  # rt for the scan to be submitted
 						time_list.append(time)
-					page_idx = page_idx + 1
+
 				elif "RETENTION_TIME" in fields[0]:
 					# OpenChrom style
 					time = float(fields[1])  # rt for the scan to be submitted
@@ -99,9 +96,6 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 					if time_list[-1] != time:
 						time_list.append(time)
 
-				elif fields[0] in xydata_tags:
-					xydata_idx = xydata_idx + 1
-
 				elif fields[0] in header_info_fields:
 					if fields[1].isdigit():
 						header_info[fields[0]] = int(fields[1])
@@ -110,53 +104,33 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 					else:
 						header_info[fields[0]] = fields[1]
 
-			# elif prefix == -1:
-			else:
-				# Line doesn't start with ##
-				# data
-				if page_idx > 1 or xydata_idx > 1:
-					if len(data) % 2 == 1:
-						# TODO: This means the data is not in x, y pairs
-						#  Make a better error message
-						raise ValueError("data not in pair !")
+				elif fields[0] in xydata_tags:
+					# Read ahead to find all XY data
+					xydata_line_idx = line_idx + 1
+					xy_data_lines = []
+					while xydata_line_idx < len(lines_list):
+						xy_data_line = lines_list[xydata_line_idx]
+						if xy_data_line.startswith("##"):
+							break
+						else:
+							xy_data_lines.append(xy_data_line)
+							xydata_line_idx += 1
+
+					line_idx += len(xy_data_lines)
+
 					mass_list = []
 					intensity_list = []
-					for i in range(len(data) // 2):
-						mass_list.append(data[i * 2])
-						intensity_list.append(data[i * 2 + 1])
-					if len(mass_list) != len(intensity_list):
-						raise ValueError("len(mass_list) is not equal to len(intensity_list)")
+					for xy_data_line in xy_data_lines:
+						if not xy_data_line.strip():
+							continue
+
+						mass, intensity = xy_data_line.strip().split(',')
+						mass_list.append(float(mass.strip()))
+						intensity_list.append(float(intensity.strip()))
+
 					scan_list.append(Scan(mass_list, intensity_list))
-					data = []
-					data_sub = line.strip().split(',')
-					for item in data_sub:
-						if not len(item.strip()) == 0:
-							data.append(float(item.strip()))
-					if page_idx > 1:
-						page_idx = 1
-					if xydata_idx > 1:
-						xydata_idx = 1
-				else:
-					data_sub = line.strip().split(',')
-					for item in data_sub:
-						if not len(item.strip()) == 0:
-							data.append(float(item.strip()))
 
-	if len(data) % 2 == 1:
-		# TODO: This means the data is not in x, y pairs
-		#  Make a better error message
-		raise ValueError("data not in pair !")
-
-	# get last scan
-	mass = []
-	intensity = []
-	for i in range(len(data) // 2):
-		mass.append(data[i * 2])
-		intensity.append(data[i * 2 + 1])
-
-	if len(mass) != len(intensity):
-		raise ValueError("len(mass) is not equal to len(intensity)")
-	scan_list.append(Scan(mass, intensity))
+		line_idx += 1  # End of while loop
 
 	# sanity check
 	time_len = len(time_list)
