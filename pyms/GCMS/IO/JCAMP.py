@@ -107,7 +107,7 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 				elif fields[0] in xydata_tags:
 					# Read ahead to find all XY data
 					xydata_line_idx = line_idx + 1
-					xy_data_lines = []
+					xy_data_lines: List[str] = []
 					while xydata_line_idx < len(lines_list):
 						xy_data_line = lines_list[xydata_line_idx]
 						if xy_data_line.startswith("##"):
@@ -124,9 +124,13 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 						if not xy_data_line.strip():
 							continue
 
-						mass, intensity = xy_data_line.strip().split(',')
-						mass_list.append(float(mass.strip()))
-						intensity_list.append(float(intensity.strip()))
+						elements = xy_data_line.strip().rstrip(',').split(',')
+						if len(elements) % 2:
+							print(elements)
+							raise ValueError(f"Expected an even number of values, got {len(elements)}")
+						for mass, intensity in zip(elements[::2], elements[1::2]):
+							mass_list.append(float(mass.strip()))
+							intensity_list.append(float(intensity.strip()))
 
 					scan_list.append(Scan(mass_list, intensity_list))
 

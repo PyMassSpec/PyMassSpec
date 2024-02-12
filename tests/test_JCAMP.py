@@ -344,8 +344,9 @@ def _represent_mappings(dumper: RegressionYamlDumper, data: int):  # noqa: MAN00
 	return dumper.represent_data(int(data))
 
 
-def test_jcamp_reader_empty_scan(advanced_data_regression: AdvancedDataRegressionFixture):
-	data: GCMS_data = JCAMP_reader(os.path.join("tests", "data", "aa_4_aq_110124_056.func_0.JDX"))
+@pytest.mark.parametrize("filename", ["gc01_0812_066.jdx", "aa_4_aq_110124_056.func_0.JDX"])
+def test_jcamp_reader_empty_scan(advanced_data_regression: AdvancedDataRegressionFixture, filename: str):
+	data: GCMS_data = JCAMP_reader(os.path.join("tests", "data", filename))
 	assert data.min_mass is not None
 	assert data.max_mass is not None
 	advanced_data_regression.check({"time_list": data.time_list, "scan_list": data.scan_list})
