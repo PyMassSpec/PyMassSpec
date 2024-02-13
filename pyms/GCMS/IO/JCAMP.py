@@ -76,35 +76,35 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 		if line.strip():
 			if line.startswith("##"):
 				# Label
-				fields: Tuple[str, str] = line.split('=', 1)
-				fields[0] = fields[0].lstrip("##").upper()
-				fields[1] = fields[1].strip()
+				label, value = line.split('=', 1)
+				label = label.lstrip("##").upper()
+				value = value.strip()
 
-				if "PAGE" in fields[0]:
-					if "T=" in fields[1]:
+				if "PAGE" in label:
+					if "T=" in value:
 						# PAGE contains retention time starting with T=
 						# FileConverter Pro style
-						time = float(fields[1].lstrip("T="))  # rt for the scan to be submitted
+						time = float(value.lstrip("T="))  # rt for the scan to be submitted
 						time_list.append(time)
 
-				elif "RETENTION_TIME" in fields[0]:
+				elif "RETENTION_TIME" in label:
 					# OpenChrom style
-					time = float(fields[1])  # rt for the scan to be submitted
+					time = float(value)  # rt for the scan to be submitted
 
 					# Check to make sure time is not already in the time list;
 					# Can happen when both ##PAGE and ##RETENTION_TIME are specified
 					if time_list[-1] != time:
 						time_list.append(time)
 
-				elif fields[0] in header_info_fields:
-					if fields[1].isdigit():
-						header_info[fields[0]] = int(fields[1])
-					elif is_float(fields[1]):
-						header_info[fields[0]] = float(fields[1])
+				elif label in header_info_fields:
+					if value.isdigit():
+						header_info[label] = int(value)
+					elif is_float(value):
+						header_info[label] = float(value)
 					else:
-						header_info[fields[0]] = fields[1]
+						header_info[label] = value
 
-				elif fields[0] in xydata_tags:
+				elif label in xydata_tags:
 					# Read ahead to find all XY data
 					xydata_line_idx = line_idx + 1
 					xy_data_lines: List[str] = []
