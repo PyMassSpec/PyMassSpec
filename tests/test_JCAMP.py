@@ -328,7 +328,7 @@ def test_get_time_at_index(data: GCMS_data):
 
 
 @_representer_for(Scan)
-def _represent_mappings(dumper: RegressionYamlDumper, scan: Scan):  # noqa: MAN002
+def _represent_scan(dumper: RegressionYamlDumper, scan: Scan):  # noqa: MAN002
 	return dumper.represent_data({
 			"mass_list": scan.mass_list,
 			"intensity_list": scan.intensity_list,
@@ -340,7 +340,7 @@ def _represent_mappings(dumper: RegressionYamlDumper, scan: Scan):  # noqa: MAN0
 		numpy.int32,
 		numpy.float64,
 		)
-def _represent_mappings(dumper: RegressionYamlDumper, data: int):  # noqa: MAN002
+def _represent_numpy(dumper: RegressionYamlDumper, data: int):  # noqa: MAN002
 	return dumper.represent_data(int(data))
 
 
