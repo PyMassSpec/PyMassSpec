@@ -63,6 +63,7 @@ def test_Display():
 	no_args = Display()
 	assert isinstance(no_args.fig, figure.Figure)
 	assert isinstance(no_args.ax, axes.Axes)
+	plt.close()
 
 	fig = plt.figure()
 	fig_arg = Display(fig=fig)
@@ -288,3 +289,5 @@ def test_do_plotting_warning():
 	expected = """No plots have been created.
 Please call a plotting function before calling 'do_plotting()'"""
 	assert args[0] == expected
+
+	plt.close()
