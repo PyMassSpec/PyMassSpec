@@ -29,7 +29,7 @@ Functions for I/O of data in JCAMP-DX format.
 
 # stdlib
 from pathlib import Path
-from typing import Any, List, MutableMapping, Tuple, Union
+from typing import Any, List, MutableMapping, Union
 
 # 3rd party
 from domdf_python_tools.paths import PathPlus

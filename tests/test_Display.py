@@ -19,7 +19,6 @@
 #############################################################################
 
 # stdlib
-import os
 import sys
 from typing import Iterator
 
