@@ -1,0 +1,20 @@
+{
+  "tests.test_Display.test_plot_mass_spec_width": "b8eff64df6920402f7188129e1bedfb527ee896fc606e01887b272e3ce92913d",
+  "tests.test_Display.test_plot_ic": "9a8dc73141a459690b3fd51f898b9a1b2afb3df7f3b0bac9dfbdef0df16c7537",
+  "tests.test_Display.test_plot_tic": "5cbbf76f413b236caa16e020d48191cf167815b903164579c514d85016613683",
+  "tests.test_Display.test_plot_ic_title": "a30819af5ff01fe1c2d692276e015fc97f2287833879a68a21a921f3a0aa6ffa",
+  "tests.test_Display.test_plot_ic_linestyle": "7c0b150baf84c9b4862740613481f75b16e3c824549f1c807d6297ea8be0fb46",
+  "tests.test_Display.test_plot_tic_linewidth": "3fc138392ca5c07e019f44ce5fe0468d7ca6d1820b2af5f2f91f866100054d0f",
+  "tests.test_Display.test_plot_mass_spec": "fcda4b31fa668c2eb0140b39af5e071750c2425beadb75128ecdbdb15d024761",
+  "tests.test_Display.test_plot_ic_multiple": "3c02588d5c2985c49e80751f304bd3f8124581582fba8bbc6589324d7657432b",
+  "tests.test_Display.test_plot_mass_spec_alpha": "129b821ed282fa0a3f35d44c591c83b634054bbfb76ab8eb43dc6c703949d1d0",
+  "tests.test_Display.test_plot_tic_alpha": "1a5c16b29431408ab5d66a519f821abae9fa4a2cc40e956d50a4cb46c4546519",
+  "tests.test_Display.test_plot_tic_title": "e89cd9444231ee87018014f7c4233d93c15e542d7177bfa2343f4e47d6eaa757",
+  "tests.test_Display.test_plot_tic_linestyle": "3fa2f5217b100714c8feab43c653375489e13134429889ee2c5b899d3d78d8df",
+  "tests.test_Display.test_plot_mass_spec_linestyle": "d3d7cf7dc8a472ef4f2cbd0ab1a520f1690a3cad68137b50474da36a567579dd",
+  "tests.test_Display.test_plot_ic_label": "fda0be132b891d8e1756693084cd1f28f6ad9676c3bfe59a049501e1bcfb283f",
+  "tests.test_Display.test_plot_tic_label": "4b1ae3b73d074df193546b2407835a058d343a3d558f463864ba41cf904bd1c9",
+  "tests.test_Display.test_plot_ic_alpha": "fe74c58803d0c24ae2f333bc20dcef5159808a4c4835db737082f0256351abb6",
+  "tests.test_Display.test_plot_ic_linewidth": "db9fcbfe6e8f0328108a825f8c675ed3a4dc74d17d528252bbea386e854269cb",
+  "tests.test_Display.test_plot_mass_spec_title": "605328b5e63ce9c4ccee4f55d78829576632fb7d4e0aed41e5bd6fab4e7d03f9"
+}

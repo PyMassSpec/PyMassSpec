@@ -1,0 +1,20 @@
+{
+  "tests.test_Display.test_plot_mass_spec_width": "a20030d6d7465f2a252a4d06d85d1bcf3603d91c7b0782bac8f3bab12e914f39",
+  "tests.test_Display.test_plot_ic": "02d65924eb024ce68998a1d4da36cdaabb9583b67fb3e315134038d0243504b1",
+  "tests.test_Display.test_plot_tic": "4d47ed213bf24136160a59cd88f24533a3a0e3a0254c43478c18b4761add7d40",
+  "tests.test_Display.test_plot_ic_title": "9b201b19d1a7907d4e0688ece51575d58deebbf12e92c388f8a65b62802ccecd",
+  "tests.test_Display.test_plot_ic_linestyle": "6452ff26dda1c3f0e9b9daf409649c445f8c15de84240490d0cb41996db18ea9",
+  "tests.test_Display.test_plot_tic_linewidth": "c41df1d56d8dcf9a09c0053c63daf50e68b3d8069741f9b0bdaead3f586a4e99",
+  "tests.test_Display.test_plot_mass_spec": "ff05bc5b29b28b61021058e9cd0794b3748304d6ba511128ce82312372c46d6a",
+  "tests.test_Display.test_plot_ic_multiple": "bf8fc019597499647bfb14a54c949c7750fe6d86420c9a30bec7193d0aad83d6",
+  "tests.test_Display.test_plot_mass_spec_alpha": "692bdcc512cc191cf6bada96c121b7896bf582dda41bb2a1ac3d6e49d65f609b",
+  "tests.test_Display.test_plot_tic_alpha": "3a86704e0fded24e29fb5df4435f8cafe82fb3468f25ee1537af9a72fe204564",
+  "tests.test_Display.test_plot_tic_title": "31892038e8c7eb8e8f6cc066d577c354b7049d34cb353244ddf8aedec35045f2",
+  "tests.test_Display.test_plot_tic_linestyle": "c4cc12182a61e38cbf8d58542e23eb0e3999603f4bbb39873abe4a0be2b4dda8",
+  "tests.test_Display.test_plot_mass_spec_linestyle": "418c04a39f93005123d63bad57eee2bbeb82a9429baaf44578c47f722080df86",
+  "tests.test_Display.test_plot_ic_label": "bebc1426a0850dca0fe1d3802e1eb3f22b8b5a0cb5f9dd5bdaa551f67b1ac4c2",
+  "tests.test_Display.test_plot_tic_label": "1974807826020ff1b6d8e7c60b449511573c08b183447aa431ed70d085309efb",
+  "tests.test_Display.test_plot_ic_alpha": "b5dded1dcc3448ce77cb4e2218ee6373ea5edc5e8dbf14e43b394d133f1dd954",
+  "tests.test_Display.test_plot_ic_linewidth": "d976e3289b2ed15a761a3cf5f147d8ed2fdd524c7875f73475547a88437e9ded",
+  "tests.test_Display.test_plot_mass_spec_title": "decaa2f9738c795b0d8795b6506997c566da042822eb743178456edd7679bce4"
+}

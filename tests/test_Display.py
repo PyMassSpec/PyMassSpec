@@ -20,6 +20,7 @@
 
 # stdlib
 import os
+import sys
 from typing import Iterator
 
 # 3rd party
@@ -38,10 +39,18 @@ from pyms.Spectrum import MassSpectrum
 # this package
 from .constants import *
 
-baseline_dir = str(PathPlus(__file__).parent / "baseline")
-assert os.path.exists(baseline_dir)
-
-image_hashes = str(PathPlus(__file__).parent / "image_hashes.json")
+if sys.version_info[:2] == (3, 6):
+	baseline_dir = str(PathPlus(__file__).parent / "baseline")
+	image_hashes = str(PathPlus(__file__).parent / "image_hashes_36.json")
+elif sys.version_info[:2] == (3, 7):
+	baseline_dir = str(PathPlus(__file__).parent / "baseline")
+	image_hashes = str(PathPlus(__file__).parent / "image_hashes_37.json")
+elif sys.version_info[:2] == (3, 8):
+	baseline_dir = str(PathPlus(__file__).parent / "baseline")
+	image_hashes = str(PathPlus(__file__).parent / "image_hashes_38.json")
+else:
+	baseline_dir = str(PathPlus(__file__).parent / "baseline")
+	image_hashes = str(PathPlus(__file__).parent / "image_hashes.json")
 
 check_images = pytest.mark.mpl_image_compare(
 		baseline_dir=baseline_dir,
