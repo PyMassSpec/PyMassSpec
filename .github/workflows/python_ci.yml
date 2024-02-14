@@ -22,7 +22,7 @@ jobs:
     runs-on: "windows-2019"
     continue-on-error: ${{ matrix.config.experimental }}
     env:
-      USING_COVERAGE: '3.6,3.7,3.8,3.9,3.10,3.11'
+      USING_COVERAGE: '3.6,3.7,3.8,3.9,3.10,3.11,3.12'
 
     strategy:
       fail-fast: False
@@ -34,6 +34,7 @@ jobs:
           - {python-version: "3.9", testenvs: "py39,build", experimental: False}
           - {python-version: "3.10", testenvs: "py310,build", experimental: False}
           - {python-version: "3.11", testenvs: "py311,build", experimental: False}
+          - {python-version: "3.12", testenvs: "py312,build", experimental: False}
         arch:
           - x64
           - x86
