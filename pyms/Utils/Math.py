@@ -31,7 +31,7 @@ Provides mathematical functions.
 import math
 from statistics import mean, median
 from statistics import stdev as std
-from typing import List, Sequence, Union, overload
+from typing import Iterable, List, Sequence, Union, overload
 
 # 3rd party
 import numpy
@@ -128,7 +128,7 @@ def rmsd(list1: Union[Sequence, numpy.ndarray], list2: Union[Sequence, numpy.nda
 	return _rmsd
 
 
-def mad_based_outlier(data, thresh: float = 3.5):
+def mad_based_outlier(data: Iterable[float], thresh: float = 3.5):
 	"""
 	Identify outliers using the median absolute deviation (MAD).
 
@@ -152,7 +152,7 @@ def mad_based_outlier(data, thresh: float = 3.5):
 	return modified_z_score > thresh
 
 
-def percentile_based_outlier(data, threshold: int = 95):
+def percentile_based_outlier(data: Iterable[float], threshold: int = 95):
 	"""
 	Identify outliers using a percentile.
 
