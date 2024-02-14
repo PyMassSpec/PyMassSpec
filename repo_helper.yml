@@ -88,6 +88,10 @@ github_ci_requirements:
   post:
    # Prefery binary wheels for older versions over sdists for newer ones
    - pip config set global.prefer-binary true
+ macOS:
+  post:
+   # Prefery binary wheels for older versions over sdists for newer ones
+   - pip config set global.prefer-binary true
 
 imgbot_ignore:
  - tests/baseline/*
