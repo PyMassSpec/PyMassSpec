@@ -100,7 +100,7 @@ PyMassSpec
 .. |language| image:: https://img.shields.io/github/languages/top/PyMassSpec/PyMassSpec
 	:alt: GitHub top language
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/PyMassSpec/PyMassSpec/v2.4.0
+.. |commits-since| image:: https://img.shields.io/github/commits-since/PyMassSpec/PyMassSpec/v2.4.1
 	:target: https://github.com/PyMassSpec/PyMassSpec/pulse
 	:alt: GitHub commits since tagged version
 
