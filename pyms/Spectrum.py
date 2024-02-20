@@ -422,8 +422,8 @@ class MassSpectrum(Scan):
 				if line.strip():
 					if line.startswith("##"):
 						# key word or information
-						fields = line.split('=', 1)
-						current_tag = fields[0] = fields[0].lstrip("##").upper()
+						fields = line[2:].split('=', 1)
+						current_tag = fields[0] = fields[0].upper()
 						last_tag = fields[0]
 
 						if current_tag.upper().startswith("END"):

@@ -28,6 +28,7 @@ Functions for I/O of data in JCAMP-DX format.
 ################################################################################
 
 # stdlib
+import sys
 from pathlib import Path
 from typing import Any, List, MutableMapping, Union
 
@@ -43,6 +44,15 @@ from pyms.Utils.Math import is_float
 from pyms.Utils.Utils import is_path
 
 __all__ = ["JCAMP_reader"]
+
+
+def _removeprefix(string: str, prefix: str):
+	if sys.version_info >= (3, 9):
+		return string.removeprefix(prefix)
+	else:
+		if string.startswith(prefix):
+			return string[len(prefix):]
+		return string
 
 
 def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
@@ -77,14 +87,14 @@ def JCAMP_reader(file_name: Union[str, Path]) -> GCMS_data:
 			if line.startswith("##"):
 				# Label
 				label, value = line.split('=', 1)
-				label = label.lstrip("##").upper()
+				label = _removeprefix(label, "##").upper()
 				value = value.strip()
 
 				if "PAGE" in label:
 					if "T=" in value:
 						# PAGE contains retention time starting with T=
 						# FileConverter Pro style
-						time = float(value.lstrip("T="))  # rt for the scan to be submitted
+						time = float(_removeprefix(value, "T="))  # rt for the scan to be submitted
 						time_list.append(time)
 
 				elif "RETENTION_TIME" in label:
