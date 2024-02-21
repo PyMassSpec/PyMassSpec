@@ -115,6 +115,10 @@ class TimeListMixin:
 
 
 class IntensityArrayMixin:
+	"""
+	Mixin class for ``intensity_array`` attribute.
+	"""
+
 	_intensity_array: numpy.ndarray
 
 	@property
@@ -169,6 +173,10 @@ class IntensityArrayMixin:
 
 
 class GetIndexTimeMixin:
+	"""
+	Mixin class for retention time attributes and methods.
+	"""
+
 	_min_rt: float
 	_max_rt: float
 	_time_list: List[float]

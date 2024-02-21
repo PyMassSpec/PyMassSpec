@@ -321,6 +321,7 @@ def write_transposed_output(
 		minutes: bool = True,
 		) -> None:
 	"""
+	Write an alignment to an Excel workbook.
 
 	:param alignment: :class:`pyms.DPA.Alignment.Alignment` object to write to file
 	:param file_name: The name of the file

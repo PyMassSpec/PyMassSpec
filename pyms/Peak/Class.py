@@ -367,13 +367,13 @@ class Peak(AbstractPeak):
 		outlier: bool = ...,
 		) -> "ICPeak": ...
 
-	def __new__(
-			cls,
-			rt: float = 0.0,
-			ms: Union[float, MassSpectrum, None] = None,
-			minutes: bool = False,
-			outlier: bool = False,
-			):
+	def __new__(  # noqa: D102
+		cls,
+		rt: float = 0.0,
+		ms: Union[float, MassSpectrum, None] = None,
+		minutes: bool = False,
+		outlier: bool = False,
+		):
 
 		if is_number(ms):
 			warnings.warn(
