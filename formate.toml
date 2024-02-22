@@ -79,4 +79,4 @@ known_third_party = [
     "sphinxemoji",
     "typing_extensions",
 ]
-known_first_party = "pyms"
+known_first_party = [ "pyms",]
