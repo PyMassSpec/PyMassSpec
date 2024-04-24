@@ -75,7 +75,7 @@ jobs:
         run: python -m tox -e "${{ matrix.config.testenvs }}" -s false
 
       - name: "Upload Coverage 🚀"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() && steps.setup-python.outcome == 'success' }}
         with:
           name: "coverage-${{ matrix.config.python-version }}"
@@ -100,7 +100,7 @@ jobs:
           python -m pip install --upgrade "coveralls>=3.0.0" coverage_pyver_pragma
 
       - name: "Download Coverage 🪂"
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: coverage
 
@@ -118,7 +118,7 @@ jobs:
 
       - name: "Upload Combined Coverage Artefact 🚀"
         if: ${{ steps.show.outcome != 'failure' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "combined-coverage"
           path: .coverage
