@@ -77,5 +77,5 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ always() && steps.setup-python.outcome == 'success' }}
         with:
-          name: "coverage-${{ matrix.config.python-version }}"
+          name: "coverage-${{ matrix.config.python-version }}-${{ matrix.arch }}"
           path: .coverage
