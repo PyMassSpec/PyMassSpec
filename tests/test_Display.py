@@ -55,7 +55,11 @@ check_images = pytest.mark.mpl_image_compare(
 		baseline_dir=baseline_dir,
 		savefig_kwargs={"dpi": 600},
 		hash_library=image_hashes,
+		backend="agg",
 		)
+
+plt.close("all")
+plt.switch_backend("agg")
 
 
 def test_Display():
