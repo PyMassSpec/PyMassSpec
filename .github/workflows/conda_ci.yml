@@ -24,14 +24,15 @@ jobs:
       - name: Setup Python 🐍
         uses: "actions/setup-python@v5"
         with:
-          python-version: "3.8"
+          python-version: "3.11"
 
       - name: Setup Conda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v2.1.1
         with:
           activate-environment: env
           conda-build-version: 3.28.4
-          python-version: "3.8"
+          miniconda-version: py311_24.1.2-0
+          python-version: "3.11"
           miniforge-variant: Mambaforge
 
       - name: Install dependencies 🔧
@@ -39,7 +40,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade "whey-conda" "setuptools!=61.*,>=40.6.0" "wheel>=0.34.2"
+          python -m pip install --upgrade "whey-conda" "setuptools!=61.*,<=67.1.0,>=40.6.0" "wheel>=0.34.2"
           # $CONDA is an environment variable pointing to the root of the miniconda directory
           $CONDA/bin/conda update -n base conda
           $CONDA/bin/conda config --add channels bioconda
