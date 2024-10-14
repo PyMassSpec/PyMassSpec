@@ -29,11 +29,11 @@ import pathlib
 
 # 3rd party
 from domdf_python_tools.typing import PathLike
-from netCDF4 import Dataset  # type: ignore[import]
+from netCDF4 import Dataset  # type: ignore[import-untyped]
 
 try:
 	# 3rd party
-	from mpi4py import MPI  # type: ignore[import]  # noqa: F401
+	from mpi4py import MPI  # type: ignore[import-not-found]  # noqa: F401
 except ModuleNotFoundError:
 	pass
 

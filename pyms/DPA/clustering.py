@@ -25,7 +25,7 @@ Provides Pycluster.treecluster regardless of which library provides it.
 
 try:
 	# 3rd party
-	from Pycluster import treecluster  # type: ignore[import]
+	from Pycluster import treecluster  # type: ignore[import-not-found]
 except ModuleNotFoundError:
 	try:
 		# 3rd party

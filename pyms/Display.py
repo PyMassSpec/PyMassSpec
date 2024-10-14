@@ -28,13 +28,13 @@ import warnings
 from typing import Dict, List, Optional, Tuple
 
 # 3rd party
-import deprecation  # type: ignore[import]
-import matplotlib  # type: ignore[import]
-import matplotlib.pyplot as plt  # type: ignore[import]
-from matplotlib.axes import Axes  # type: ignore[import]
-from matplotlib.container import BarContainer  # type: ignore[import]
-from matplotlib.figure import Figure  # type: ignore[import]
-from matplotlib.lines import Line2D  # type: ignore[import]
+import deprecation  # type: ignore[import-untyped]
+import matplotlib  # type: ignore[import-untyped]
+import matplotlib.pyplot as plt  # type: ignore[import-untyped]
+from matplotlib.axes import Axes  # type: ignore[import-untyped]
+from matplotlib.container import BarContainer  # type: ignore[import-untyped]
+from matplotlib.figure import Figure  # type: ignore[import-untyped]
+from matplotlib.lines import Line2D  # type: ignore[import-untyped]
 
 # this package
 from pyms import Peak, __version__

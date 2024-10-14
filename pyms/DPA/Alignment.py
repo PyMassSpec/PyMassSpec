@@ -32,7 +32,7 @@ from typing import Dict, List, Optional, Sequence
 
 # 3rd party
 import numpy
-import pandas  # type: ignore[import]
+import pandas  # type: ignore[import-untyped]
 from domdf_python_tools.typing import PathLike
 from pandas import DataFrame
 

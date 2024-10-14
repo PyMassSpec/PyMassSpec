@@ -416,7 +416,7 @@ class IntensityMatrix(BaseIntensityMatrix):
 		# Try to include parallelism.
 		try:
 			# 3rd party
-			from mpi4py import MPI  # type: ignore[import]
+			from mpi4py import MPI  # type: ignore[import-not-found]
 			comm = MPI.COMM_WORLD
 			num_ranks = comm.Get_size()
 			rank = comm.Get_rank()
@@ -472,7 +472,7 @@ class IntensityMatrix(BaseIntensityMatrix):
 
 		else:
 			# Iterate over global indices.
-			return super().iter_ms_indices()
+			yield from super().iter_ms_indices()
 
 	def iter_ic_indices(self) -> Iterator[int]:
 		"""
@@ -490,7 +490,7 @@ class IntensityMatrix(BaseIntensityMatrix):
 
 		else:
 			# Iterate over global indices.
-			return super().iter_ic_indices()
+			yield from super().iter_ic_indices()
 
 	def get_ic_at_mass(self, mass: Optional[float] = None) -> IonChromatogram:
 		"""

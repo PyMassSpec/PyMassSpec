@@ -37,7 +37,7 @@ from pyms.Peak import Peak
 
 try:
 	# 3rd party
-	from mpi4py import MPI  # type: ignore[import]
+	from mpi4py import MPI  # type: ignore[import-not-found]
 except ModuleNotFoundError:
 	pass
 

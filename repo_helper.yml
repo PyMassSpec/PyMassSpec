@@ -110,3 +110,5 @@ keywords:
  - chemistry
  - mass-spectrometry
  - chromatography
+
+mypy_version: "1.12.0"

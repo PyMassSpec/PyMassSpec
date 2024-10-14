@@ -29,11 +29,11 @@ from typing import List
 
 # 3rd party
 from domdf_python_tools.typing import PathLike
-from openpyxl import Workbook  # type: ignore[import]
-from openpyxl.comments import Comment  # type: ignore[import]
-from openpyxl.formatting.rule import ColorScaleRule  # type: ignore[import]
-from openpyxl.styles import PatternFill  # type: ignore[import]
-from openpyxl.utils import get_column_letter  # type: ignore[import]
+from openpyxl import Workbook  # type: ignore[import-untyped]
+from openpyxl.comments import Comment  # type: ignore[import-untyped]
+from openpyxl.formatting.rule import ColorScaleRule  # type: ignore[import-untyped]
+from openpyxl.styles import PatternFill  # type: ignore[import-untyped]
+from openpyxl.utils import get_column_letter  # type: ignore[import-untyped]
 
 # this package
 from pyms.DPA.Alignment import Alignment

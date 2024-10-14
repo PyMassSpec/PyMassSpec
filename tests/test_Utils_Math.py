@@ -4,7 +4,7 @@ import random
 import statistics
 from decimal import Decimal
 from fractions import Fraction
-from typing import List
+from typing import List, cast
 
 # 3rd party
 import pytest
@@ -61,14 +61,17 @@ class TestMean:
 		assert Math.mean(data) == Fraction(1479, 1960)
 		assert statistics.mean(data) == Math.mean(data)
 
+	def _mean(self, values: List[float]) -> float:
+		return statistics.mean(cast(List[float], values))
+
 	def test_inf(self):
 		# Test mean with infinities.
-		raw = [1, 3, 5, 7, 9]  # Use only ints, to avoid TypeError later.
+		raw: List[float] = [1, 3, 5, 7, 9]  # Use only ints, to avoid TypeError later.
 		for kind in (float, Decimal):
 			for sign in (1, -1):
-				inf = kind("inf") * sign
+				inf = cast(float, kind("inf") * sign)
 				data = raw + [inf]
-				assert math.isinf(statistics.mean(data))
+				assert math.isinf(self._mean(data))
 				assert statistics.mean(data) == inf
 				assert math.isinf(Math.mean(data))
 				assert Math.mean(data) == inf
@@ -84,9 +87,9 @@ class TestMean:
 		# Test mean with NANs.
 		raw = [1, 3, 5, 7, 9]  # Use only ints, to avoid TypeError later.
 		for kind in (float, Decimal):
-			inf = kind("nan")
+			inf = cast(float, kind("nan"))
 			data = raw + [inf]
-			assert math.isnan(statistics.mean(data))
+			assert math.isnan(self._mean(data))
 			assert math.isnan(Math.mean(data))
 
 	def test_big_data(self):

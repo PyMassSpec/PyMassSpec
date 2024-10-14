@@ -22,7 +22,7 @@
 from typing import Any
 
 # 3rd party
-import deprecation  # type: ignore[import]
+import deprecation  # type: ignore[import-untyped]
 import pytest
 
 # this package

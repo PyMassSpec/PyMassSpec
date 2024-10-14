@@ -561,13 +561,13 @@ def test_build_intensity_matrix_i(data: GCMS_data, im_i: IntensityMatrix):
 
 	for obj in [test_dict, *test_lists, test_string, *test_numbers]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix_i(obj)  # type: ignore[arg-type]
+			build_intensity_matrix_i(obj)
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix_i(data, bin_left=obj)  # type: ignore[arg-type]
+			build_intensity_matrix_i(data, bin_left=obj)
 	for obj in [test_dict, *test_lists, test_string]:
 		with pytest.raises(TypeError):
-			build_intensity_matrix_i(data, bin_right=obj)  # type: ignore[arg-type]
+			build_intensity_matrix_i(data, bin_right=obj)
 
 
 # TODO; Saving data

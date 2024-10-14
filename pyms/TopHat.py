@@ -29,7 +29,7 @@ from typing import Optional, Union
 
 # 3rd party
 import numpy
-from scipy import ndimage  # type: ignore[import]
+from scipy import ndimage  # type: ignore[import-untyped]
 
 # this package
 from pyms.GCMS.Function import ic_window_points

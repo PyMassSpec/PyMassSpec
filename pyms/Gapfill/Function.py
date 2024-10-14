@@ -28,7 +28,7 @@ import pathlib
 from typing import List, Optional
 
 # 3rd party
-import pandas  # type: ignore[import]
+import pandas  # type: ignore[import-untyped]
 from domdf_python_tools.typing import PathLike
 from enum_tools import IntEnum
 
