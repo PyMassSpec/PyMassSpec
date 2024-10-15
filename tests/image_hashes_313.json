@@ -1,0 +1,20 @@
+{
+  "tests.test_Display.test_plot_mass_spec_width": "5db645b69818a4f4e1befb7eda0987df343dc78697fe466060d306fd157ea7e5",
+  "tests.test_Display.test_plot_tic_linewidth": "fdd9b5e07c495c085e809005c38c68e9b8122f2a94b30122d0e31832035f8835",
+  "tests.test_Display.test_plot_tic_alpha": "49bb2da380909d543d83b3cb28c8a399113e65e988a4fe60a670205d68a432b4",
+  "tests.test_Display.test_plot_mass_spec": "e941fc3863aff7241691c79f88ca879b85abaf608cdf189dd40ad2ec4e843722",
+  "tests.test_Display.test_plot_ic": "88f7b6aaea3d3e271551975be4ffc585581b7b2e17139ba5a456b40dec37120a",
+  "tests.test_Display.test_plot_tic": "3a012ec9fbb8922ae30b9e51ed43130b9fd81fd4301fb7eb5587ac179822d31e",
+  "tests.test_Display.test_plot_mass_spec_linestyle": "b0fc8ee57ac885a053165ec56d271cf7289defecb205dc4b15242c93512c51a7",
+  "tests.test_Display.test_plot_ic_multiple": "fd28f2a8ff2fde047d8393fb1e717a7812f36220a45d86e3bc9b483c595c80fe",
+  "tests.test_Display.test_plot_tic_label": "0ea0fd890e57d451537445ffb1ea5ed0bf88fddb974acdf807b81c4ea870df91",
+  "tests.test_Display.test_plot_ic_title": "b2c96129c19c34b10c164342c890d308ef8a9f4a8de77093157cd334f4103601",
+  "tests.test_Display.test_plot_mass_spec_title": "bf2e64e0882ede76c76fa74687ced241032cae4b15a5e9cc51dcca20175b861f",
+  "tests.test_Display.test_plot_tic_linestyle": "fe1d0bacf2bae214669673e9281b9440cc1ed5463e61507914ee1c101f0fc225",
+  "tests.test_Display.test_plot_tic_title": "f751ff2d857a9db8e9b2143344265c965b453c4f900c50ca3fbe227914a659e0",
+  "tests.test_Display.test_plot_mass_spec_alpha": "c0a61bc8c10dd6547bd7a0349d9b28044a9792206aaf2bfeda9d3aaa21a0ce13",
+  "tests.test_Display.test_plot_ic_label": "a780b699817b70d2a07521a2826e846299d7221a75c8994f74ba9ccf2c94152e",
+  "tests.test_Display.test_plot_ic_alpha": "e4913bd6f1bac78037372b8ce3e0124895d38b975ab43651e915221ee37eb94b",
+  "tests.test_Display.test_plot_ic_linewidth": "18bc4f8a00008b8e2be483caba37bb5c4c40b3d482e0330384aa40d748428805",
+  "tests.test_Display.test_plot_ic_linestyle": "7f983eb3af10311321399e5cf44789ac818d3ec3c926179eb74872f9687d0076"
+}

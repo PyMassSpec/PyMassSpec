@@ -47,6 +47,9 @@ elif sys.version_info[:2] == (3, 7):
 elif sys.version_info[:2] == (3, 8):
 	baseline_dir = str(PathPlus(__file__).parent / "baseline")
 	image_hashes = str(PathPlus(__file__).parent / "image_hashes_38.json")
+elif sys.version_info >= (3, 13):
+	baseline_dir = str(PathPlus(__file__).parent / "baseline")
+	image_hashes = str(PathPlus(__file__).parent / "image_hashes_313.json")
 else:
 	baseline_dir = str(PathPlus(__file__).parent / "baseline")
 	image_hashes = str(PathPlus(__file__).parent / "image_hashes.json")
