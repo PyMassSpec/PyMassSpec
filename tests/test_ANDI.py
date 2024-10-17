@@ -34,7 +34,7 @@ from pyms.Spectrum import Scan
 from pyms.Utils.Utils import _pickle_load_path
 from tests.constants import *
 
-pytest.importorskip("pyms.GCMS.IO.ANDI")
+pytest.importorskip("pyms.GCMS.IO.ANDI", exc_type=ImportError)
 
 # this package
 from pyms.GCMS.IO.ANDI import ANDI_reader  # noqa: E402
