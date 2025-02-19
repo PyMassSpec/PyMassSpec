@@ -114,7 +114,7 @@ PyMassSpec
 		:last-commit:
 		:alt: GitHub last commit
 
-	.. |maintained| maintained-shield:: 2024
+	.. |maintained| maintained-shield:: 2025
 		:alt: Maintenance
 
 	.. |pypi-downloads| pypi-shield::
