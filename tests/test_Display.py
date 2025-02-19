@@ -25,7 +25,7 @@ from typing import Iterator
 # 3rd party
 import pytest
 from domdf_python_tools.paths import PathPlus
-from matplotlib import axes, figure  # type: ignore[import-untyped]
+from matplotlib import axes, figure
 from matplotlib import pyplot as plt
 
 # this package

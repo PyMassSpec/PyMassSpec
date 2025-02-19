@@ -29,12 +29,12 @@ from typing import Dict, List, Optional, Tuple
 
 # 3rd party
 import deprecation  # type: ignore[import-untyped]
-import matplotlib  # type: ignore[import-untyped]
-import matplotlib.pyplot as plt  # type: ignore[import-untyped]
-from matplotlib.axes import Axes  # type: ignore[import-untyped]
-from matplotlib.container import BarContainer  # type: ignore[import-untyped]
-from matplotlib.figure import Figure  # type: ignore[import-untyped]
-from matplotlib.lines import Line2D  # type: ignore[import-untyped]
+import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
+from matplotlib.container import BarContainer
+from matplotlib.figure import Figure
+from matplotlib.lines import Line2D
 
 # this package
 from pyms import Peak, __version__
@@ -88,7 +88,7 @@ class Display:
 			current_version=__version__,
 			details="Functionality has moved to other functions and classes in this module.",
 			)
-	def __init__(self, fig: Figure = None, ax: Axes = None):
+	def __init__(self, fig: Optional[Figure] = None, ax: Optional[Axes] = None):
 
 		if fig is None:
 			fig = plt.figure()
@@ -539,6 +539,7 @@ class ClickEventHandler:
 	ms_fig: Optional[Figure]
 	ms_ax: Optional[Axes]
 	n_intensities: int
+	cid: Optional[int]
 
 	def __init__(
 			self,
