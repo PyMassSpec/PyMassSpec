@@ -29,7 +29,7 @@ import pathlib
 
 # 3rd party
 from domdf_python_tools.typing import PathLike
-from netCDF4 import Dataset  # type: ignore[import-untyped]
+from netCDF4 import Dataset
 
 try:
 	# 3rd party
