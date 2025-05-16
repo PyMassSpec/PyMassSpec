@@ -80,6 +80,7 @@ jobs:
         with:
           name: "coverage-${{ matrix.config.python-version }}"
           path: .coverage
+          include-hidden-files: true
 
 
   Coverage:
@@ -122,6 +123,7 @@ jobs:
         with:
           name: "combined-coverage"
           path: .coverage
+          include-hidden-files: true
 
       - name: "Upload Combined Coverage to Coveralls"
         if: ${{ steps.show.outcome != 'failure' }}

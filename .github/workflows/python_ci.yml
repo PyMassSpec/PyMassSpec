@@ -79,3 +79,4 @@ jobs:
         with:
           name: "coverage-${{ matrix.config.python-version }}-${{ matrix.arch }}"
           path: .coverage
+          include-hidden-files: true
