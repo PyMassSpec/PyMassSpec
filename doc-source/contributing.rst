@@ -3,7 +3,8 @@ Overview
 
 .. This file based on https://github.com/PyGithub/PyGithub/blob/master/CONTRIBUTING.md
 
-``PyMassSpec`` uses `tox <https://tox.readthedocs.io>`_ to automate testing and packaging, and `pre-commit <https://pre-commit.com>`_ to maintain code quality.
+``PyMassSpec`` uses `tox <https://tox.readthedocs.io>`_ to automate testing and packaging,
+and `pre-commit <https://pre-commit.com>`_ to maintain code quality.
 
 Install ``pre-commit`` with ``pip`` and install the git hook:
 
@@ -16,17 +17,16 @@ Install ``pre-commit`` with ``pip`` and install the git hook:
 Coding style
 --------------
 
-`Yapf <https://github.com/google/yapf>`_ is used for code formatting, and `isort <https://timothycrosley.github.io/isort/>`_ is used to sort imports.
+`formate <https://formate.readthedocs.io>`_ is used for code formatting.
 
-``yapf`` and ``isort`` can be run manually via ``pre-commit``:
+It can be run manually via ``pre-commit``:
 
 .. prompt:: bash
 
-	pre-commit run yapf -a
-	pre-commit run isort -a
+	pre-commit run formate -a
 
 
-The complete autoformatting suite can be run with ``pre-commit``:
+Or, to run the complete autoformatting suite:
 
 .. prompt:: bash
 
@@ -36,7 +36,8 @@ The complete autoformatting suite can be run with ``pre-commit``:
 Automated tests
 -------------------
 
-Tests are run with ``tox`` and ``pytest``. To run tests for a specific Python version, such as Python 3.6, run:
+Tests are run with ``tox`` and ``pytest``.
+To run tests for a specific Python version, such as Python 3.6:
 
 .. prompt:: bash
 
