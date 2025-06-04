@@ -38,11 +38,11 @@ Automated tests
 -------------------
 
 Tests are run with ``tox`` and ``pytest``.
-To run tests for a specific Python version, such as Python 3.6:
+To run tests for a specific Python version, such as Python 3.10:
 
 .. code-block:: bash
 
-	$ tox -e py36
+	$ tox -e py310
 
 
 To run tests for all Python versions, simply run:
