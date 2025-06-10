@@ -164,7 +164,7 @@ Please report this at https://github.com/domdfcoding/pymassspec/issues and uploa
 		return self.__copy__()
 
 	@property
-	def __dict__(self):  # noqa: MAN002
+	def __dict__(self):  # type: ignore[override]  # TODO: switch to to_dict() method  # noqa: MAN002
 		return {
 				"intensity_list": self.intensity_list,
 				"mass_list": self.mass_list,

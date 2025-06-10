@@ -16,6 +16,7 @@ primary_conda_channel: "domdfcoding"
 
 min_coverage: 70
 enable_devmode: false
+mypy_version: 1.16
 python_deploy_version: 3.9
 
 conda_channels:
@@ -112,5 +113,3 @@ keywords:
  - chemistry
  - mass-spectrometry
  - chromatography
-
-mypy_version: "1.12.0"

@@ -115,7 +115,7 @@ def test_bounds(peak: Peak):
 	assert peak.bounds == (11, 12, 13)
 	assert isinstance(peak.bounds, tuple)
 	peak2 = Peak(test_float)
-	peak2.bounds = [11, 12, 13]  # type: ignore[assignment]
+	peak2.bounds = [11, 12, 13]
 	assert peak2.bounds == (11, 12, 13)
 	assert isinstance(peak2.bounds, tuple)
 
