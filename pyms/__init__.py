@@ -30,7 +30,7 @@ __author__: str = "See AUTHORS"
 __license__: str = "GPLv2"
 __maintainer_email__: str = "dominic@davis-foster.co.uk"
 __url__: str = "http://domdfcoding.github.io/PyMassSpec"
-__version__: str = "2.5.0"
+__version__: str = "2.6.0"
 
 __copyright__: str = "2005-2012 Vladimir Likic, 2019-2020 Dominic Davis-Foster"
 __email__: str = "dominic@davis-foster.co.uk"
