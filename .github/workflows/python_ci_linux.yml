@@ -209,6 +209,7 @@ jobs:
           $CONDA/bin/conda config --set always_yes yes --set changeps1 no
           $CONDA/bin/conda update -n base conda
           $CONDA/bin/conda info -a
+          $CONDA/bin/conda install conda-forge::py-lief=0.14.1
           $CONDA/bin/conda config --add channels bioconda
           $CONDA/bin/conda config --add channels conda-forge
           $CONDA/bin/conda config --add channels domdfcoding
