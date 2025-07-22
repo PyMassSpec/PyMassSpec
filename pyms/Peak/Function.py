@@ -234,7 +234,7 @@ def peak_top_ion_areas(
 
 @deprecation.deprecated(
 		deprecated_in="2.0.0",
-		removed_in="2.4.0",
+		removed_in="3.0.0",
 		current_version=__version__,
 		details="Use :func:`pyms.Peak.Function.top_ions_v2` instead",
 		)
@@ -274,7 +274,7 @@ def top_ions_v1(peak: Peak, num_ions: int = 5) -> List[float]:
 
 @deprecation.deprecated(
 		deprecated_in="2.1.2",
-		removed_in="2.5.0",
+		removed_in="3.0.0",
 		current_version=__version__,
 		details="Use :meth:`pyms.Peak.Class.Peak.top_ions` instead",
 		)

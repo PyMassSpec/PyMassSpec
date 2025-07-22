@@ -84,7 +84,7 @@ class Display:
 
 	@deprecation.deprecated(
 			"2.2.8",
-			"2.4.0",
+			"3.0.0",
 			current_version=__version__,
 			details="Functionality has moved to other functions and classes in this module.",
 			)
