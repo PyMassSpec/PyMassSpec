@@ -108,6 +108,7 @@ def ANDI_reader(file_name: PathLike) -> GCMS_data:
 	if len(time_list) != len(scan_list):
 		raise ValueError("number of time points does not equal the number of scans")
 
+	rootgrp.close()
 	return GCMS_data(time_list, scan_list)
 
 
