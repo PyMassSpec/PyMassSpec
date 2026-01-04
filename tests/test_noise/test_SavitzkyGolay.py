@@ -19,10 +19,10 @@
 #############################################################################
 
 # 3rd party
+import numpy
 import pytest
 
 # this package
-# pyms
 from pyms.IntensityMatrix import IntensityMatrix
 from pyms.IonChromatogram import IonChromatogram
 from pyms.Noise.SavitzkyGolay import savitzky_golay, savitzky_golay_im
@@ -40,12 +40,12 @@ def test_savitzky_golay(tic: IonChromatogram):
 	assert tic1.is_tic()
 	assert len(tic1) == 2103
 	assert len(tic) == len(tic1)  # Length should be unchanged
-	assert tic1.get_intensity_at_index(test_int) == 421885.76190476184
+	assert numpy.isclose(tic1.get_intensity_at_index(test_int), 421885.76190476184)
 	assert tic1.get_time_at_index(test_int) == 1304.15599823
 	assert tic1.get_time_at_index(test_int) == tic.get_time_at_index(test_int)
 	assert tic1.time_list[0] == 1.05200003833
 	assert tic1.time_list[0] == tic.time_list[0]
-	assert tic1.time_step == 1.0560000035830972
+	assert numpy.isclose(tic1.time_step, 1.0560000035830972)
 	assert tic1.time_step == tic1.time_step
 	assert tic1.get_index_at_time(12) == 10
 	assert tic1.get_index_at_time(12) == tic1.get_index_at_time(12)
