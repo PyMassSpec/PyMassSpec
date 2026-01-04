@@ -24,8 +24,9 @@ Functions for reading mzML format data files.
 ################################################################################
 
 # 3rd party
-import pymzml
 from domdf_python_tools.typing import PathLike
+from pymzml.run import Reader
+from pymzml.spec import Spectrum
 
 try:
 	# 3rd party
@@ -55,7 +56,7 @@ def mzML_reader(file_name: PathLike) -> GCMS_data:
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
 
-	mzml_file = pymzml.run.Reader(str(file_name))
+	mzml_file = Reader(str(file_name))
 
 	try:  # avoid printing from each rank
 		comm = MPI.COMM_WORLD
@@ -85,21 +86,16 @@ def mzML_reader(file_name: PathLike) -> GCMS_data:
 	time_list = []
 
 	for spectrum in mzml_file:
+		assert isinstance(spectrum, Spectrum)
 		mass_list = []
 		intensity_list = []
 
-		for mz, i in spectrum.peaks:
+		for mz, i in spectrum.peaks("raw"):  # TODO: expose option
 			mass_list.append(mz)
 			intensity_list.append(i)
 
-		# scan_list.append(Scan(mass_list, intensity_list))
-		for element in spectrum.xmlTree:
-			# For some reason there are spectra with no time value,
-			# Ignore these????????????
-			if element.get("accession") == "MS:1000016":  # time value
-				# We need time in seconds not minutes
-				time_list.append(60 * float(element.get("value")))
-				scan_list.append(Scan(mass_list, intensity_list))
+		time_list.append(spectrum.scan_time_in_minutes() * 60)
+		scan_list.append(Scan(mass_list, intensity_list))
 
 	# print("time:", len(time_list))
 	# print("scan:", len(scan_list))
