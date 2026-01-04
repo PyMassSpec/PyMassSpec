@@ -4,7 +4,7 @@ coverage-pyver-pragma>=0.2.1
 coveralls>=2.1.2
 importlib-metadata>=3.6.0
 iniconfig!=1.1.0,>=1.0.1
-plotly>=6.5.0
+plotly>=5.18.0
 pynumpress>=0.0.9
 pytest>=6.0.0
 pytest-cov>=2.8.1
