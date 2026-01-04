@@ -535,7 +535,13 @@ def plot_peaks(ax: Axes, peak_list: List[Peak.Peak], label: str = "Peaks", style
 class ClickEventHandler:
 	"""
 	Class to enable clicking of chromatogram to view the intensities top n most intense
-	ions at that peak, and viewing of the mass spectrum with a right click
+	ions at that peak, and viewing of the mass spectrum with a right click.
+
+	:param peak_list: The list of peaks in the chromatogram.
+	:param fig:
+	:param ax:
+	:param tolerance:
+	:param n_intensities: The number of highest intentity values to show for clicked peaks.
 	"""  # noqa: D400
 
 	peak_list: List[Peak.Peak]
