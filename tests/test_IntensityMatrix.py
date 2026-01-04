@@ -46,7 +46,7 @@ from tests.constants import *
 
 
 @pytest.fixture(scope="module")
-def im_leco_filename(im: IntensityMatrix, tmpdir_factory) -> pathlib.Path:
+def im_leco_filename(im: IntensityMatrix, tmpdir_factory) -> pathlib.Path:  # noqa: MAN001
 	"""
 	Create the im_leco.csv file ahead of time and return the path to it
 	"""

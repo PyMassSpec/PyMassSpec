@@ -19,7 +19,6 @@
 #############################################################################
 
 # stdlib
-import sys
 from typing import Iterator
 
 # 3rd party
