@@ -39,7 +39,7 @@ from pyms.Spectrum import MassSpectrum
 from .constants import *
 
 check_images = pytest.mark.mpl_image_compare(
-		baseline_dir = str(PathPlus(__file__).parent / "baseline"),
+		baseline_dir=str(PathPlus(__file__).parent / "baseline"),
 		savefig_kwargs={"dpi": 600},
 		backend="agg",
 		)
