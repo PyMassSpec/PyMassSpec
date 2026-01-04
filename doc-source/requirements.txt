@@ -1,10 +1,12 @@
 default-values>=0.6.0
+docutils<0.22
 domdf-sphinx-theme>=0.3.0
 extras-require>=0.5.0
 html-section>=0.3.0
 jupyter>=1.0.0
 nbconvert>=6.0.7
 nbsphinx>=0.7.1
+roman>=4.0
 seed-intersphinx-mapping>=1.2.2
 sphinx>=3.0.3
 sphinx-copybutton>=0.2.12
