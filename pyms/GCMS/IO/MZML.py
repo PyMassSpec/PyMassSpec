@@ -24,7 +24,7 @@ Functions for reading mzML format data files.
 ################################################################################
 
 # 3rd party
-import pymzml  # type: ignore[import-untyped]
+import pymzml
 from domdf_python_tools.typing import PathLike
 
 try:
