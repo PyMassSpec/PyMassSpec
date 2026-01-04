@@ -10,6 +10,8 @@ on:
 jobs:
   Run:
     name: "notebooks"
+    permissions:
+      contents: read
     runs-on: "ubuntu-latest"
 
     steps:
