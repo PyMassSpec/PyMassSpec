@@ -103,7 +103,7 @@ yapf_exclude:
  - pyms-demo/.*/.*
 
 tox_unmanaged:
- - flake8
+ - pytest
 
 sphinx_conf_epilogue:
  - html_logo = "../logo/PyMassSpec_262.png"

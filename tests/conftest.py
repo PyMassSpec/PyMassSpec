@@ -71,7 +71,7 @@ def im_i(data: GCMS_data) -> IntensityMatrix:
 	return build_intensity_matrix_i(data)
 
 
-@pytest.fixture(scope="session")  # noqa: PT005
+@pytest.fixture(scope="session")
 def _peak_list(im_i: IntensityMatrix) -> List[Peak]:  # noqa: PT005
 	im_i = copy.deepcopy(im_i)
 
@@ -97,7 +97,7 @@ def peak_list(_peak_list: List[Peak]) -> List[Peak]:
 	return copy.deepcopy(_peak_list)
 
 
-@pytest.fixture(scope="session")  # noqa: PT005
+@pytest.fixture(scope="session")
 def _filtered_peak_list(im_i: IntensityMatrix, _peak_list: List[Peak]) -> List[Peak]:  # noqa: PT005
 	peak_list = copy.deepcopy(_peak_list)
 	# do peak detection on pre-trimmed data

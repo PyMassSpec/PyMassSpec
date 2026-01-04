@@ -241,8 +241,6 @@ class MassSpectrum(Scan):
 	def intensity_list(self, value: List[float]) -> None:
 		"""
 		Set the intensity values for the spectrum.
-
-		:param value: list of intensity value for each mass in ``mass_list``.
 		"""
 
 		value = array_as_numeric(value)  # type: ignore[assignment]  # reuse of variable for new type
@@ -259,8 +257,6 @@ class MassSpectrum(Scan):
 	def mass_spec(self, value: List[float]) -> None:
 		"""
 		Set the intensity values for the spectrum.
-
-		:param value: list of intensity value for each mass in `mass_list`.
 		"""
 
 		value = array_as_numeric(value)  # type: ignore[assignment]  # reuse of variable for new type
@@ -277,8 +273,6 @@ class MassSpectrum(Scan):
 	def mass_list(self, value: List[float]) -> None:
 		"""
 		Set the mass values for the spectrum.
-
-		:param value: list of mass values for the spectrum
 		"""
 
 		value = array_as_numeric(value)  # type: ignore[assignment]  # reuse of variable for new type

@@ -228,6 +228,10 @@ def is_peak_list(peaks: Any) -> bool:
 	"""
 	Returns whether ``peaks`` is a valid peak list.
 
+	:param peaks:
+
+	:rtype:
+
 	:author: Dominic Davis-Foster
 	"""
 

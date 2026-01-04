@@ -130,8 +130,6 @@ class AbstractPeak(pymsBaseClass):
 		"""
 		Sets the area under the peak.
 
-		:param value: The peak area
-
 		:author: Andrew Isaac
 		"""
 
@@ -161,9 +159,6 @@ class AbstractPeak(pymsBaseClass):
 	def bounds(self, value: Sequence[int]) -> None:
 		"""
 		Sets peak boundaries in points.
-
-		:param value: A 3-element tuple containing the left, apex, and right
-			peak boundaries in points. Left and right are offsets.
 		"""
 
 		if not is_sequence(value):
@@ -198,7 +193,7 @@ class AbstractPeak(pymsBaseClass):
 		Returns a copy of the ion areas dict.
 
 		:return: The dictionary of ``ion: ion area`` pairs
-		"""  # noqa: D400
+		"""
 
 		if len(self._ion_areas) == 0:
 			raise ValueError("no ion areas set")
@@ -209,8 +204,6 @@ class AbstractPeak(pymsBaseClass):
 	def ion_areas(self, value: Dict) -> None:
 		"""
 		Sets the ``ion: ion area`` pairs dictionary.
-
-		:param value: The dictionary of ion:ion_area pairs
 		"""
 
 		if not isinstance(value, dict) or not is_number(list(value.keys())[0]):
@@ -697,8 +690,6 @@ class ICPeak(AbstractPeak):
 	def ic_mass(self, value: float) -> None:
 		"""
 		Sets the mass for a single ion chromatogram peak and clears the mass spectrum.
-
-		:param value: The mass of the ion chromatogram that the peak is from
 		"""
 
 		if not is_number(value):

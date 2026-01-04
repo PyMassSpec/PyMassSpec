@@ -40,7 +40,7 @@ except TypeError:
 	pytest.importorskip("pyms.GCMS.IO.ANDI")
 
 # this package
-from pyms.GCMS.IO.ANDI import ANDI_reader  # noqa: E402
+from pyms.GCMS.IO.ANDI import ANDI_reader
 
 
 @pytest.fixture(scope="module")

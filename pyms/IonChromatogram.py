@@ -170,8 +170,6 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 		"""
 		Sets the value for the intensity array.
 
-		:param ia: An array of new intensity values
-
 		:author: Vladimir Likic
 		"""
 

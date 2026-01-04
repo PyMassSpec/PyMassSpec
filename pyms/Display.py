@@ -203,7 +203,7 @@ Please call a plotting function before calling 'do_plotting()'""",
 			# self.plot_mass_spec(event.xdata, mass_list, intensity_list)
 			self.plot_mass_spec(MassSpectrum(mass_list, intensity_list))
 
-	def plot_ic(self, ic: IonChromatogram, **kwargs) -> List[Line2D]:
+	def plot_ic(self, ic: IonChromatogram, **kwargs) -> List[Line2D]:  # noqa: PRM002
 		"""
 		Plots an Ion Chromatogram.
 
@@ -225,7 +225,7 @@ Please call a plotting function before calling 'do_plotting()'""",
 		self.__tic_ic_plots.append(plot)
 		return plot
 
-	def plot_mass_spec(self, mass_spec: MassSpectrum, **kwargs) -> BarContainer:
+	def plot_mass_spec(self, mass_spec: MassSpectrum, **kwargs) -> BarContainer:  # noqa: PRM002
 		"""
 		Plots a Mass Spectrum.
 
@@ -262,7 +262,7 @@ Please call a plotting function before calling 'do_plotting()'""",
 
 		return plot
 
-	def plot_tic(self, tic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:
+	def plot_tic(self, tic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:  # noqa: PRM002
 		"""
 		Plots a Total Ion Chromatogram.
 
@@ -324,7 +324,12 @@ Please call a plotting function before calling 'do_plotting()'""",
 		plt.close()
 
 
-def plot_ic(ax: matplotlib.axes.Axes, ic: IonChromatogram, minutes: bool = False, **kwargs) -> List[Line2D]:
+def plot_ic(  # noqa: PRM002
+		ax: matplotlib.axes.Axes,
+		ic: IonChromatogram,
+		minutes: bool = False,
+		**kwargs,
+		) -> List[Line2D]:
 	"""
 	Plots an Ion Chromatogram.
 
@@ -362,7 +367,7 @@ def plot_ic(ax: matplotlib.axes.Axes, ic: IonChromatogram, minutes: bool = False
 	return plot
 
 
-def plot_mass_spec(ax: Axes, mass_spec: MassSpectrum, **kwargs) -> BarContainer:
+def plot_mass_spec(ax: Axes, mass_spec: MassSpectrum, **kwargs) -> BarContainer:  # noqa: PRM002
 	"""
 	Plots a Mass Spectrum.
 

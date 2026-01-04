@@ -86,7 +86,7 @@ class Experiment(pymsBaseClass):
 
 		return Experiment(copy.copy(self._expr_code), copy.copy(self.peak_list))
 
-	def __deepcopy__(self, memodict={}) -> "Experiment":  # noqa: MAN001
+	def __deepcopy__(self, memodict={}) -> "Experiment":  # noqa: MAN001,PRM002
 		"""
 		Returns a new Experiment object containing a copy of the data in this object.
 		"""

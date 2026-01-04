@@ -93,7 +93,6 @@ def add_gaussv_noise(
 	:param scale: the scale of the normal distribution from which the noise is drawn
 	:param cutoff: The level below which the intensity of the ic at that point
 		has no effect on the scale of the noise distribution
-	:param scale: The scale of the normal distribution for ic values
 	:param prop: For intensity values above the cutoff, the scale is
 		multiplied by the ic value multiplied by ``prop``.
 
@@ -120,10 +119,10 @@ def add_gaussv_noise_ic(
 	value of the ic at the point where the noise is being added
 
 	:param ic: The IonChromatogram
-	:param cutoff: The level below which the intensity of the ic at that point
-		has no effect on the scale of the noise distribution
 	:param scale: The scale of the normal distribution for ic values below the cutoff
 		is modified for values above the cutoff
+	:param cutoff: The level below which the intensity of the ic at that point
+		has no effect on the scale of the noise distribution
 	:param prop: For ic values above the cutoff, the scale is multiplied by the ic
 		value multiplied by ``prop``.
 
