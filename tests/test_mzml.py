@@ -9,6 +9,7 @@ from coincidence.regressions import AdvancedDataRegressionFixture
 # this package
 from pyms.GCMS.Class import GCMS_data
 from pyms.GCMS.IO.MZML import mzML_reader
+from pyms.IonChromatogram import IonChromatogram
 from pyms.Spectrum import Scan
 
 
@@ -74,7 +75,7 @@ def test_masses(mzml_data):
 	assert isinstance(mzml_data.min_mass, float)
 	# minimum mass found in all data
 	assert numpy.isclose(mzml_data.min_mass, 70.048691)
-	#"maximum mass found in all data
+	# "maximum mass found in all data
 	assert isinstance(mzml_data.max_mass, float)
 	assert numpy.isclose(mzml_data.max_mass, 898.748962)
 
@@ -82,26 +83,25 @@ def test_masses(mzml_data):
 def test_times(mzml_data):
 	time = mzml_data.time_list
 	assert isinstance(time, list)
-	#number of retention times
+	# number of retention times
 	assert len(time) == 11
-	#retention time of 1st scan:
+	# retention time of 1st scan:
 	assert isinstance(time[0], float)
 	assert numpy.isclose(time[0], 0.087954)
-	#index of 2sec in time_list
+	# index of 2sec in time_list
 	assert isinstance(mzml_data.get_index_at_time(2.0), int)
 	assert mzml_data.get_index_at_time(2.0) == 7
 
 
 def test_tic(mzml_data):
 	tic = mzml_data.tic
-	# this package
-	from pyms.IonChromatogram import IonChromatogram
+
 	assert isinstance(tic, IonChromatogram)
-	#number of scans in TIC
+	# number of scans in TIC
 	assert len(tic) == 11
 	assert len(tic) == len(mzml_data.time_list)
 
-	#start time of TIC
+	# start time of TIC
 	assert isinstance(tic.get_time_at_index(0), float)
 	assert numpy.isclose(tic.get_time_at_index(0), 0.087954)
 
@@ -118,14 +118,14 @@ def test_scans(mzml_data):
 	assert numpy.isclose(scans[0].mass_list[0], 70.065781)
 
 	assert isinstance(scans[0].intensity_list, list)
-	#1st intensity value for 1st scan
+	# 1st intensity value for 1st scan
 	assert isinstance(scans[0].intensity_list[0], float)
 	assert numpy.isclose(scans[0].intensity_list[0], 70541.453125)
 
-	#minimum mass found in 1st scan
+	# minimum mass found in 1st scan
 	assert isinstance(scans[0].min_mass, float)
 	assert numpy.isclose(scans[0].min_mass, 70.065781)
 
-	#maximum mass found in 1st scan
+	# maximum mass found in 1st scan
 	assert isinstance(scans[0].max_mass, float)
 	assert numpy.isclose(scans[0].min_mass, 70.065781)
