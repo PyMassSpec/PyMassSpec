@@ -10,7 +10,8 @@ numpy>=1.19.2; platform_system != "Windows"
 numpy!=1.19.4,>=1.19.3; platform_system == "Windows"
 openpyxl>=2.6.2
 pandas>=1.0.0
-pymzml>=2.2.1
+pymzml>=2.2.1; python_version >= "3.8"
+pymzml<2.6.0,>=2.2.1; python_version < "3.8"
 scipy>=1.2.1
 sdjson>=0.3.0
 typing-extensions>=3.7.4.3
