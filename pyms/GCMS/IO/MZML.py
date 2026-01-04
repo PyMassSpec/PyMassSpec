@@ -23,6 +23,9 @@ Functions for reading mzML format data files.
 #                                                                              #
 ################################################################################
 
+# stdlib
+import os
+
 # 3rd party
 from domdf_python_tools.typing import PathLike
 from pymzml.run import Reader
@@ -56,46 +59,46 @@ def mzML_reader(file_name: PathLike) -> GCMS_data:
 	if not is_path(file_name):
 		raise TypeError("'file_name' must be a string or a PathLike object")
 
-	mzml_file = Reader(str(file_name))
+	with Reader(os.fspath(file_name)) as mzml_file:
 
-	try:  # avoid printing from each rank
-		comm = MPI.COMM_WORLD
-		rank = comm.Get_rank()
-		size = comm.Get_size()
+		try:  # avoid printing from each rank
+			comm = MPI.COMM_WORLD
+			rank = comm.Get_rank()
+			size = comm.Get_size()
 
-		if rank == 0:
-			file_names = []
+			if rank == 0:
+				file_names = []
 
-			for i in range(1, size):
-				recv_buffer = ''
-				file_n = comm.recv(recv_buffer, i)
-				file_names.append(file_n)
+				for i in range(1, size):
+					recv_buffer = ''
+					file_n = comm.recv(recv_buffer, i)
+					file_names.append(file_n)
 
-			print(" -> Reading mzML files:")
-			print(file_name)
-			for file_n in file_names:
-				print(file_n)
-		else:
-			comm.send(file_name, dest=0)
-	# TODO: Find specific error
-	except Exception as e:
-		print(e)
-		print(f" -> Reading mzML file '{file_name}'")
+				print(" -> Reading mzML files:")
+				print(file_name)
+				for file_n in file_names:
+					print(file_n)
+			else:
+				comm.send(file_name, dest=0)
+		# TODO: Find specific error
+		except Exception as e:
+			print(e)
+			print(f" -> Reading mzML file '{file_name}'")
 
-	scan_list = []
-	time_list = []
+		scan_list = []
+		time_list = []
 
-	for spectrum in mzml_file:
-		assert isinstance(spectrum, Spectrum)
-		mass_list = []
-		intensity_list = []
+		for spectrum in mzml_file:
+			assert isinstance(spectrum, Spectrum)
+			mass_list = []
+			intensity_list = []
 
-		for mz, i in spectrum.peaks("raw"):  # TODO: expose option
-			mass_list.append(mz)
-			intensity_list.append(i)
+			for mz, i in spectrum.peaks("raw"):  # TODO: expose option
+				mass_list.append(mz)
+				intensity_list.append(i)
 
-		time_list.append(spectrum.scan_time_in_minutes() * 60)
-		scan_list.append(Scan(mass_list, intensity_list))
+			time_list.append(spectrum.scan_time_in_minutes() * 60)
+			scan_list.append(Scan(mass_list, intensity_list))
 
 	# print("time:", len(time_list))
 	# print("scan:", len(scan_list))
