@@ -1,5 +1,6 @@
 ---
 modname: PyMassSpec
+pypi_name: pymassspec
 import_name: pyms
 copyright_years: "2019-2021"
 author: "Dominic Davis-Foster"

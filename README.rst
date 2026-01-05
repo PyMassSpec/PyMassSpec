@@ -69,20 +69,20 @@ PyMassSpec
 	:target: https://www.codefactor.io/repository/github/PyMassSpec/PyMassSpec
 	:alt: CodeFactor Grade
 
-.. |pypi-version| image:: https://img.shields.io/pypi/v/PyMassSpec
-	:target: https://pypi.org/project/PyMassSpec/
+.. |pypi-version| image:: https://img.shields.io/pypi/v/pymassspec
+	:target: https://pypi.org/project/pymassspec/
 	:alt: PyPI - Package Version
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/PyMassSpec?logo=python&logoColor=white
-	:target: https://pypi.org/project/PyMassSpec/
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/pymassspec?logo=python&logoColor=white
+	:target: https://pypi.org/project/pymassspec/
 	:alt: PyPI - Supported Python Versions
 
-.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/PyMassSpec
-	:target: https://pypi.org/project/PyMassSpec/
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/pymassspec
+	:target: https://pypi.org/project/pymassspec/
 	:alt: PyPI - Supported Implementations
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/PyMassSpec
-	:target: https://pypi.org/project/PyMassSpec/
+.. |wheel| image:: https://img.shields.io/pypi/wheel/pymassspec
+	:target: https://pypi.org/project/pymassspec/
 	:alt: PyPI - Wheel
 
 .. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/PyMassSpec?logo=anaconda
@@ -111,8 +111,8 @@ PyMassSpec
 .. |maintained| image:: https://img.shields.io/maintenance/yes/2026
 	:alt: Maintenance
 
-.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/PyMassSpec
-	:target: https://pypi.org/project/PyMassSpec/
+.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/pymassspec
+	:target: https://pypi.org/project/pymassspec/
 	:alt: PyPI - Downloads
 
 .. end shields

@@ -24,4 +24,4 @@ setup(
 		py_modules=[],
 		)
 
-shutil.rmtree("PyMassSpec.egg-info", ignore_errors=True)
+shutil.rmtree("pymassspec.egg-info", ignore_errors=True)

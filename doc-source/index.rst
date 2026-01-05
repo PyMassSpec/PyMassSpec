@@ -71,22 +71,22 @@ PyMassSpec
 		:alt: CodeFactor Grade
 
 	.. |pypi-version| pypi-shield::
-		:project: PyMassSpec
+		:project: pymassspec
 		:version:
 		:alt: PyPI - Package Version
 
 	.. |supported-versions| pypi-shield::
-		:project: PyMassSpec
+		:project: pymassspec
 		:py-versions:
 		:alt: PyPI - Supported Python Versions
 
 	.. |supported-implementations| pypi-shield::
-		:project: PyMassSpec
+		:project: pymassspec
 		:implementations:
 		:alt: PyPI - Supported Implementations
 
 	.. |wheel| pypi-shield::
-		:project: PyMassSpec
+		:project: pymassspec
 		:wheel:
 		:alt: PyPI - Wheel
 
@@ -118,7 +118,7 @@ PyMassSpec
 		:alt: Maintenance
 
 	.. |pypi-downloads| pypi-shield::
-		:project: PyMassSpec
+		:project: pymassspec
 		:downloads: month
 		:alt: PyPI - Downloads
 
@@ -167,7 +167,7 @@ Installation
 
 .. start installation
 
-.. installation:: PyMassSpec
+.. installation:: pymassspec
 	:pypi:
 	:github:
 	:anaconda:
@@ -267,7 +267,7 @@ Installation
 
 .. start installation
 
-.. installation:: PyMassSpec
+.. installation:: pymassspec
 	:pypi:
 	:github:
 	:anaconda:

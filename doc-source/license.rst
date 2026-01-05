@@ -7,4 +7,4 @@ License
 .. license-info:: GPL-2.0-only
 
 .. license::
-	:py: PyMassSpec
+	:py: pymassspec

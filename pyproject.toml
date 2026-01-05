@@ -3,7 +3,7 @@ requires = [ "setuptools!=61.*,<=67.1.0,>=40.6.0", "wheel>=0.34.2",]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "PyMassSpec"
+name = "pymassspec"
 version = "2.7.0"
 description = "Python Toolkit for Mass Spectrometry"
 readme = "README.rst"
