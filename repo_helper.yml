@@ -6,7 +6,7 @@ author: "Dominic Davis-Foster"
 rtfd_author: "PyMassSpec Authors"
 email: "dominic@davis-foster.co.uk"
 # Original Author Sean O'Callaghan <spoc@unimelb.edu.au>
-version: "2.6.0.post1"
+version: "2.7.0"
 username: "PyMassSpec"
 assignee: "domdfcoding"
 license: 'GPLv2'
