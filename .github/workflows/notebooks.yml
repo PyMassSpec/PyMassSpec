@@ -11,7 +11,7 @@ jobs:
   Run:
     name: "notebooks"
     permissions:
-      contents: read
+      contents: write
     runs-on: "ubuntu-latest"
 
     steps:
