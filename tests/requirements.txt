@@ -5,7 +5,7 @@ coveralls>=2.1.2
 importlib-metadata>=3.6.0
 iniconfig!=1.1.0,>=1.0.1
 plotly>=5.18.0
-pymzml@ git+https://github.com/domdfcoding/pymzML.git@element-truth
+pymzml@ git+https://github.com/domdfcoding/pymzML.git@stubs
 pynumpress>=0.0.9; sys_platform != "win32"
 pynumpress>=0.0.9; python_version < "3.13" and sys_platform == "win32"
 pytest>=6.0.0
