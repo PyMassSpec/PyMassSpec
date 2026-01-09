@@ -268,7 +268,7 @@ detailed description.
 
 
 .. _`documentation`: https://pymassspec.readthedocs.io
-.. _`Contributing to PyMassSpec`: https://pymassspec.readthedocs.io/en/master/Contributing/Contributing.html
+.. _`Contributing to PyMassSpec`: https://pymassspec.readthedocs.io/en/master/contributing.html
 .. _`pytest`: https://pytest.org/
 .. _`file an issue`: https://github.com/domdfcoding/pymassspec/issues
 .. _Python: https://www.python.org/
