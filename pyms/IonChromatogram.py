@@ -69,7 +69,7 @@ class IonChromatogram(pymsBaseClass, TimeListMixin, IntensityArrayMixin, GetInde
 			self,
 			intensity_list: Union[Sequence[float], numpy.ndarray],
 			time_list: Sequence[float],
-			mass: Optional[float] = None
+			mass: Optional[float] = None,
 			):
 		if not is_sequence_of(intensity_list, _number_types):
 			raise TypeError("'intensity_list' must be a Sequence of numbers")

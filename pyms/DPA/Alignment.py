@@ -391,7 +391,7 @@ class Alignment:
 			raise TypeError("'area_file_name' must be a string or a PathLike object")
 
 		if not is_sequence_of(top_ion_list, _number_types):
-			raise TypeError(f"'top_ion_list' must be a Sequence of numbers")
+			raise TypeError("'top_ion_list' must be a Sequence of numbers")
 
 		area_file_name = prepare_filepath(area_file_name)
 

@@ -129,7 +129,7 @@ def test_intensity_array(tic: IonChromatogram, im: IntensityMatrix):
 			numpy.equal(
 					IonChromatogram(tic.intensity_array, tic.time_list).intensity_array,
 					tic.intensity_array,
-					)
+					),
 			)
 
 	ic = im.get_ic_at_index(0)

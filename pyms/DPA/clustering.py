@@ -31,9 +31,7 @@ except ModuleNotFoundError:
 		# 3rd party
 		from Bio.Cluster import treecluster
 	except ModuleNotFoundError:
-		raise ModuleNotFoundError(
-				"""Neither PyCluster or BioPython is installed.
-Please install one of them and try again."""
-				) from None
+		msg = "Neither PyCluster or BioPython is installed.\nPlease install one of them and try again."
+		raise ModuleNotFoundError(msg) from None
 
 __all__ = ["treecluster"]

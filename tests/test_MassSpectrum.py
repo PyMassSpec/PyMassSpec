@@ -94,11 +94,12 @@ def test_mass_spec(ms: MassSpectrum):
 
 
 @pytest.mark.parametrize(
-		"obj, expects", [
+		"obj, expects",
+		[
 				(test_string, ValueError),
 				(test_dict, TypeError),
 				(test_list_strs, ValueError),
-				]
+				],
 		)
 def test_mass_spec_errors(ms: MassSpectrum, obj: Any, expects: Type[Exception]):
 	with pytest.raises(expects):
@@ -122,11 +123,12 @@ def test_mass_list(ms: MassSpectrum):
 
 
 @pytest.mark.parametrize(
-		"obj, expects", [
+		"obj, expects",
+		[
 				(test_string, ValueError),
 				(test_dict, TypeError),
 				(test_list_strs, ValueError),
-				]
+				],
 		)
 def test_mass_list_errors(ms: MassSpectrum, obj: Any, expects: Type[Exception]):
 	with pytest.raises(expects):
@@ -155,7 +157,7 @@ def test_from_jcamp():
 
 		if not jcamp_file.exists():
 			r = requests.get(
-					f"https://webbook.nist.gov/cgi/cbook.cgi?JCAMP=C{cas.replace('-', '')}&Index=0&Type=Mass"
+					f"https://webbook.nist.gov/cgi/cbook.cgi?JCAMP=C{cas.replace('-', '')}&Index=0&Type=Mass",
 					)
 			jcamp_file.write_bytes(r.content)
 

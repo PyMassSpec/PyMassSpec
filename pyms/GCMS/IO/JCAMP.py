@@ -46,7 +46,7 @@ from pyms.Utils.Utils import is_path
 __all__ = ["JCAMP_reader"]
 
 
-def _removeprefix(string: str, prefix: str):
+def _removeprefix(string: str, prefix: str) -> str:
 	if sys.version_info >= (3, 9):
 		return string.removeprefix(prefix)
 	else:

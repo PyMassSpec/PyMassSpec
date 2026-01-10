@@ -75,18 +75,24 @@ class TestIntensityMatrix:
 		with pytest.raises(expects):
 			IntensityMatrix(obj, im.mass_list, im.intensity_array)
 
-	@pytest.mark.parametrize("obj, expects", [
-			*args,
-			([test_list_ints], ValueError),
-			])
+	@pytest.mark.parametrize(
+			"obj, expects",
+			[
+					*args,
+					([test_list_ints], ValueError),
+					],
+			)
 	def test_mass_list_errors(self, obj: Any, expects: Type[Exception], im: IntensityMatrix):
 		with pytest.raises(TypeError):
 			IntensityMatrix(im.time_list, obj, im.intensity_array)
 
-	@pytest.mark.parametrize("obj, expects", [
-			*args,
-			([test_list_ints], ValueError),
-			])
+	@pytest.mark.parametrize(
+			"obj, expects",
+			[
+					*args,
+					([test_list_ints], ValueError),
+					],
+			)
 	def test_intensity_array_errors(self, obj: Any, im: IntensityMatrix, expects: Type[Exception]):
 		with pytest.raises(expects):
 			IntensityMatrix(im.time_list, im.mass_list, obj)

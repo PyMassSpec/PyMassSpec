@@ -32,6 +32,7 @@ import deprecation  # type: ignore[import-untyped]
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
+from matplotlib.backend_bases import MouseEvent
 from matplotlib.container import BarContainer
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
@@ -142,7 +143,7 @@ Please call a plotting function before calling 'do_plotting()'""",
 
 		# If no peak list plot, no mouse click event
 		if len(self.__peak_list) != 0:
-			self.fig.canvas.mpl_connect("button_press_event", self.onclick)
+			self.fig.canvas.mpl_connect("button_press_event", self.onclick)  # type: ignore[arg-type]
 
 	# plt.show()
 
@@ -170,7 +171,7 @@ Please call a plotting function before calling 'do_plotting()'""",
 
 		return largest
 
-	def onclick(self, event) -> None:
+	def onclick(self, event: MouseEvent) -> None:
 		"""
 		Finds the 5 highest intensity m/z channels for the selected peak.
 		The peak is selected by clicking on it.
@@ -183,6 +184,7 @@ Please call a plotting function before calling 'do_plotting()'""",
 		mass_list = []
 
 		for peak in self.__peak_list:
+			assert event.xdata is not None
 			# if event.xdata > 0.9999*peak.rt and event.xdata < 1.0001*peak.rt:
 			if 0.9999 * peak.rt < event.xdata < 1.0001 * peak.rt:
 				intensity_list = peak.mass_spectrum.mass_spec
@@ -465,9 +467,8 @@ def plot_head2tail(
 	if bottom_spec_kwargs is None:
 		bottom_spec_kwargs = dict(color="blue", width=0.5)
 	elif not isinstance(bottom_spec_kwargs, dict):
-		raise TypeError(
-				"'bottom_spec_kwargs' must be a dictionary of keyword arguments for the bottom mass spectrum."
-				)
+		msg = "'bottom_spec_kwargs' must be a dictionary of keyword arguments for the bottom mass spectrum."
+		raise TypeError(msg)
 
 	# Plot a line at y=0 with same width and colour as Spines
 	ax.axhline(y=0, color=ax.spines["bottom"].get_edgecolor(), linewidth=ax.spines["bottom"].get_linewidth())
@@ -581,11 +582,11 @@ class ClickEventHandler:
 
 		# If no peak list plot, no mouse click event
 		if len(self.peak_list) != 0:
-			self.cid = self.fig.canvas.mpl_connect("button_press_event", self.onclick)
+			self.cid = self.fig.canvas.mpl_connect("button_press_event", self.onclick)  # type: ignore[arg-type]
 		else:
 			self.cid = None
 
-	def onclick(self, event) -> None:
+	def onclick(self, event: MouseEvent) -> None:
 		"""
 		Finds the n highest intensity m/z channels for the selected peak.
 		The peak is selected by clicking on it.
@@ -596,6 +597,7 @@ class ClickEventHandler:
 
 		for peak in self.peak_list:
 			# if event.xdata > 0.9999*peak.rt and event.xdata < 1.0001*peak.rt:
+			assert event.xdata is not None
 			if self._min * peak.rt < event.xdata < self._max * peak.rt:
 				intensity_list = peak.mass_spectrum.mass_spec
 				mass_list = peak.mass_spectrum.mass_list

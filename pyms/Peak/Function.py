@@ -48,7 +48,7 @@ __all__ = [
 		"top_ions_v2",
 		"ion_area",
 		"half_area",
-		"median_bounds"
+		"median_bounds",
 		]
 
 

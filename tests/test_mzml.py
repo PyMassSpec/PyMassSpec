@@ -71,7 +71,7 @@ def test_mzml_reader(
 			})
 
 
-def test_masses(mzml_data):
+def test_masses(mzml_data: GCMS_data):
 	assert isinstance(mzml_data.min_mass, float)
 	# minimum mass found in all data
 	assert numpy.isclose(mzml_data.min_mass, 70.048691)
@@ -80,7 +80,7 @@ def test_masses(mzml_data):
 	assert numpy.isclose(mzml_data.max_mass, 898.748962)
 
 
-def test_times(mzml_data):
+def test_times(mzml_data: GCMS_data):
 	time = mzml_data.time_list
 	assert isinstance(time, list)
 	# number of retention times
@@ -93,7 +93,7 @@ def test_times(mzml_data):
 	assert mzml_data.get_index_at_time(2.0) == 7
 
 
-def test_tic(mzml_data):
+def test_tic(mzml_data: GCMS_data):
 	tic = mzml_data.tic
 
 	assert isinstance(tic, IonChromatogram)
@@ -106,7 +106,7 @@ def test_tic(mzml_data):
 	assert numpy.isclose(tic.get_time_at_index(0), 0.087954)
 
 
-def test_scans(mzml_data):
+def test_scans(mzml_data: GCMS_data):
 	# raw scans
 	scans = mzml_data.scan_list
 

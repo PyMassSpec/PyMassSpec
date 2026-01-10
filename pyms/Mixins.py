@@ -143,7 +143,7 @@ class IntensityArrayMixin:
 		:author: Andrew Isaac
 		"""
 
-		warn(f"Use 'intensity_array' attribute instead", DeprecationWarning)
+		warn("Use 'intensity_array' attribute instead", DeprecationWarning)
 
 		return numpy.copy(self._intensity_array)
 
@@ -168,7 +168,7 @@ class IntensityArrayMixin:
 
 		:author: Andrew Isaac
 		"""
-		warn(f"Use 'intensity_array_list' attribute instead", DeprecationWarning)
+		warn("Use 'intensity_array_list' attribute instead", DeprecationWarning)
 		return self.intensity_array
 
 
@@ -200,9 +200,8 @@ class GetIndexTimeMixin:
 			raise TypeError("'time' must be a number")
 
 		if (time < self._min_rt) or (time > self._max_rt):
-			raise IndexError(
-					f"time {time:.2f} is out of bounds (min: {self._min_rt:.2f}, max: {self._max_rt:.2f})"
-					)
+			msg = f"time {time:.2f} is out of bounds (min: {self._min_rt:.2f}, max: {self._max_rt:.2f})"
+			raise IndexError(msg)
 
 		time_list = self._time_list
 		time_diff_min = self._max_rt

@@ -73,7 +73,7 @@ def write_mass_hunter_csv(
 		# write headers
 		fp.write(
 				'"UID","Common Ion","Qual Ion 1","ratio QI1/CI","Qual Ion 2",'
-				'"ratio QI2/CI","l window delta","r window delta"\n'
+				'"ratio QI2/CI","l window delta","r window delta"\n',
 				)
 
 		rtsums: List[float] = []
@@ -196,7 +196,7 @@ def write_mass_hunter_csv(
 							f"{q2_ci_ratio * 100:.1f}",
 							f"{(l_window_delta + 1.5) / 60:.2f}",
 							f"{(r_window_delta + 1.5) / 60:.2f}",
-							])
+							]),
 					)
 
 			index += 1
@@ -308,7 +308,7 @@ def write_excel(
 						mid_color="FFFFFF",
 						end_type="percentile",
 						end_value=99,
-						end_color="FFE5CC"
+						end_color="FFE5CC",
 						),
 				)
 

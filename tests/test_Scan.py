@@ -71,7 +71,8 @@ def test_inequality(scan: Scan, val: Any):
 
 
 @pytest.mark.parametrize(
-		"index, mass, intensity", [(5, 60.9465, 1381.0), (50, 138.8299, 673.0), (100, 477.6667, 1728.0)]
+		"index, mass, intensity",
+		[(5, 60.9465, 1381.0), (50, 138.8299, 673.0), (100, 477.6667, 1728.0)],
 		)
 def test_scan_values(scan: Scan, index: int, mass: float, intensity: float):
 	assert scan.mass_list[index] == mass

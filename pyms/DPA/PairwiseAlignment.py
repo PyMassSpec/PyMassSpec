@@ -27,10 +27,11 @@ Classes for peak alignment by dynamic programming.
 import copy
 import functools
 import math
-from typing import Dict, List
+from typing import List
 
 # 3rd party
 import numpy
+from typing_extensions import TypedDict
 
 # this package
 from pyms.Peak import Peak
@@ -51,6 +52,7 @@ __all__ = [
 		"align",
 		"score_matrix",
 		"dp",
+		"DPResult",
 		"position_similarity",
 		"merge_alignments",
 		"alignment_similarity",
@@ -199,7 +201,20 @@ def score_matrix(a1: Alignment, a2: Alignment, D: float) -> numpy.ndarray:
 	return score_matrix
 
 
-def dp(S, gap_penalty: float) -> Dict:
+class DPResult(TypedDict):
+	"""
+	Return type of :func:`~.dp`.
+	"""
+
+	p: List[int]
+	q: List[int]
+	trace: List[int]
+	matches: List[List[int]]
+	D: numpy.ndarray
+	phi: numpy.ndarray
+
+
+def dp(S: numpy.ndarray, gap_penalty: float) -> DPResult:
 	"""
 	Solves optimal path in score matrix based on global sequence alignment.
 
@@ -344,10 +359,8 @@ def position_similarity(pos1: List[Peak], pos2: List[Peak], D: float) -> float:
 						try:
 							top = numpy.dot(mass_spect1, mass_spect2)
 						except ValueError:
-							raise ValueError(
-									"""Mass Spectra are of different lengths.
-Use `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra"""
-									)
+							msg = "Mass Spectra are of different lengths.\nUse `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra"
+							raise ValueError(msg)
 
 						bot = numpy.sqrt(mass_spect1_sum * mass_spect2_sum)
 						if bot > 0:
@@ -366,7 +379,7 @@ Use `IntensityMatrix.crop_mass()` to set same length for all Mass Spectra"""
 	return score
 
 
-def merge_alignments(A1: Alignment, A2: Alignment, traces) -> Alignment:
+def merge_alignments(A1: Alignment, A2: Alignment, traces: List[int]) -> Alignment:
 	"""
 	Merges two alignments with gaps added in from DP traceback.
 
@@ -426,7 +439,7 @@ def merge_alignments(A1: Alignment, A2: Alignment, traces) -> Alignment:
 	return ma
 
 
-def alignment_similarity(traces, score_matrix, gap: float) -> float:
+def alignment_similarity(traces: List[int], score_matrix: numpy.ndarray, gap: float) -> float:
 	"""
 	Calculates similarity score between two alignments (new method).
 
@@ -464,7 +477,7 @@ def alignment_similarity(traces, score_matrix, gap: float) -> float:
 	return similarity
 
 
-def alignment_compare(x, y) -> int:
+def alignment_compare(x, y) -> int:  # noqa: MAN001
 	"""
 	A helper function for sorting peak positions in a alignment.
 
@@ -484,7 +497,7 @@ def alignment_compare(x, y) -> int:
 		return 1
 
 
-def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float):  # TODO: return type
+def score_matrix_mpi(a1: Alignment, a2: Alignment, D: float) -> numpy.ndarray:
 	"""
 	Calculates the score matrix between two alignments.
 

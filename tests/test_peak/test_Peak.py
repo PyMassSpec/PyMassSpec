@@ -70,7 +70,8 @@ def test_equality(peak: Peak):
 
 
 @pytest.mark.parametrize(
-		"val", [test_list_ints, test_list_strs, test_tuple, test_string, test_int, test_float, test_dict]
+		"val",
+		[test_list_ints, test_list_strs, test_tuple, test_string, test_int, test_float, test_dict],
 		)
 def test_inequality(peak: Peak, val: Any):
 	assert peak != val

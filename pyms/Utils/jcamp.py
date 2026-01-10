@@ -55,7 +55,7 @@ header_info_fields = [
 		"$NIST MASS SPEC NO",
 		"MOLFORM",
 		"MW",
-		"$NIST SOURCE."
+		"$NIST SOURCE.",
 		]
 
 xydata_tags = {"XYDATA", "DATA TABLE", "XYPOINTS, PEAK TABLE", "PEAK TABLE", "XYPOINTS"}

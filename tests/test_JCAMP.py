@@ -200,10 +200,13 @@ def test_trim(data: GCMS_data):
 			trimmed.trim(end=obj)  # type: ignore[type-var]
 
 
-@pytest.mark.parametrize("filename", [
-		"jcamp_gcms_data.I.csv",
-		"jcamp_gcms_data.mz.csv",
-		])
+@pytest.mark.parametrize(
+		"filename",
+		[
+				"jcamp_gcms_data.I.csv",
+				"jcamp_gcms_data.mz.csv",
+				],
+		)
 def test_write(
 		data: GCMS_data,
 		tmp_pathplus: PathPlus,

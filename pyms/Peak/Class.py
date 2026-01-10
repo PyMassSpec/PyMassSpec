@@ -358,7 +358,7 @@ class Peak(AbstractPeak):
 		ms: float,
 		minutes: bool = ...,
 		outlier: bool = ...,
-		) -> "ICPeak": ...
+	) -> "ICPeak": ...
 
 	def __new__(  # noqa: D102
 		cls,
@@ -366,12 +366,12 @@ class Peak(AbstractPeak):
 		ms: Union[float, MassSpectrum, None] = None,
 		minutes: bool = False,
 		outlier: bool = False,
-		):
+	):
 
 		if is_number(ms):
 			warnings.warn(
 					"Creating a Peak object for a single ion chromatogram is "
-					"deprecated in 2.3.0 and will be removed in 3.0.0. Use the ICPeak class instead."
+					"deprecated in 2.3.0 and will be removed in 3.0.0. Use the ICPeak class instead.",
 					)
 			return ICPeak(rt, cast(float, ms), minutes, outlier)
 		else:
@@ -456,7 +456,7 @@ class Peak(AbstractPeak):
 			raise IndexError(
 					f"'ion' out of range of mass spectrum (range "
 					f"{min(self._mass_spectrum.mass_list)} to "
-					f"{max(self._mass_spectrum.mass_list)})"
+					f"{max(self._mass_spectrum.mass_list)})",
 					)
 
 	def get_third_highest_mz(self) -> int:

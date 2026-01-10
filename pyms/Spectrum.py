@@ -112,8 +112,8 @@ class Scan(pymsBaseClass, MassListMixin):
 			else:
 				warnings.warn(
 						"""Unknown sort order for mass list; it doesn't appear to be in either ascending or descending order.
-Please report this at https://github.com/domdfcoding/pymassspec/issues and upload an example data file if possible.
-"""
+Please report this at https://github.com/PyMassSpec/PyMassSpec/issues and upload an example data file if possible.
+""",
 						)
 
 		self._mass_list = mass_list

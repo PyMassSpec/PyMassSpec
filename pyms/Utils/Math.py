@@ -128,7 +128,7 @@ def rmsd(list1: Union[Sequence, numpy.ndarray], list2: Union[Sequence, numpy.nda
 	return _rmsd
 
 
-def mad_based_outlier(data: Iterable[float], thresh: float = 3.5):
+def mad_based_outlier(data: Iterable[float], thresh: float = 3.5) -> Sequence[float]:
 	"""
 	Identify outliers using the median absolute deviation (MAD).
 
@@ -152,7 +152,7 @@ def mad_based_outlier(data: Iterable[float], thresh: float = 3.5):
 	return modified_z_score > thresh
 
 
-def percentile_based_outlier(data: Iterable[float], threshold: int = 95):
+def percentile_based_outlier(data: Iterable[float], threshold: int = 95) -> Sequence[float]:
 	"""
 	Identify outliers using a percentile.
 
@@ -172,7 +172,7 @@ def percentile_based_outlier(data: Iterable[float], threshold: int = 95):
 	return (data < minval) | (data > maxval)
 
 
-def median_outliers(data, m: float = 2.5):
+def median_outliers(data: Iterable[float], m: float = 2.5):  # noqa: MAN002
 	"""
 	Identify outliers using the median value.
 

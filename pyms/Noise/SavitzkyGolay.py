@@ -178,7 +178,7 @@ def _calc_coeff(num_points: int, pol_degree: int, diff_order: int = 0) -> numpy.
 	return coeff
 
 
-def _resub(D, rhs):
+def _resub(D: numpy.ndarray, rhs: numpy.ndarray) -> numpy.ndarray:
 	"""
 	Solves ``D D^T = rhs`` by resubstitution.
 
