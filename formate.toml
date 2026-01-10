@@ -12,6 +12,12 @@ priority = 30
 [hooks.yapf.kwargs]
 yapf_style = ".style.yapf"
 
+[hooks.trailing_commas]
+priority = 21
+
+[hooks.trailing_commas.kwargs]
+format_ImportFrom = false
+
 [hooks.isort]
 priority = 50
 

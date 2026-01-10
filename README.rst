@@ -112,7 +112,7 @@ PyMassSpec
 	:alt: Maintenance
 
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/pymassspec
-	:target: https://pypi.org/project/pymassspec/
+	:target: https://pypistats.org/packages/pymassspec
 	:alt: PyPI - Downloads
 
 .. end shields
