@@ -167,8 +167,9 @@ Installation
 
 .. start installation
 
-.. installation:: pymassspec
+.. installation:: PyMassSpec
 	:pypi:
+	:pypi-name: pymassspec
 	:github:
 	:anaconda:
 	:conda-channels: bioconda, conda-forge, domdfcoding
@@ -267,8 +268,9 @@ Installation
 
 .. start installation
 
-.. installation:: pymassspec
+.. installation:: PyMassSpec
 	:pypi:
+	:pypi-name: pymassspec
 	:github:
 	:anaconda:
 	:conda-channels: bioconda, conda-forge, domdfcoding
