@@ -8,6 +8,7 @@ nbconvert>=6.0.7
 nbsphinx>=0.7.1
 roman>=4.0
 seed-intersphinx-mapping>=1.2.2
+setuptools<81
 sphinx>=3.0.3
 sphinx-copybutton>=0.2.12
 sphinx-debuginfo>=0.2.2
