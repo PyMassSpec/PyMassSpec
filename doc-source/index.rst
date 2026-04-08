@@ -244,10 +244,6 @@ The resulting noise and baseline corrected ion chromatogram is saved back into t
 
 Further examples can be found in the `documentation`_
 
-License
-=========
-PyMassSpec is Free and Open Source software released under the `GNU General Public License version 2 <GPL_>`__.
-
 
 Issues
 ========
@@ -260,7 +256,6 @@ detailed description.
 .. _`pytest`: https://pytest.org/
 .. _`file an issue`: https://github.com/domdfcoding/pymassspec/issues
 .. _Python: https://www.python.org/
-.. _GPL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
 
 Installation
