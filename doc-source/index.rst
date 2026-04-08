@@ -254,7 +254,7 @@ detailed description.
 
 .. _`documentation`: https://pymassspec.readthedocs.io
 .. _`pytest`: https://pytest.org/
-.. _`file an issue`: https://github.com/domdfcoding/pymassspec/issues
+.. _`file an issue`: https://github.com/domdfcoding/PyMassSpec/issues
 .. _Python: https://www.python.org/
 
 

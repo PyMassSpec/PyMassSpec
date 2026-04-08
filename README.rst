@@ -270,7 +270,7 @@ detailed description.
 .. _`documentation`: https://pymassspec.readthedocs.io
 .. _`Contributing to PyMassSpec`: https://pymassspec.readthedocs.io/en/master/contributing.html
 .. _`pytest`: https://pytest.org/
-.. _`file an issue`: https://github.com/domdfcoding/pymassspec/issues
+.. _`file an issue`: https://github.com/domdfcoding/PyMassSpec/issues
 .. _Python: https://www.python.org/
 .. _GPL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 .. _Demos and Examples: https://pymassspec.readthedocs.io/en/master/pyms-demo/introduction.html#pyms-demo
