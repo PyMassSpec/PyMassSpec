@@ -75,7 +75,7 @@ base-classifiers = [
 python-versions = [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13",]
 python-implementations = [ "CPython",]
 platforms = [ "Windows", "macOS", "Linux",]
-license-key = "GPL-2.0-only"
+license-key = "GPLv2"
 package = "pyms"
 
 [tool.sphinx-pyproject]
