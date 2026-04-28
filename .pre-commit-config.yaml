@@ -5,6 +5,7 @@ exclude: ^$
 
 ci:
   autoupdate_schedule: quarterly
+  skip: [taplo-lint]
 
 repos:
  - repo: https://github.com/repo-helper/pyproject-parser
@@ -21,7 +22,6 @@ repos:
     - id: check-case-conflict
     - id: check-executables-have-shebangs
     - id: check-json
-    - id: check-toml
     - id: check-yaml
     - id: check-merge-conflict
     - id: check-symlinks
@@ -31,8 +31,14 @@ repos:
     - id: mixed-line-ending
     - id: end-of-file-fixer
 
+ - repo: https://github.com/domdfcoding/taplo-pre-commit
+   rev: v0.10.0
+   hooks:
+    - id: taplo-lint
+      args: []
+
  - repo: https://github.com/domdfcoding/pre-commit-hooks
-   rev: v0.6.0
+   rev: v0.7.0
    hooks:
     - id: requirements-txt-sorter
       args:
@@ -40,6 +46,9 @@ repos:
     - id: check-docstring-first
       exclude: ^(doc-source/conf|__pkginfo__|setup|tests/.*)\.py$
     - id: bind-requirements
+      args:
+       - --python-min
+       - '3.7'
 
  - repo: https://github.com/python-formate/flake8-dunder-all
    rev: v0.5.0
@@ -60,8 +69,8 @@ repos:
     - id: rst-directive-colons
     - id: rst-inline-touching-normal
 
- - repo: https://github.com/asottile/pyupgrade
-   rev: v3.3.0
+ - repo: https://github.com/python-formate/pyupgrade
+   rev: bbe3007
    hooks:
     - id: pyupgrade
       args:
@@ -80,7 +89,7 @@ repos:
     - id: snippet-fmt
 
  - repo: https://github.com/python-formate/formate
-   rev: v1.2.0
+   rev: v1.2.1
    hooks:
     - id: formate
       exclude: ^(pyms-demo/.*/.*|doc-source/conf|__pkginfo__|setup)\.(_)?py$
