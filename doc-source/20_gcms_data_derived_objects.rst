@@ -190,7 +190,7 @@ The LECO CSV format data can be imported directly into an :class:`~.IntensityMat
 .. code-block:: python
 
     >>> from pyms.IntensityMatrix import IntensityMatrix
-    >>> iim = IntensityMatrix([0],[0],[[0]])
+    >>> iim = IntensityMatrix([0], [0], [[0]])
     >>> iim.import_leco_csv("output/data_leco.csv")
     >>> im.size
     >>> iim.size
